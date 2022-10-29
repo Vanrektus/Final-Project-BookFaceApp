@@ -1,0 +1,35 @@
+﻿@model PublicationViewModel
+
+@{
+	ViewBag.Title = "All Publications";
+}
+
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="text-center row">
+	<div class="card col-4" style="width: 20rem; ">
+		<img class="card-img-top" style="width: 18rem;"
+			 src="@Model.ImageUrl" alt="Publication Image">
+		<div class="card-body">
+
+			<h5 class="card-title mt-1">@Model.Title</h5>
+		</div>
+		@if (@Model.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value)
+		{
+		<a class="btn btn-success" asp-area="" asp-controller="Publication" asp-action="Edit" asp-route-id="@Model.Id">Edit Post</a>
+		}
+
+		@foreach (var comment in Model.PublicationsComments)
+		{
+			<div class="card-body">
+				<h5 class="card-title mt-1">@comment.Comment.User.UserName</h5>
+				<h5 class="card-title mt-1">@comment.Comment.Text</h5>
+				<hr />
+			</div>
+		}
+
+		<a class="btn btn-success" asp-area="" asp-controller="Publication" asp-action="AddComment" asp-route-id="@Model.Id">Add new comment</a>
+	</div>
+</div>
