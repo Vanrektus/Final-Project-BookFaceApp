@@ -1,0 +1,38 @@
+﻿@model IEnumerable<PublicationViewModel>
+
+@{
+	ViewBag.Title = "All Publications";
+}
+
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div id="main-card" class="text-center row main-card">
+	@foreach (var publication in Model)
+	{
+		<div class="card col-4" style="width: 20rem; ">
+			<h5 class="card-title mt-1">@publication.UserName</h5>
+			<img class="card-img-top" style="width: 18rem;"
+			 src="@publication.ImageUrl" alt="Publication Image">
+			<div class="card-body">
+				<h5 class="card-title mt-1">@publication.Title</h5>
+				<h5 class="card-title mt-1">@publication.UsersPublications.Count likes</h5>
+				<h5 class="card-title mt-1">@publication.PublicationsComments.Count comments</h5>
+			</div>
+			@if (publication.UsersPublications.Any(up => up.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value))
+			{
+				<form class="input-group-sm" asp-controller="Publication" asp-action="LikePublication" asp-route-id="@publication.Id">
+					<button type="submit" class="btn btn-primary">Unlike</button>
+				</form>
+			}
+			else
+			{
+				<form class="input-group-sm" asp-controller="Publication" asp-action="LikePublication" asp-route-id="@publication.Id">
+					<button type="submit" class="btn btn-outline-primary">Like</button>
+				</form>
+			}
+			<a class="btn btn-info" asp-area="" asp-controller="Publication" asp-action="Details" asp-route-id="@publication.Id">Details</a>
+		</div>
+	}
+</div>

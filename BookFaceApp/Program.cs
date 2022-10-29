@@ -1,9 +1,9 @@
-//using BookFaceApp.Contracts;
+using BookFaceApp.Contracts;
 using BookFaceApp.Data;
 using BookFaceApp.Data.Common;
 using BookFaceApp.Data.Entities;
 using BookFaceApp.ModelBinders;
-//using BookFaceApp.Services;
+using BookFaceApp.Services;
 using Microsoft.EntityFrameworkCore;
 using static BookFaceApp.Data.DataConstants.UserConstants;
 
@@ -37,7 +37,7 @@ builder.Services.AddControllersWithViews()
     });
 
 builder.Services.AddScoped<IRepository, Repository>();
-//builder.Services.AddScoped<IPublicationService, PublicationService>();
+builder.Services.AddScoped<IPublicationService, PublicationService>();
 
 var app = builder.Build();
 
