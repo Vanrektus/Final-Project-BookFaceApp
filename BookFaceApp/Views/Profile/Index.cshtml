@@ -1,0 +1,25 @@
+﻿@model IEnumerable<PublicationViewModel>
+
+@{
+	ViewBag.Title = "My Profile";
+}
+
+<h2 class="text-center">@User.Identity?.Name</h2>
+<h2 class="text-center">My Publications</h2>
+<hr />
+
+<div class="text-center row">
+	@foreach (var publication in Model)
+	{
+		<div class="card col-4" style="width: 20rem; ">
+			<img class="card-img-top" style="width: 18rem;"
+			 src="@publication.ImageUrl" alt="Publication Image">
+			<div class="card-body">
+
+				<h5 class="card-title mt-1">@publication.Title</h5>
+			</div>
+
+			<a class="btn btn-info" asp-area="" asp-controller="Publication" asp-action="Details" asp-route-id="@publication.Id">Details</a>
+		</div>
+	}
+</div>
