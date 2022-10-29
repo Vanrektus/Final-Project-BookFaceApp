@@ -1,6 +1,6 @@
 //using BookFaceApp.Contracts;
 using BookFaceApp.Data;
-//using BookFaceApp.Data.Common;
+using BookFaceApp.Data.Common;
 using BookFaceApp.Data.Entities;
 using BookFaceApp.ModelBinders;
 //using BookFaceApp.Services;
@@ -36,7 +36,7 @@ builder.Services.AddControllersWithViews()
         options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
     });
 
-//builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<IRepository, Repository>();
 //builder.Services.AddScoped<IPublicationService, PublicationService>();
 
 var app = builder.Build();
