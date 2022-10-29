@@ -1,18 +1,43 @@
+//using BookFaceApp.Contracts;
 using BookFaceApp.Data;
-using Microsoft.AspNetCore.Identity;
+//using BookFaceApp.Data.Common;
+using BookFaceApp.Data.Entities;
+using BookFaceApp.ModelBinders;
+//using BookFaceApp.Services;
 using Microsoft.EntityFrameworkCore;
+using static BookFaceApp.Data.DataConstants.UserConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<BookFaceAppDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddDefaultIdentity<User>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequiredLength = MinUserPassword;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+})
+    .AddEntityFrameworkStores<BookFaceAppDbContext>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/User/Login";
+});
+
+builder.Services.AddControllersWithViews()
+    .AddMvcOptions(options =>
+    {
+        options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+    });
+
+//builder.Services.AddScoped<IRepository, Repository>();
+//builder.Services.AddScoped<IPublicationService, PublicationService>();
 
 var app = builder.Build();
 
