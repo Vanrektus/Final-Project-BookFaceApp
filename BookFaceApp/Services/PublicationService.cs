@@ -76,7 +76,6 @@ namespace BookFaceApp.Services
 
             entity.Title = model.Title;
             entity.ImageUrl = model.ImageUrl;
-            entity.UserId = model.UserId;
 
             await repo.SaveChangesAsync();
         }
