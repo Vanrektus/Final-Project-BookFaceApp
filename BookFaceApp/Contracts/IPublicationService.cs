@@ -19,8 +19,6 @@ namespace BookFaceApp.Contracts
 
         Task AddCommentAsync(PublicationAddCommentModel model, int publicationId, string userId);
 
-        Task<List<Comment>> GetCommentsOfPostAsync(int publicationId);
-
         Task LikePublication(int publicationId, string userId);
     }
 }

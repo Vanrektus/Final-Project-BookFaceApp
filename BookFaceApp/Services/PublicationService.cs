@@ -83,6 +83,7 @@ namespace BookFaceApp.Services
         public async Task<IEnumerable<PublicationViewModel>> GetAllPublicationsAsync()
         {
             var entities = await repo.All<Publication>()
+                .Include(p => p.User)
                 .Include(p => p.PublicationsComments)
                 .ThenInclude(pc => pc.Comment)
                 .ThenInclude(c => c.User)
@@ -103,23 +104,11 @@ namespace BookFaceApp.Services
                 });
         }
 
-        public async Task<List<Comment>> GetCommentsOfPostAsync(int publicationId)
-        {
-            var publication = await repo.All<Publication>()
-                .FirstOrDefaultAsync(p => p.Id == publicationId);
-
-            if (publication == null)
-            {
-                throw new ArgumentException("Invalid publication ID");
-            }
-
-            return await repo.All<Comment>().ToListAsync();
-        }
-
         public async Task<IEnumerable<PublicationViewModel>> GetMineAsync(string userId)
         {
             var entities = await repo.All<Publication>()
                 .Where(p => p.UserId == userId)
+                .Include(p => p.User)
                 .Include(p => p.PublicationsComments)
                 .ThenInclude(pc => pc.Comment)
                 .ThenInclude(c => c.User)
@@ -144,6 +133,7 @@ namespace BookFaceApp.Services
         {
             var model = await repo.All<Publication>()
                 .Where(p => p.Id == publicationId)
+                .Include(p => p.User)
                 .Include(p => p.PublicationsComments)
                 .ThenInclude(pc => pc.Comment)
                 .ThenInclude(c => c.User)
@@ -153,7 +143,8 @@ namespace BookFaceApp.Services
 
             if (model == null)
             {
-                return null;
+                return null!;
+                //throw new ArgumentException("Invalid publication ID");
             }
 
             var user = await repo.GetByIdAsync<User>(model.UserId);
@@ -176,7 +167,8 @@ namespace BookFaceApp.Services
 
             if (model == null)
             {
-                throw new ArgumentException("Invalid publication ID");
+                return null!;
+                //throw new ArgumentException("Invalid publication ID");
             }
 
             return new PublicationEditModel(){
@@ -215,7 +207,6 @@ namespace BookFaceApp.Services
                     User = user,
                     PublicationId = publication.Id,
                     Publication = publication,
-                    isLiked = true
                 });
             }
             else
@@ -227,6 +218,15 @@ namespace BookFaceApp.Services
             await repo.SaveChangesAsync();
         }
 
-        //private async Task<>
+        //private async Task<IEnumerable<Publication>> GetEntities()
+        //{
+        //    return await repo.All<Publication>()
+        //        .Include(p => p.PublicationsComments)
+        //        .ThenInclude(pc => pc.Comment)
+        //        .ThenInclude(c => c.User)
+        //        .Include(p => p.UsersPublications)
+        //        .ThenInclude(up => up.User)
+        //        .ToListAsync();
+        //}
     }
 }

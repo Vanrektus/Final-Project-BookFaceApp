@@ -72,21 +72,27 @@ namespace BookFaceApp.Controllers
                 return View(model);
             }
 
-            return RedirectToAction("InvalidModel", "Error");
+            return RedirectToAction("InvalidPublication", "Error");
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var model = await publicationService.GetPublicationForEditAsync(id);
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            if ((model != null) && (model.UserId == userId))
+            if (model == null)
             {
-                return View(model);
+                return RedirectToAction("InvalidPublication", "Error");
             }
 
-            return RedirectToAction("NotOwner", "Error");
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (model.UserId != userId)
+            {
+                return RedirectToAction("NotOwner", "Error");
+            }
+
+            return View(model);
         }
 
         [HttpPost]
@@ -151,11 +157,6 @@ namespace BookFaceApp.Controllers
             }
 
             return RedirectToAction(nameof(All));
-        }
-
-        public IActionResult NotAuthorized()
-        {
-            return View();
         }
     }
 }

@@ -16,7 +16,5 @@ namespace BookFaceApp.Data.Entities
 
         [ForeignKey(nameof(PublicationId))]
         public Publication Publication { get; set; } = null!;
-
-        public bool isLiked { get; set; }
     }
 }

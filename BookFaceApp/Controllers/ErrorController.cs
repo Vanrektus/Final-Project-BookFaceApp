@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookFaceApp.Controllers
 {
+    [Authorize]
     public class ErrorController : Controller
     {
         public IActionResult NotOwner()
@@ -9,7 +11,7 @@ namespace BookFaceApp.Controllers
             return View();
         }
 
-        public IActionResult InvalidModel()
+        public IActionResult InvalidPublication()
         {
             return View();
         }
