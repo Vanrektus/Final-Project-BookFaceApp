@@ -3,7 +3,6 @@ using BookFaceApp.Data.Common;
 using BookFaceApp.Data.Entities;
 using BookFaceApp.Models.Publication;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace BookFaceApp.Services
 {
@@ -66,22 +65,23 @@ namespace BookFaceApp.Services
             await repo.SaveChangesAsync();
         }
 
-        //public async Task<PublicationViewModel> Edit(int publicationId)
-        //{
-        //    var model = await repo.All<Publication>()
-        //        .Where(p => p.Id == publicationId)
-        //        .Select(p => new PublicationViewModel()
-        //        {
-        //            Id = p.Id,
-        //            Title = p.Title,
-        //            ImageUrl = p.ImageUrl
-        //        })
-        //        .FirstOrDefaultAsync();
+        public async Task EditPublication(PublicationEditModel model)
+        {
+            var entity = await repo.GetByIdAsync<Publication>(model.Id);
 
-        //    return model;
-        //}
+            if (entity == null)
+            {
+                throw new ArgumentException("Invalid publication");
+            }
 
-        public async Task<IEnumerable<PublicationViewModel>> GetAllAsync()
+            entity.Title = model.Title;
+            entity.ImageUrl = model.ImageUrl;
+            entity.UserId = model.UserId;
+
+            await repo.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<PublicationViewModel>> GetAllPublicationsAsync()
         {
             var entities = await repo.All<Publication>()
                 .Include(p => p.PublicationsComments)
@@ -134,6 +134,52 @@ namespace BookFaceApp.Services
                 });
         }
 
+        public async Task<PublicationViewModel> GetOnePublicationAsync(int publicationId)
+        {
+            var model = await repo.GetByIdAsync<Publication>(publicationId);
+
+            return new PublicationViewModel()
+            {
+                Id = model.Id,
+                Title = model.Title,
+                ImageUrl = model.ImageUrl,
+                UserName = model.User.UserName,
+                UserId = model.UserId,
+                PublicationsComments = model.PublicationsComments,
+                UsersPublications = model.UsersPublications
+            };
+        }
+
+        //public async Task<PublicationViewModel> GetOneAsync(int publicationId)
+        //{
+        //    return await repo.All<Publication>()
+        //        .Where(p => p.Id == publicationId)
+        //        .Select(p => new PublicationViewModel()
+        //        {
+        //            Id = p.Id,
+        //            Title = p.Title,
+        //            ImageUrl = p.ImageUrl
+        //        })
+        //        .FirstOrDefaultAsync();
+        //}
+
+        public async Task<PublicationEditModel> GetPublicationForEditAsync(int publicationId)
+        {
+            var model = await repo.GetByIdAsync<Publication>(publicationId);
+
+            if (model == null)
+            {
+                throw new ArgumentException("Invalid publication ID");
+            }
+
+            return new PublicationEditModel(){
+                Id = model.Id,
+                Title = model.Title,
+                ImageUrl = model.ImageUrl,
+                UserId = model.UserId
+            };
+        }
+
         public async Task LikePublication(int publicationId, string userId)
         {
             var user = await repo.All<User>()
@@ -173,18 +219,5 @@ namespace BookFaceApp.Services
 
             await repo.SaveChangesAsync();
         }
-
-        //public async Task<PublicationViewModel> GetOneAsync(int publicationId)
-        //{
-        //    return await repo.All<Publication>()
-        //        .Where(p => p.Id == publicationId)
-        //        .Select(p => new PublicationViewModel()
-        //        {
-        //            Id = p.Id,
-        //            Title = p.Title,
-        //            ImageUrl = p.ImageUrl
-        //        })
-        //        .FirstOrDefaultAsync();
-        //}
     }
 }

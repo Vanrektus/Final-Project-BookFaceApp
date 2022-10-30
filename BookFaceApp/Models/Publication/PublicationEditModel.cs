@@ -14,6 +14,6 @@ namespace BookFaceApp.Models.Publication
 
         public string? ImageUrl { get; set; }
 
-        public string? UserId { get; set; } = null!;
+        public string UserId { get; set; } = null!;
     }
 }

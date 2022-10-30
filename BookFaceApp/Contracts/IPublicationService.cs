@@ -5,11 +5,13 @@ namespace BookFaceApp.Contracts
 {
     public interface IPublicationService
     {
-        Task<IEnumerable<PublicationViewModel>> GetAllAsync();
+        Task<IEnumerable<PublicationViewModel>> GetAllPublicationsAsync();
 
-        //Task<PublicationViewModel> GetOneAsync(int publicationId);
+        Task<PublicationViewModel> GetOnePublicationAsync(int publicationId);
 
-        //Task<PublicationViewModel> Edit(int publicationId);
+        Task<PublicationEditModel> GetPublicationForEditAsync(int publicationId);
+
+        Task EditPublication(PublicationEditModel model);
 
         Task AddPublicationAsync(PublicationAddModel model, string userId);
 

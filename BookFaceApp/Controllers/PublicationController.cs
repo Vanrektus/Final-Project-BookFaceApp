@@ -4,7 +4,6 @@ using BookFaceApp.Data.Entities;
 using BookFaceApp.Models.Publication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace BookFaceApp.Controllers
@@ -26,7 +25,7 @@ namespace BookFaceApp.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var model = await publicationService.GetAllAsync();
+            var model = await publicationService.GetAllPublicationsAsync();
 
             return View(model);
         }
@@ -67,40 +66,24 @@ namespace BookFaceApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var entities = await publicationService.GetAllAsync();
+            var model = await publicationService.GetOnePublicationAsync(id);
 
-            var model = entities
-                .Where(p => p.Id == id)
-                .Select(p => new PublicationViewModel()
-                {
-                    Id = p.Id,
-                    Title = p.Title,
-                    ImageUrl = p.ImageUrl,
-                    UserId = p.UserId,
-                    PublicationsComments = p.PublicationsComments,
-                })
-                .FirstOrDefault();
+            if (model != null)
+            {
+                return View(model);
+            }
 
-            return View(model);
+            return RedirectToAction(nameof(All));
+            //return RedirectToAction("InvalidModel", "Error");
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var entities = await publicationService.GetAllAsync();
+            var model = await publicationService.GetPublicationForEditAsync(id);
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            var model = entities
-                .Where(p => p.Id == id)
-                .Select(p => new PublicationEditModel()
-                {
-                    Id = p.Id,
-                    Title = p.Title,
-                    ImageUrl = p.ImageUrl,
-                    UserId = p.UserId
-                })
-                .FirstOrDefault();
-
-            if (model != null && (model.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value))
+            if ((model != null) && (model.UserId == userId))
             {
                 return View(model);
             }
@@ -116,15 +99,7 @@ namespace BookFaceApp.Controllers
                 return View(model);
             }
 
-            var publication = await repo.GetByIdAsync<Publication>(model.Id);
-
-            if (publication != null)
-            {
-                publication.Title = model.Title;
-                publication.ImageUrl = model.ImageUrl;
-            }
-
-            await repo.SaveChangesAsync();
+            await publicationService.EditPublication(model);
 
             return RedirectToAction(nameof(All));
         }
