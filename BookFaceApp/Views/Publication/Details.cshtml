@@ -1,7 +1,7 @@
 ﻿@model PublicationViewModel
 
 @{
-	ViewBag.Title = "All Publications";
+	ViewBag.Title = "Publication details";
 }
 
 
@@ -10,6 +10,7 @@
 
 <div class="text-center row">
 	<div class="card col-4" style="width: 20rem; ">
+		<h5 class="card-title mt-1">@Model.UserName</h5>
 		<img class="card-img-top" style="width: 18rem;"
 			 src="@Model.ImageUrl" alt="Publication Image">
 		<div class="card-body">
@@ -18,7 +19,7 @@
 		</div>
 		@if (@Model.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value)
 		{
-		<a class="btn btn-success" asp-area="" asp-controller="Publication" asp-action="Edit" asp-route-id="@Model.Id">Edit Post</a>
+			<a class="btn btn-success" asp-area="" asp-controller="Publication" asp-action="Edit" asp-route-id="@Model.Id">Edit Post</a>
 		}
 
 		@foreach (var comment in Model.PublicationsComments)
