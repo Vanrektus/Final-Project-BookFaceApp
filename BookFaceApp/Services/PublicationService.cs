@@ -153,7 +153,7 @@ namespace BookFaceApp.Services
 
             if (model == null)
             {
-                throw new ArgumentException("Invalid publication ID");
+                return null;
             }
 
             var user = await repo.GetByIdAsync<User>(model.UserId);

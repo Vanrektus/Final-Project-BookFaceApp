@@ -1,6 +1,5 @@
 ﻿using BookFaceApp.Contracts;
 using BookFaceApp.Data.Common;
-using BookFaceApp.Data.Entities;
 using BookFaceApp.Models.Publication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -73,8 +72,7 @@ namespace BookFaceApp.Controllers
                 return View(model);
             }
 
-            return RedirectToAction(nameof(All));
-            //return RedirectToAction("InvalidModel", "Error");
+            return RedirectToAction("InvalidModel", "Error");
         }
 
         [HttpGet]

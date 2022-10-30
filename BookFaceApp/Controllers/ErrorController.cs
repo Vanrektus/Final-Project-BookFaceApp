@@ -8,5 +8,10 @@ namespace BookFaceApp.Controllers
         {
             return View();
         }
+
+        public IActionResult InvalidModel()
+        {
+            return View();
+        }
     }
 }
