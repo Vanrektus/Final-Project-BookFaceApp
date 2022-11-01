@@ -82,5 +82,22 @@ namespace BookFaceApp.Controllers
 
             return RedirectToAction("All", "Publication");
         }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var userId = User.Claims
+                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+                await commentService.DeleteCommentAsync(id, userId!);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return RedirectToAction("All", "Publication");
+        }
     }
 }

@@ -13,7 +13,10 @@ namespace BookFaceApp.Data.Entities
         [MaxLength(MaxCommentText)]
         public string Text { get; set; } = null!;
 
-        [Required]
+		[Required]
+        public bool IsDeleted { get; set; } = false;
+
+		[Required]
         public string UserId { get; set; } = null!;
 
         [ForeignKey(nameof(UserId))]

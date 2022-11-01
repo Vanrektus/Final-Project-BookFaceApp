@@ -48,7 +48,8 @@ namespace BookFaceApp.Services
             var entities = await repo.All<Publication>()
                 .Where(p => p.IsDeleted == false)
                 .Include(p => p.User)
-                .Include(p => p.PublicationsComments)
+                .Include(p => p.PublicationsComments
+                .Where(pc => pc.Comment.IsDeleted == false))
                 .ThenInclude(pc => pc.Comment)
                 .ThenInclude(c => c.User)
                 .Include(p => p.UsersPublications)
@@ -72,8 +73,10 @@ namespace BookFaceApp.Services
         {
             var entities = await repo.All<Publication>()
                 .Where(p => p.UserId == userId)
+                .Where(p => p.IsDeleted == false)
                 .Include(p => p.User)
-                .Include(p => p.PublicationsComments)
+                .Include(p => p.PublicationsComments
+                .Where(pc => pc.Comment.IsDeleted == false))
                 .ThenInclude(pc => pc.Comment)
                 .ThenInclude(c => c.User)
                 .Include(p => p.UsersPublications)
@@ -98,7 +101,8 @@ namespace BookFaceApp.Services
             var model = await repo.All<Publication>()
                 .Where(p => p.Id == publicationId)
                 .Include(p => p.User)
-                .Include(p => p.PublicationsComments)
+                .Include(p => p.PublicationsComments
+                .Where(pc => pc.Comment.IsDeleted == false))
                 .ThenInclude(pc => pc.Comment)
                 .ThenInclude(c => c.User)
                 .Include(p => p.UsersPublications)
@@ -135,7 +139,8 @@ namespace BookFaceApp.Services
                 //throw new ArgumentException("Invalid publication ID");
             }
 
-            return new PublicationEditModel(){
+            return new PublicationEditModel()
+            {
                 Id = model.Id,
                 Title = model.Title,
                 ImageUrl = model.ImageUrl,
@@ -160,7 +165,7 @@ namespace BookFaceApp.Services
 
             if (publication == null)
             {
-                throw new ArgumentException("Invalid book ID");
+                throw new ArgumentException("Invalid publication ID");
             }
 
             if (!user.UsersPublications.Any(up => up.PublicationId == publicationId))
@@ -182,9 +187,8 @@ namespace BookFaceApp.Services
             await repo.SaveChangesAsync();
         }
 
-		public async Task DeletePublicationAsync(int publicationId, string userId)
-		{
-
+        public async Task DeletePublicationAsync(int publicationId, string userId)
+        {
             var user = await repo.All<User>()
                 .Where(u => u.Id == userId)
                 .Include(u => u.UsersPublications)
@@ -200,15 +204,15 @@ namespace BookFaceApp.Services
 
             if (publication == null)
             {
-                throw new ArgumentException("Invalid book ID");
+                throw new ArgumentException("Invalid publication ID");
             }
 
-			if (publication.UserId == user.Id)
-			{
+            if (publication.UserId == user.Id)
+            {
                 publication.IsDeleted = true;
-			}
+            }
 
             await repo.SaveChangesAsync();
         }
-	}
+    }
 }

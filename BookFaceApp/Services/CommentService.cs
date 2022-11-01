@@ -2,7 +2,6 @@
 using BookFaceApp.Data.Common;
 using BookFaceApp.Data.Entities;
 using BookFaceApp.Models.Comment;
-using BookFaceApp.Models.Publication;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookFaceApp.Services
@@ -53,10 +52,33 @@ namespace BookFaceApp.Services
             await repo.SaveChangesAsync();
         }
 
-		public async Task DeleteCommentAsync(int publicationId, string userId)
-		{
-			throw new NotImplementedException();
-		}
+		public async Task DeleteCommentAsync(int commentId, string userId)
+        {
+            var user = await repo.All<User>()
+                .Where(u => u.Id == userId)
+                .Include(u => u.UsersPublications)
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new ArgumentException("Invalid user ID");
+            }
+
+            var comment = await repo.All<Comment>()
+                .FirstOrDefaultAsync(b => b.Id == commentId);
+
+            if (comment == null)
+            {
+                throw new ArgumentException("Invalid comment ID");
+            }
+
+            if (comment.UserId == user.Id)
+            {
+                comment.IsDeleted = true;
+            }
+
+            await repo.SaveChangesAsync();
+        }
 
 		public async Task EditCommentAsync(CommentEditModel model)
         {

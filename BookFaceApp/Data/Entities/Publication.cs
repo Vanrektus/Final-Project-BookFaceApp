@@ -15,6 +15,7 @@ namespace BookFaceApp.Data.Entities
 
         public string? ImageUrl { get; set; }
 
+		[Required]
         public bool IsDeleted { get; set; } = false;
 
 		[Required]
