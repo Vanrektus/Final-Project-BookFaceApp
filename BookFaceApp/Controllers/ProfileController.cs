@@ -1,4 +1,5 @@
 ﻿using BookFaceApp.Contracts;
+using BookFaceApp.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -20,7 +21,7 @@ namespace BookFaceApp.Controllers
             var userId = User.Claims
                 .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            var model = await publicationService.GetMineAsync(userId!);
+            var model = await publicationService.GetUserPublicationsAsync(userId!);
 
             return View(model);
         }

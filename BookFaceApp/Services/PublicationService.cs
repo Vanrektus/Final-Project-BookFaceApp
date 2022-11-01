@@ -15,43 +15,6 @@ namespace BookFaceApp.Services
             repo = _repo;
         }
 
-        public async Task AddCommentAsync(PublicationAddCommentModel model, int publicationId, string userId)
-        {
-            var user = await repo.All<User>()
-                .FirstOrDefaultAsync(u => u.Id == userId);
-
-            if (user == null)
-            {
-                throw new ArgumentException("Invalid user ID");
-            }
-
-            var publication = await repo.All<Publication>()
-                .Where(p => p.Id == publicationId)
-                .Include(p => p.PublicationsComments)
-                .ThenInclude(pc => pc.Comment)
-                .ThenInclude(c => c.User)
-                .FirstOrDefaultAsync();
-
-            if (publication == null)
-            {
-                throw new ArgumentException("Invalid publication ID");
-            }
-
-            publication.PublicationsComments.Add(new PublicationComment()
-            {
-                PublicationId = publication.Id,
-                Publication = publication,
-                Comment = new Comment()
-                {
-                    Text = model.Text,
-                    User = user,
-                    UserId = userId
-                }
-            });
-
-            await repo.SaveChangesAsync();
-        }
-
         public async Task AddPublicationAsync(PublicationAddModel model, string userId)
         {
             var entity = new Publication()
@@ -65,7 +28,7 @@ namespace BookFaceApp.Services
             await repo.SaveChangesAsync();
         }
 
-        public async Task EditPublication(PublicationEditModel model)
+        public async Task EditPublicationAsync(PublicationEditModel model)
         {
             var entity = await repo.GetByIdAsync<Publication>(model.Id);
 
@@ -83,6 +46,7 @@ namespace BookFaceApp.Services
         public async Task<IEnumerable<PublicationViewModel>> GetAllPublicationsAsync()
         {
             var entities = await repo.All<Publication>()
+                .Where(p => p.IsDeleted == false)
                 .Include(p => p.User)
                 .Include(p => p.PublicationsComments)
                 .ThenInclude(pc => pc.Comment)
@@ -104,7 +68,7 @@ namespace BookFaceApp.Services
                 });
         }
 
-        public async Task<IEnumerable<PublicationViewModel>> GetMineAsync(string userId)
+        public async Task<IEnumerable<PublicationViewModel>> GetUserPublicationsAsync(string userId)
         {
             var entities = await repo.All<Publication>()
                 .Where(p => p.UserId == userId)
@@ -179,7 +143,7 @@ namespace BookFaceApp.Services
             };
         }
 
-        public async Task LikePublication(int publicationId, string userId)
+        public async Task LikePublicationAsync(int publicationId, string userId)
         {
             var user = await repo.All<User>()
                 .Where(u => u.Id == userId)
@@ -218,15 +182,33 @@ namespace BookFaceApp.Services
             await repo.SaveChangesAsync();
         }
 
-        //private async Task<IEnumerable<Publication>> GetEntities()
-        //{
-        //    return await repo.All<Publication>()
-        //        .Include(p => p.PublicationsComments)
-        //        .ThenInclude(pc => pc.Comment)
-        //        .ThenInclude(c => c.User)
-        //        .Include(p => p.UsersPublications)
-        //        .ThenInclude(up => up.User)
-        //        .ToListAsync();
-        //}
-    }
+		public async Task DeletePublicationAsync(int publicationId, string userId)
+		{
+
+            var user = await repo.All<User>()
+                .Where(u => u.Id == userId)
+                .Include(u => u.UsersPublications)
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new ArgumentException("Invalid user ID");
+            }
+
+            var publication = await repo.All<Publication>()
+                .FirstOrDefaultAsync(b => b.Id == publicationId);
+
+            if (publication == null)
+            {
+                throw new ArgumentException("Invalid book ID");
+            }
+
+			if (publication.UserId == user.Id)
+			{
+                publication.IsDeleted = true;
+			}
+
+            await repo.SaveChangesAsync();
+        }
+	}
 }

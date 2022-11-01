@@ -11,9 +11,12 @@
 <div id="main-card" class="text-center row main-card">
 	@foreach (var publication in Model)
 	{
-		<div class="card col-4" style="width: 20rem; ">
+		<div class="card col-4" style="width: 375px; margin: 5px;">
+			@*<a asp-controller="Profile" asp-action="Index" asp-route-id="@publication.UserId">
+		<h5 class="card-title mt-1">@publication.UserName</h5>
+		</a>*@
 			<h5 class="card-title mt-1">@publication.UserName</h5>
-			<img class="card-img-top" style="width: 18rem;"
+			<img class="card-img-top" style="width: 350px; height: 250px;"
 			 src="@publication.ImageUrl" alt="Publication Image">
 			<div class="card-body">
 				<h5 class="card-title mt-1">@publication.Title</h5>

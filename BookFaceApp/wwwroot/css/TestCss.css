@@ -12,6 +12,7 @@
 }
 
 .panel-body {
+    border-width: 10px;
     background: #fff;
 }
 
@@ -116,15 +117,15 @@ a:hover {
     border-top: 1px solid #ebeef5;
 }
 
-.fb-time-action span, .fb-time-action a {
+.fb-time-action span, .fb-time-action a, .fb-time-action form {
     margin-right: 5px;
 }
 
-.fb-time-action a {
+.fb-time-action a, .fb-time-action form {
     color: #2972a1;
 }
 
-    .fb-time-action a:hover {
+    .fb-time-action a:hover. .fb-time-action form:hover {
         text-decoration: underline;
     }
 

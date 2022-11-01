@@ -11,18 +11,23 @@ namespace BookFaceApp.Controllers
     public class PublicationController : Controller
     {
         private readonly IPublicationService publicationService;
-        private readonly IRepository repo;
 
         public PublicationController(
-            IPublicationService _publicationService,
-            IRepository _repo)
+            IPublicationService _publicationService)
         {
             publicationService = _publicationService;
-            repo = _repo;
         }
 
         [HttpGet]
         public async Task<IActionResult> All()
+        {
+            var model = await publicationService.GetAllPublicationsAsync();
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AllTest()
         {
             var model = await publicationService.GetAllPublicationsAsync();
 
@@ -103,42 +108,9 @@ namespace BookFaceApp.Controllers
                 return View(model);
             }
 
-            await publicationService.EditPublication(model);
+            await publicationService.EditPublicationAsync(model);
 
             return RedirectToAction(nameof(All));
-        }
-
-        [HttpGet]
-        public IActionResult AddComment()
-        {
-            var model = new PublicationAddCommentModel();
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddComment(PublicationAddCommentModel model, int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            try
-            {
-                var userId = User.Claims
-                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
-                await publicationService.AddCommentAsync(model, id, userId!);
-
-                return RedirectToAction(nameof(All));
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError("", "Something went wrong!");
-
-                throw;
-            }
         }
 
         [HttpPost]
@@ -149,9 +121,26 @@ namespace BookFaceApp.Controllers
                 var userId = User.Claims
                     .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-                await publicationService.LikePublication(id, userId!);
+                await publicationService.LikePublicationAsync(id, userId!);
             }
             catch (Exception)
+            {
+                throw;
+            }
+
+            return RedirectToAction(nameof(All));
+        }
+
+        public async Task<IActionResult> Delete(int id)
+		{
+			try
+            {
+                var userId = User.Claims
+                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+                await publicationService.DeletePublicationAsync(id, userId!);
+            }
+			catch (Exception)
             {
                 throw;
             }

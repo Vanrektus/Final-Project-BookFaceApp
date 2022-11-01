@@ -38,6 +38,7 @@ builder.Services.AddControllersWithViews()
 
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<IPublicationService, PublicationService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 
 var app = builder.Build();
 
