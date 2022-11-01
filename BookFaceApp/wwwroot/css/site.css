@@ -16,3 +16,17 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+#pub-det-username {
+    /*text-align: left;*/
+}
+
+#pub-like-btn {
+    float: left;
+    padding: 5px;
+}
+
+#pub-det-btn {
+    float: left;
+    padding: 5px;
+}

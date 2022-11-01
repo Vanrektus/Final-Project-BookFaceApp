@@ -20,19 +20,31 @@
 				<h5 class="card-title mt-1">@publication.UsersPublications.Count likes</h5>
 				<h5 class="card-title mt-1">@publication.PublicationsComments.Count comments</h5>
 			</div>
-			@if (publication.UsersPublications.Any(up => up.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value))
-			{
-				<form class="input-group-sm" asp-controller="Publication" asp-action="LikePublication" asp-route-id="@publication.Id">
-					<button type="submit" class="btn btn-primary">Unlike</button>
-				</form>
-			}
-			else
-			{
-				<form class="input-group-sm" asp-controller="Publication" asp-action="LikePublication" asp-route-id="@publication.Id">
-					<button type="submit" class="btn btn-outline-primary">Like</button>
-				</form>
-			}
-			<a class="btn btn-info" asp-area="" asp-controller="Publication" asp-action="Details" asp-route-id="@publication.Id">Details</a>
+
+			<div>
+				<div id="pub-like-btn">
+					@if (publication.UsersPublications.Any(up => up.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value))
+					{
+						<form class="input-group-sm" asp-controller="Publication" asp-action="LikePublication" asp-route-id="@publication.Id">
+							<button type="submit" class="btn btn-light">
+								<img src="/lib/bootstrap-icons/heart-fill.svg" alt="Bootstrap" width="35" height="35">
+							</button>
+						</form>
+					}
+					else
+					{
+						<form class="input-group-sm" asp-controller="Publication" asp-action="LikePublication" asp-route-id="@publication.Id">
+							<button type="submit" class="btn btn-outline-light">
+								<img src="/lib/bootstrap-icons/heart.svg" alt="Bootstrap" width="35" height="35">
+							</button>
+						</form>
+					}
+				</div>
+
+				<div id="pub-det-btn">
+					<a class="btn btn-light" asp-area="" asp-controller="Publication" asp-action="Details" asp-route-id="@publication.Id">COMMENTS</a>
+				</div>
+			</div>
 		</div>
 	}
 </div>

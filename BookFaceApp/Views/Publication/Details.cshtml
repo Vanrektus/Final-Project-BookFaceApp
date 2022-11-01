@@ -10,27 +10,47 @@
 
 <div class="text-center row">
 	<div class="card col-4" style="width: 20rem; ">
-		<h5 class="card-title mt-1">@Model.UserName</h5>
+		<div>
+			<h5 id="pub-det-username" class="card-title mt-1">@Model.UserName</h5>
+
+			@if (@Model.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value)
+			{
+				<a id="pub-det-btn" class="btn btn-outline-info" asp-area="" asp-controller="Publication" asp-action="Edit" asp-route-id="@Model.Id">
+					<img src="/lib/bootstrap-icons/pencil.svg" alt="Bootstrap" width="35" height="35">
+				</a>
+				<a id="pub-det-btn" class="btn btn-outline-danger" asp-area="" asp-controller="Publication" asp-action="Delete" asp-route-id="@Model.Id">
+					<img src="/lib/bootstrap-icons/x-square.svg" alt="Bootstrap" width="35" height="35">
+				</a>
+			}
+		</div>
+
 		<img class="card-img-top" style="width: 18rem;"
 			 src="@Model.ImageUrl" alt="Publication Image">
 		<div class="card-body">
 
 			<h5 class="card-title mt-1">@Model.Title</h5>
 		</div>
-		@if (@Model.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value)
+
+
+		@if (Model.PublicationsComments.Count > 0)
 		{
-			<a class="btn btn-success" asp-area="" asp-controller="Publication" asp-action="Edit" asp-route-id="@Model.Id">Edit Post</a>
+			@foreach (var comment in Model.PublicationsComments)
+			{
+				<div class="card-body">
+					<h5 class="card-title mt-1">@comment.Comment.User.UserName</h5>
+					<h5 class="card-title mt-1">@comment.Comment.Text</h5>
+					<hr />
+				</div>
+			}
+		}
+		else
+		{
+			<h5 class="card-title mt-1">No comments yet.</h5>
 		}
 
-		@foreach (var comment in Model.PublicationsComments)
-		{
-			<div class="card-body">
-				<h5 class="card-title mt-1">@comment.Comment.User.UserName</h5>
-				<h5 class="card-title mt-1">@comment.Comment.Text</h5>
-				<hr />
-			</div>
-		}
 
 		<a class="btn btn-success" asp-area="" asp-controller="Publication" asp-action="AddComment" asp-route-id="@Model.Id">Add new comment</a>
 	</div>
 </div>
+
+<script src="/js/bootstrap.min.js"></script>
