@@ -207,10 +207,12 @@ namespace BookFaceApp.Services
                 throw new ArgumentException("Invalid publication ID");
             }
 
-            if (publication.UserId == user.Id)
+            if (publication.UserId != user.Id)
             {
-                publication.IsDeleted = true;
+                throw new ArgumentException("Invalid owner ID");
             }
+
+            publication.IsDeleted = true;
 
             await repo.SaveChangesAsync();
         }

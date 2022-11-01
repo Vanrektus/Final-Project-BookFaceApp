@@ -6,17 +6,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookFaceApp.Services
 {
-	public class CommentService : ICommentService
-	{
-		private readonly IRepository repo;
+    public class CommentService : ICommentService
+    {
+        private readonly IRepository repo;
 
-		public CommentService(IRepository _repo)
-		{
-			repo = _repo;
-		}
+        public CommentService(IRepository _repo)
+        {
+            repo = _repo;
+        }
 
-		public async Task AddCommentAsync(CommentAddModel model, int publicationId, string userId)
-		{
+        public async Task AddCommentAsync(CommentAddModel model, int publicationId, string userId)
+        {
             var user = await repo.All<User>()
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
@@ -27,7 +27,8 @@ namespace BookFaceApp.Services
 
             var publication = await repo.All<Publication>()
                 .Where(p => p.Id == publicationId)
-                .Include(p => p.PublicationsComments)
+                .Include(p => p.PublicationsComments
+                .Where(pc => pc.Comment.IsDeleted == false))
                 .ThenInclude(pc => pc.Comment)
                 .ThenInclude(c => c.User)
                 .FirstOrDefaultAsync();
@@ -52,7 +53,7 @@ namespace BookFaceApp.Services
             await repo.SaveChangesAsync();
         }
 
-		public async Task DeleteCommentAsync(int commentId, string userId)
+        public async Task DeleteCommentAsync(int commentId, string userId)
         {
             var user = await repo.All<User>()
                 .Where(u => u.Id == userId)
@@ -72,15 +73,17 @@ namespace BookFaceApp.Services
                 throw new ArgumentException("Invalid comment ID");
             }
 
-            if (comment.UserId == user.Id)
+            if (comment.UserId != user.Id)
             {
-                comment.IsDeleted = true;
+                throw new ArgumentException("Invalid owner ID");
             }
+
+            comment.IsDeleted = true;
 
             await repo.SaveChangesAsync();
         }
 
-		public async Task EditCommentAsync(CommentEditModel model)
+        public async Task EditCommentAsync(CommentEditModel model)
         {
             var entity = await repo.GetByIdAsync<Comment>(model.Id);
 
@@ -94,8 +97,8 @@ namespace BookFaceApp.Services
             await repo.SaveChangesAsync();
         }
 
-		public async Task<CommentEditModel> GetCommentForEditAsync(int commentId)
-		{
+        public async Task<CommentEditModel> GetCommentForEditAsync(int commentId)
+        {
             var model = await repo.GetByIdAsync<Comment>(commentId);
 
             if (model == null)
@@ -111,5 +114,5 @@ namespace BookFaceApp.Services
                 UserId = model.UserId
             };
         }
-	}
+    }
 }

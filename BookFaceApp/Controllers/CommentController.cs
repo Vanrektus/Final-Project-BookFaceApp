@@ -95,6 +95,7 @@ namespace BookFaceApp.Controllers
             catch (Exception)
             {
                 throw;
+                //return RedirectToAction("NotOwner", "Error");
             }
 
             return RedirectToAction("All", "Publication");
