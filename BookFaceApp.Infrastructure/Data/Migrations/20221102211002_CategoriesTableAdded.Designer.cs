@@ -4,6 +4,7 @@ using BookFaceApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookFaceApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BookFaceAppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221102211002_CategoriesTableAdded")]
+    partial class CategoriesTableAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,33 +40,6 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Fun"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Animals"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Cars"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Politics"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Games"
-                        });
                 });
 
             modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.Comment", b =>
@@ -102,7 +77,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageUrl")
@@ -217,44 +192,6 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "dea12856-c198-4129-b3f3-b893d8395082",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "8d97433b-7f15-464d-9689-29ea871c4cc2",
-                            Email = "admin@mail.com",
-                            EmailConfirmed = false,
-                            FirstName = "Vancho",
-                            LastName = "Vanchov",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@MAIL.COM",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHLKjn/I51dXaSJ3IKxcaYeJB4/cH2RJXWcPEkScJRAEp7JpZ8QMEwazCMhipwU7jA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "33c28143-6904-4cc7-80cb-3f0bae605529",
-                            TwoFactorEnabled = false,
-                            UserName = "Admin"
-                        },
-                        new
-                        {
-                            Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "0260cbfd-2a86-4cae-87fd-0001f98cdc7b",
-                            Email = "guest@mail.com",
-                            EmailConfirmed = false,
-                            FirstName = "Gostin",
-                            LastName = "Gostinov",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "GUEST@MAIL.COM",
-                            NormalizedUserName = "GUEST",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKU8+mmg1ubDHbLNAEncg9teuhVT/yuWSSaJootu+eo3LjfPkYyDeCOezx4ASYcr9g==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "16c1e4de-7368-4181-a972-774c9abca484",
-                            TwoFactorEnabled = false,
-                            UserName = "Guest"
-                        });
                 });
 
             modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.UserPublication", b =>
@@ -424,9 +361,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                 {
                     b.HasOne("BookFaceApp.Infrastructure.Data.Entities.Category", "Category")
                         .WithMany("Publications")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("BookFaceApp.Infrastructure.Data.Entities.User", "User")
                         .WithMany("Publications")

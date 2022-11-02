@@ -4,6 +4,12 @@
     {
         public class UserConstants
         {
+            public const int MinUserFirstName = 2;
+            public const int MaxUserFirstName = 30;
+
+            public const int MinUserLastName = 2;
+            public const int MaxUserLastName = 320;
+
             public const int MinUserUserName = 5;
             public const int MaxUserUserName = 20;
 
@@ -24,6 +30,12 @@
         {
             public const int MinCommentText = 1;
             public const int MaxCommentText = 500;
+        }
+
+        public class CategoryConstants
+        {
+            public const int MinCategoryName = 2;
+            public const int MaxCategoryName = 50;
         }
     }
 }

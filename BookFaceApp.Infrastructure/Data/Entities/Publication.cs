@@ -24,6 +24,12 @@ namespace BookFaceApp.Infrastructure.Data.Entities
         [ForeignKey(nameof(UserId))]
         public User User { get; set; } = null!;
 
+        [Required]
+        public int CategoryId { get; set; }
+
+        [ForeignKey(nameof(CategoryId))]
+        public Category Category { get; set; } = null!;
+
         public List<PublicationComment> PublicationsComments { get; set; } = new List<PublicationComment>();
 
         public List<UserPublication> UsersPublications { get; set; } = new List<UserPublication>();

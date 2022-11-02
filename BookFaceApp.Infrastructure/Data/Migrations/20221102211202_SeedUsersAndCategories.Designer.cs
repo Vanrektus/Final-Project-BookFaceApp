@@ -4,6 +4,7 @@ using BookFaceApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookFaceApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BookFaceAppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221102211202_SeedUsersAndCategories")]
+    partial class SeedUsersAndCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,7 +104,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageUrl")
@@ -223,7 +225,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8d97433b-7f15-464d-9689-29ea871c4cc2",
+                            ConcurrencyStamp = "68dd8a19-1a44-41ee-a943-6a2c5b48857c",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Vancho",
@@ -231,9 +233,9 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHLKjn/I51dXaSJ3IKxcaYeJB4/cH2RJXWcPEkScJRAEp7JpZ8QMEwazCMhipwU7jA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOcnKDGCkE3RaMyfdo+l1Om2rrBhgehCs7VVHXMJw8wAfStAc//9b41cGIf5iTRAgw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "33c28143-6904-4cc7-80cb-3f0bae605529",
+                            SecurityStamp = "2a187d53-f372-495e-8e17-3464e137d82a",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         },
@@ -241,7 +243,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0260cbfd-2a86-4cae-87fd-0001f98cdc7b",
+                            ConcurrencyStamp = "31734029-2580-4cd6-9458-aff32dff388b",
                             Email = "guest@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Gostin",
@@ -249,9 +251,9 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "GUEST@MAIL.COM",
                             NormalizedUserName = "GUEST",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKU8+mmg1ubDHbLNAEncg9teuhVT/yuWSSaJootu+eo3LjfPkYyDeCOezx4ASYcr9g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENlauRJZhq/l94zsRTVzRPcjF7/zjxkoDJyjLeYokvGgHk519LNwwvkGitilR8U2Cg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "16c1e4de-7368-4181-a972-774c9abca484",
+                            SecurityStamp = "6d3577f1-1870-4d91-981e-b29d569cf4a0",
                             TwoFactorEnabled = false,
                             UserName = "Guest"
                         });
@@ -424,9 +426,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                 {
                     b.HasOne("BookFaceApp.Infrastructure.Data.Entities.Category", "Category")
                         .WithMany("Publications")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("BookFaceApp.Infrastructure.Data.Entities.User", "User")
                         .WithMany("Publications")

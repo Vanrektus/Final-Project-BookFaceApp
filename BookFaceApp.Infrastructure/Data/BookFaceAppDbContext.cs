@@ -1,4 +1,5 @@
-﻿using BookFaceApp.Infrastructure.Data.Entities;
+﻿using BookFaceApp.Infrastructure.Data.Configuration;
+using BookFaceApp.Infrastructure.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,11 +14,16 @@ namespace BookFaceApp.Infrastructure.Data
 
         public DbSet<Publication> Publications { get; set; } = null!;
         public DbSet<Comment> Comments { get; set; } = null!;
+        public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<PublicationComment> PublicationsComments { get; set; } = null!;
         public DbSet<UserPublication> UsersPublications { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new CategoryConfiguration());
+
+            // --- PublicationComment ---
             builder.Entity<PublicationComment>()
                 .HasKey(pc => new { pc.PublicationId, pc.CommentId });
 
@@ -33,6 +39,7 @@ namespace BookFaceApp.Infrastructure.Data
                 .HasForeignKey(pc => pc.CommentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // --- UserPublication ---
             builder.Entity<UserPublication>()
                 .HasKey(ul => new { ul.UserId, ul.PublicationId });
 
