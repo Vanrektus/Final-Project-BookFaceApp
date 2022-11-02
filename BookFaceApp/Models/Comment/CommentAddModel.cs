@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static BookFaceApp.Data.DataConstants.CommentConstants;
+using static BookFaceApp.Infrastructure.Data.DataConstants.CommentConstants;
 
 namespace BookFaceApp.Models.Comment
 {

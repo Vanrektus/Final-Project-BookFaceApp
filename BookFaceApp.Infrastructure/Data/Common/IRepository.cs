@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace BookFaceApp.Data.Common
+namespace BookFaceApp.Infrastructure.Data.Common
 {
     public interface IRepository : IDisposable
     {

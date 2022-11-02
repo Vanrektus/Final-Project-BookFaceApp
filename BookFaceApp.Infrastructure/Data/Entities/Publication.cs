@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static BookFaceApp.Data.DataConstants.PublicationConstants;
+using static BookFaceApp.Infrastructure.Data.DataConstants.PublicationConstants;
 
-namespace BookFaceApp.Data.Entities
+namespace BookFaceApp.Infrastructure.Data.Entities
 {
     public class Publication
     {

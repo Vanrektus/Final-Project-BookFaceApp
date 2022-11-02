@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static BookFaceApp.Data.DataConstants.CommentConstants;
+using static BookFaceApp.Infrastructure.Data.DataConstants.CommentConstants;
 
-namespace BookFaceApp.Data.Entities
+namespace BookFaceApp.Infrastructure.Data.Entities
 {
     public class Comment
     {

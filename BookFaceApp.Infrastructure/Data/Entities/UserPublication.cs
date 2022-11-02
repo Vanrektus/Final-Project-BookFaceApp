@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BookFaceApp.Data.Entities
+namespace BookFaceApp.Infrastructure.Data.Entities
 {
     public class UserPublication
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace BookFaceApp.Data.Entities
+namespace BookFaceApp.Infrastructure.Data.Entities
 {
     public class User : IdentityUser
     {

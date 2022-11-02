@@ -1,6 +1,6 @@
 ﻿using BookFaceApp.Contracts;
-using BookFaceApp.Data.Common;
-using BookFaceApp.Data.Entities;
+using BookFaceApp.Infrastructure.Data.Common;
+using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.Models.Publication;
 using Microsoft.EntityFrameworkCore;
 

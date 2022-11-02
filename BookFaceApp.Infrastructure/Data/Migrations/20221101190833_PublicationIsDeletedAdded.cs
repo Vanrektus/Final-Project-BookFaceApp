@@ -2,15 +2,15 @@
 
 #nullable disable
 
-namespace BookFaceApp.Data.Migrations
+namespace BookFaceApp.Infrastructure.Data.Migrations
 {
-    public partial class CommentIsDeletedAdded : Migration
+    public partial class PublicationIsDeletedAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
                 name: "IsDeleted",
-                table: "Comments",
+                table: "Publications",
                 type: "bit",
                 nullable: false,
                 defaultValue: false);
@@ -20,7 +20,7 @@ namespace BookFaceApp.Data.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "IsDeleted",
-                table: "Comments");
+                table: "Publications");
         }
     }
 }

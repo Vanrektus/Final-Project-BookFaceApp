@@ -1,8 +1,8 @@
-﻿using BookFaceApp.Data.Entities;
+﻿using BookFaceApp.Infrastructure.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookFaceApp.Data
+namespace BookFaceApp.Infrastructure.Data
 {
     public class BookFaceAppDbContext : IdentityDbContext<User>
     {

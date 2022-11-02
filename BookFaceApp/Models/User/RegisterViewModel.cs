@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static BookFaceApp.Data.DataConstants.UserConstants;
+using static BookFaceApp.Infrastructure.Data.DataConstants.UserConstants;
 
 namespace BookFaceApp.Models.User
 {

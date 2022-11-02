@@ -1,4 +1,4 @@
-﻿using BookFaceApp.Data.Entities;
+﻿using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

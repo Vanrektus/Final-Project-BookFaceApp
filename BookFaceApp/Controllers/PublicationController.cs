@@ -1,5 +1,5 @@
 ﻿using BookFaceApp.Contracts;
-using BookFaceApp.Data.Common;
+using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Models.Publication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

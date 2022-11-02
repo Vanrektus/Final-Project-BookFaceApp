@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace BookFaceApp.Data.Migrations
+namespace BookFaceApp.Infrastructure.Data.Migrations
 {
     public partial class TablesAdded : Migration
     {

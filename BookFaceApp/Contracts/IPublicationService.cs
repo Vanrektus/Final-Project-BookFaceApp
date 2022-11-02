@@ -1,4 +1,4 @@
-﻿using BookFaceApp.Data.Entities;
+﻿using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.Models.Publication;
 
 namespace BookFaceApp.Contracts

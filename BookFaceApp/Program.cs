@@ -1,15 +1,14 @@
 using BookFaceApp.Contracts;
-using BookFaceApp.Data;
-using BookFaceApp.Data.Common;
-using BookFaceApp.Data.Entities;
+using BookFaceApp.Infrastructure.Data;
+using BookFaceApp.Infrastructure.Data.Common;
+using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.ModelBinders;
 using BookFaceApp.Services;
 using Microsoft.EntityFrameworkCore;
-using static BookFaceApp.Data.DataConstants.UserConstants;
+using static BookFaceApp.Infrastructure.Data.DataConstants.UserConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BookFaceAppDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -42,15 +41,13 @@ builder.Services.AddScoped<ICommentService, CommentService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseMigrationsEndPoint();
+    app.UseDeveloperExceptionPage();
 }
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

@@ -1,4 +1,4 @@
-﻿namespace BookFaceApp.Data
+﻿namespace BookFaceApp.Infrastructure.Data
 {
     public class DataConstants
     {
