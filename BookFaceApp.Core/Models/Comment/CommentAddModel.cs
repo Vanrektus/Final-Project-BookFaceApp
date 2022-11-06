@@ -1,19 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static BookFaceApp.Infrastructure.Data.DataConstants.CommentConstants;
 
-namespace BookFaceApp.Models.Comment
+namespace BookFaceApp.Core.Models.Comment
 {
-	public class CommentEditModel
+	public class CommentAddModel
     {
-        [Required]
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(MaxCommentText)]
         public string Text { get; set; } = null!;
 
-		public string? UserId { get; set; }
-
-		public int Publicationid { get; set; }
+        public int PublicationId { get; set; }
     }
 }

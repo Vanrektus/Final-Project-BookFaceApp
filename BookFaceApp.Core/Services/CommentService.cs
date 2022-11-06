@@ -1,10 +1,10 @@
-﻿using BookFaceApp.Contracts;
+﻿using BookFaceApp.Core.Contracts;
+using BookFaceApp.Core.Models.Comment;
 using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
-using BookFaceApp.Models.Comment;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookFaceApp.Services
+namespace BookFaceApp.Core.Services
 {
     public class CommentService : ICommentService
     {

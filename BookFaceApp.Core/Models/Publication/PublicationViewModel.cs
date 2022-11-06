@@ -1,6 +1,6 @@
 ﻿using BookFaceApp.Infrastructure.Data.Entities;
 
-namespace BookFaceApp.Models.Publication
+namespace BookFaceApp.Core.Models.Publication
 {
     public class PublicationViewModel
     {

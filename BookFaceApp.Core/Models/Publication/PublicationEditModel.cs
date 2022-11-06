@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static BookFaceApp.Infrastructure.Data.DataConstants.PublicationConstants;
 
-namespace BookFaceApp.Models.Publication
+namespace BookFaceApp.Core.Models.Publication
 {
     public class PublicationEditModel
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static BookFaceApp.Infrastructure.Data.DataConstants.UserConstants;
 
-namespace BookFaceApp.Models.User
+namespace BookFaceApp.Core.Models.User
 {
     public class RegisterViewModel
     {

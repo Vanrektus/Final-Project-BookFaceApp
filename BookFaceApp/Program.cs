@@ -1,9 +1,9 @@
-using BookFaceApp.Contracts;
+using BookFaceApp.Core.Contracts;
+using BookFaceApp.Core.Services;
 using BookFaceApp.Infrastructure.Data;
 using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.ModelBinders;
-using BookFaceApp.Services;
 using Microsoft.EntityFrameworkCore;
 using static BookFaceApp.Infrastructure.Data.DataConstants.UserConstants;
 
@@ -16,11 +16,13 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<User>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = false;
+    options.SignIn.RequireConfirmedAccount = builder.Configuration.GetValue<bool>("Identity:RequireConfirmedAccount");
+    options.SignIn.RequireConfirmedEmail = builder.Configuration.GetValue<bool>("Identity:RequireConfirmedEmail"); ;
+    options.SignIn.RequireConfirmedPhoneNumber = builder.Configuration.GetValue<bool>("Identity:RequireConfirmedPhoneNumber"); ;
+    options.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:RequireNonAlphanumeric"); ;
+    options.Password.RequireUppercase = builder.Configuration.GetValue<bool>("Identity:RequireUppercase"); ;
+    options.Password.RequireLowercase = builder.Configuration.GetValue<bool>("Identity:RequireLowercase"); ;
     options.Password.RequiredLength = MinUserPassword;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
 })
     .AddEntityFrameworkStores<BookFaceAppDbContext>();
 
@@ -35,9 +37,7 @@ builder.Services.AddControllersWithViews()
         options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
     });
 
-builder.Services.AddScoped<IRepository, Repository>();
-builder.Services.AddScoped<IPublicationService, PublicationService>();
-builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 

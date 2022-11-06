@@ -1,10 +1,10 @@
-﻿using BookFaceApp.Contracts;
+﻿using BookFaceApp.Core.Contracts;
 using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
-using BookFaceApp.Models.Publication;
+using BookFaceApp.Core.Models.Publication;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookFaceApp.Services
+namespace BookFaceApp.Core.Services
 {
     public class PublicationService : IPublicationService
     {
@@ -45,7 +45,7 @@ namespace BookFaceApp.Services
 
         public async Task<IEnumerable<PublicationViewModel>> GetAllPublicationsAsync()
         {
-            var entities = await repo.All<Publication>()
+            var entities = await repo.AllReadonly<Publication>()
                 .Where(p => p.IsDeleted == false)
                 .Include(p => p.User)
                 .Include(p => p.PublicationsComments
@@ -71,7 +71,7 @@ namespace BookFaceApp.Services
 
         public async Task<IEnumerable<PublicationViewModel>> GetUserPublicationsAsync(string userId)
         {
-            var entities = await repo.All<Publication>()
+            var entities = await repo.AllReadonly<Publication>()
                 .Where(p => p.UserId == userId)
                 .Where(p => p.IsDeleted == false)
                 .Include(p => p.User)
@@ -98,7 +98,7 @@ namespace BookFaceApp.Services
 
         public async Task<PublicationViewModel> GetOnePublicationAsync(int publicationId)
         {
-            var model = await repo.All<Publication>()
+            var model = await repo.AllReadonly<Publication>()
                 .Where(p => p.Id == publicationId)
                 .Include(p => p.User)
                 .Include(p => p.PublicationsComments

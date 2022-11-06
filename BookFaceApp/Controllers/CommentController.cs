@@ -1,7 +1,5 @@
-﻿using BookFaceApp.Contracts;
-using BookFaceApp.Models.Comment;
-using BookFaceApp.Models.Publication;
-using BookFaceApp.Services;
+﻿using BookFaceApp.Core.Contracts;
+using BookFaceApp.Core.Models.Comment;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 

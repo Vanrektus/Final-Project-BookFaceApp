@@ -1,7 +1,6 @@
-﻿using BookFaceApp.Infrastructure.Data.Entities;
-using BookFaceApp.Models.Publication;
+﻿using BookFaceApp.Core.Models.Publication;
 
-namespace BookFaceApp.Contracts
+namespace BookFaceApp.Core.Contracts
 {
     public interface IPublicationService
     {

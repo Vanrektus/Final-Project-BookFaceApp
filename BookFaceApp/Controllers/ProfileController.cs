@@ -1,5 +1,4 @@
-﻿using BookFaceApp.Contracts;
-using BookFaceApp.Infrastructure.Data.Entities;
+﻿using BookFaceApp.Core.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

@@ -1,6 +1,5 @@
-﻿using BookFaceApp.Contracts;
-using BookFaceApp.Infrastructure.Data.Common;
-using BookFaceApp.Models.Publication;
+﻿using BookFaceApp.Core.Contracts;
+using BookFaceApp.Core.Models.Publication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -110,7 +109,7 @@ namespace BookFaceApp.Controllers
 
             await publicationService.EditPublicationAsync(model);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Details), new { model.Id });
         }
 
         [HttpPost]

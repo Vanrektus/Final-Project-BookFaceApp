@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BookFaceApp.Models.User
+namespace BookFaceApp.Core.Models.User
 {
     public class LoginViewModel
     {

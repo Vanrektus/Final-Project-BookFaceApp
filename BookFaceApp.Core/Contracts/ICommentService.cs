@@ -1,9 +1,8 @@
-﻿using BookFaceApp.Models.Comment;
-using BookFaceApp.Models.Publication;
+﻿using BookFaceApp.Core.Models.Comment;
 
-namespace BookFaceApp.Contracts
+namespace BookFaceApp.Core.Contracts
 {
-	public interface ICommentService
+    public interface ICommentService
 	{
 		Task AddCommentAsync(CommentAddModel model, int publicationId, string userId);
 
