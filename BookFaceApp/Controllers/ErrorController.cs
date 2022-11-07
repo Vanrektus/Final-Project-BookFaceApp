@@ -15,5 +15,10 @@ namespace BookFaceApp.Controllers
         {
             return View();
         }
+
+        public IActionResult InvalidComment()
+        {
+            return View();
+        }
     }
 }

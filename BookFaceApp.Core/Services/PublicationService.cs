@@ -1,7 +1,7 @@
 ﻿using BookFaceApp.Core.Contracts;
+using BookFaceApp.Core.Models.Publication;
 using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
-using BookFaceApp.Core.Models.Publication;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookFaceApp.Core.Services

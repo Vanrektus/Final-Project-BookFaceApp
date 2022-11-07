@@ -1,4 +1,5 @@
-﻿using BookFaceApp.Core.Contracts;
+﻿using BookFaceApp.Core.Constants;
+using BookFaceApp.Core.Contracts;
 using BookFaceApp.Core.Models.Publication;
 using BookFaceApp.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -19,14 +20,6 @@ namespace BookFaceApp.Controllers
 
         [HttpGet]
         public async Task<IActionResult> All()
-        {
-            var model = await publicationService.GetAllPublicationsAsync();
-
-            return View(model);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> AllTest()
         {
             var model = await publicationService.GetAllPublicationsAsync();
 
@@ -75,6 +68,8 @@ namespace BookFaceApp.Controllers
                 return View(model);
             }
 
+            TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
+
             return RedirectToAction("InvalidPublication", "Error");
         }
 
@@ -85,6 +80,8 @@ namespace BookFaceApp.Controllers
 
             if (model == null)
             {
+                TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
+
                 return RedirectToAction("InvalidPublication", "Error");
             }
 
@@ -92,6 +89,8 @@ namespace BookFaceApp.Controllers
 
             if (model.UserId != userId)
             {
+                TempData[MessageConstant.ErrorMessage] = "You need to be the owner in order to perform this action!";
+
                 return RedirectToAction("NotOwner", "Error");
             }
 
@@ -136,8 +135,10 @@ namespace BookFaceApp.Controllers
 
                 await publicationService.DeletePublicationAsync(id, userId!);
             }
-			catch (Exception)
+			catch (Exception e)
             {
+                Console.WriteLine(e);
+
                 throw;
                 //return RedirectToAction("NotOwner", "Error");
             }

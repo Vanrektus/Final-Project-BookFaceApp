@@ -1,4 +1,5 @@
-﻿using BookFaceApp.Core.Contracts;
+﻿using BookFaceApp.Core.Constants;
+using BookFaceApp.Core.Contracts;
 using BookFaceApp.Core.Models.Comment;
 using BookFaceApp.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -39,9 +40,19 @@ namespace BookFaceApp.Controllers
 
                 return RedirectToAction("All", "Publication");
             }
-            catch (Exception)
+            catch (ArgumentException ae)
             {
-                ModelState.AddModelError("", "Something went wrong!");
+                if (ae.Message == "Invalid user ID")
+                {
+                    TempData[MessageConstant.ErrorMessage] = "Invalid user ID!";
+                    return RedirectToAction("NotOwner", "Error");
+                }
+
+                if (ae.Message == "Invalid publication ID")
+                {
+                    TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
+                    return RedirectToAction("InvalidPublication", "Error");
+                }
 
                 throw;
             }
@@ -54,6 +65,8 @@ namespace BookFaceApp.Controllers
 
             if (model == null)
             {
+                TempData[MessageConstant.ErrorMessage] = "The comment you are looking for was not found :(";
+                
                 return RedirectToAction("InvalidPublication", "Error");
             }
 
@@ -61,6 +74,8 @@ namespace BookFaceApp.Controllers
 
             if (model.UserId != userId)
             {
+                TempData[MessageConstant.ErrorMessage] = "You need to be the owner in order to perform this action!";
+
                 return RedirectToAction("NotOwner", "Error");
             }
 
@@ -88,10 +103,25 @@ namespace BookFaceApp.Controllers
 
                 await commentService.DeleteCommentAsync(id, userId!);
             }
-            catch (Exception)
+            catch (ArgumentException ae)
             {
-                throw;
-                //return RedirectToAction("NotOwner", "Error");
+                if (ae.Message == "Invalid user ID")
+                {
+                    TempData[MessageConstant.ErrorMessage] = "Invalid user ID!";
+                    return RedirectToAction("NotOwner", "Error");
+                }
+
+                if (ae.Message == "Invalid comment ID")
+                {
+                    TempData[MessageConstant.ErrorMessage] = "The comment you are looking for was not found :(";
+                    return RedirectToAction("InvalidComment", "Error");
+                }
+
+                if (ae.Message == "Invalid owner ID")
+                {
+                    TempData[MessageConstant.ErrorMessage] = "You need to be the owner in order to perform this action!";
+                    return RedirectToAction("NotOwner", "Error");
+                }
             }
 
             return RedirectToAction("All", "Publication");
