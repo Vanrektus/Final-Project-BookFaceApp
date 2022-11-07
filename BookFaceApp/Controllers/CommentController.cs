@@ -1,7 +1,7 @@
 ﻿using BookFaceApp.Core.Contracts;
 using BookFaceApp.Core.Models.Comment;
+using BookFaceApp.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace BookFaceApp.Controllers
 {
@@ -33,8 +33,7 @@ namespace BookFaceApp.Controllers
 
             try
             {
-                var userId = User.Claims
-                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                var userId = User.Id();
 
                 await commentService.AddCommentAsync(model, id, userId!);
 
@@ -58,7 +57,7 @@ namespace BookFaceApp.Controllers
                 return RedirectToAction("InvalidPublication", "Error");
             }
 
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.Id();
 
             if (model.UserId != userId)
             {
@@ -85,8 +84,7 @@ namespace BookFaceApp.Controllers
         {
             try
             {
-                var userId = User.Claims
-                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                var userId = User.Id();
 
                 await commentService.DeleteCommentAsync(id, userId!);
             }

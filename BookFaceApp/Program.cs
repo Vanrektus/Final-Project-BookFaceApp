@@ -1,7 +1,4 @@
-using BookFaceApp.Core.Contracts;
-using BookFaceApp.Core.Services;
 using BookFaceApp.Infrastructure.Data;
-using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.ModelBinders;
 using Microsoft.EntityFrameworkCore;

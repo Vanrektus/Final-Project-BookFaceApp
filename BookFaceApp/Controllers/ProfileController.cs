@@ -1,7 +1,7 @@
 ﻿using BookFaceApp.Core.Contracts;
+using BookFaceApp.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace BookFaceApp.Controllers
 {
@@ -17,8 +17,7 @@ namespace BookFaceApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var userId = User.Claims
-                .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.Id();
 
             var model = await publicationService.GetUserPublicationsAsync(userId!);
 
