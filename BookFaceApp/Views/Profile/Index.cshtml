@@ -20,6 +20,7 @@
 			 src="@publication.ImageUrl" alt="Publication Image">
 			<div class="card-body">
 				<h5 class="card-title mt-1">@publication.Title</h5>
+				<h5 class="card-title mt-1">Category: @publication.Category</h5>
 				<h5 class="card-title mt-1">@publication.UsersPublications.Count likes</h5>
 				<h5 class="card-title mt-1">@publication.PublicationsComments.Count comments</h5>
 			</div>
@@ -45,7 +46,9 @@
 				</div>
 
 				<div id="pub-det-btn">
-					<a class="btn btn-light" asp-area="" asp-controller="Publication" asp-action="Details" asp-route-id="@publication.Id">COMMENTS</a>
+					<a class="btn btn-light" asp-area="" asp-controller="Publication" asp-action="Details" asp-route-id="@publication.Id">
+						<img src="/lib/bootstrap-icons/chat-dots.svg" alt="Bootstrap" width="35" height="35">
+					</a>
 				</div>
 			</div>
 		</div>

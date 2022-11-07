@@ -14,6 +14,8 @@ namespace BookFaceApp.Core.Models.Publication
 
         public string UserId { get; set; } = null!;
 
+        public string Category { get; set; } = null!;
+
         public List<PublicationComment> PublicationsComments { get; set; } = null!;
 
         public List<UserPublication> UsersPublications { get; set; } = null!;

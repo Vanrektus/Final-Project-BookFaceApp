@@ -54,6 +54,7 @@ namespace BookFaceApp.Core.Services
                 .ThenInclude(c => c.User)
                 .Include(p => p.UsersPublications)
                 .ThenInclude(up => up.User)
+                .Include(p => p.Category)
                 .ToListAsync();
 
             return entities
@@ -61,9 +62,10 @@ namespace BookFaceApp.Core.Services
                 {
                     Id = p.Id,
                     Title = p.Title,
-                    ImageUrl = p.ImageUrl,
+                    ImageUrl = p.ImageUrl!,
                     UserName = p.User.UserName,
                     UserId = p.UserId,
+                    Category = p.Category.Name,
                     PublicationsComments = p.PublicationsComments,
                     UsersPublications = p.UsersPublications,
                 });
@@ -81,6 +83,7 @@ namespace BookFaceApp.Core.Services
                 .ThenInclude(c => c.User)
                 .Include(p => p.UsersPublications)
                 .ThenInclude(up => up.User)
+                .Include(p => p.Category)
                 .ToListAsync();
 
             return entities
@@ -88,9 +91,10 @@ namespace BookFaceApp.Core.Services
                 {
                     Id = p.Id,
                     Title = p.Title,
-                    ImageUrl = p.ImageUrl,
+                    ImageUrl = p.ImageUrl!,
                     UserName = p.User.UserName,
                     UserId = p.UserId,
+                    Category = p.Category.Name,
                     PublicationsComments = p.PublicationsComments,
                     UsersPublications = p.UsersPublications,
                 });
@@ -107,6 +111,7 @@ namespace BookFaceApp.Core.Services
                 .ThenInclude(c => c.User)
                 .Include(p => p.UsersPublications)
                 .ThenInclude(up => up.User)
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync();
 
             if (model == null)
@@ -121,9 +126,10 @@ namespace BookFaceApp.Core.Services
             {
                 Id = model.Id,
                 Title = model.Title,
-                ImageUrl = model.ImageUrl,
+                ImageUrl = model.ImageUrl!,
                 UserName = user.UserName,
                 UserId = model.UserId,
+                Category = model.Category.Name,
                 PublicationsComments = model.PublicationsComments,
                 UsersPublications = model.UsersPublications
             };
@@ -216,5 +222,7 @@ namespace BookFaceApp.Core.Services
 
             await repo.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Category>> GetCategoriesAsync() => await repo.All<Category>().ToListAsync();
     }
 }

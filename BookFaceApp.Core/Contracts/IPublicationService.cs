@@ -1,4 +1,5 @@
 ﻿using BookFaceApp.Core.Models.Publication;
+using BookFaceApp.Infrastructure.Data.Entities;
 
 namespace BookFaceApp.Core.Contracts
 {
@@ -11,6 +12,8 @@ namespace BookFaceApp.Core.Contracts
         Task<PublicationViewModel> GetOnePublicationAsync(int publicationId);
 
         Task<PublicationEditModel> GetPublicationForEditAsync(int publicationId);
+
+        Task<IEnumerable<Category>> GetCategoriesAsync();
 
         Task EditPublicationAsync(PublicationEditModel model);
 
