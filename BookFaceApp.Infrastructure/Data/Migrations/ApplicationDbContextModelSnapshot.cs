@@ -37,7 +37,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -91,7 +91,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.Publication", b =>
@@ -126,7 +126,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Publications");
+                    b.ToTable("Publications", (string)null);
                 });
 
             modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.PublicationComment", b =>
@@ -141,7 +141,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.ToTable("PublicationsComments");
+                    b.ToTable("PublicationsComments", (string)null);
                 });
 
             modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.User", b =>
@@ -269,7 +269,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("PublicationId");
 
-                    b.ToTable("UsersPublications");
+                    b.ToTable("UsersPublications", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

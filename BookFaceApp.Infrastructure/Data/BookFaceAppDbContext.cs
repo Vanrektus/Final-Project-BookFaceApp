@@ -22,38 +22,8 @@ namespace BookFaceApp.Infrastructure.Data
         {
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new CategoryConfiguration());
-
-            // --- PublicationComment ---
-            builder.Entity<PublicationComment>()
-                .HasKey(pc => new { pc.PublicationId, pc.CommentId });
-
-            builder.Entity<PublicationComment>()
-                .HasOne<Publication>(pc => pc.Publication)
-                .WithMany(p => p.PublicationsComments)
-                .HasForeignKey(pc => pc.PublicationId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<PublicationComment>()
-                .HasOne<Comment>(pc => pc.Comment)
-                .WithMany(c => c.PublicationsComments)
-                .HasForeignKey(pc => pc.CommentId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // --- UserPublication ---
-            builder.Entity<UserPublication>()
-                .HasKey(ul => new { ul.UserId, ul.PublicationId });
-
-            builder.Entity<UserPublication>()
-                .HasOne<User>(up => up.User)
-                .WithMany(u => u.UsersPublications)
-                .HasForeignKey(u => u.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<UserPublication>()
-                .HasOne<Publication>(up => up.Publication)
-                .WithMany(p => p.UsersPublications)
-                .HasForeignKey(p => p.PublicationId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.ApplyConfiguration(new PublicationCommentConfiguration());
+            builder.ApplyConfiguration(new UserPublicationConfiguration());
 
             base.OnModelCreating(builder);
         }
