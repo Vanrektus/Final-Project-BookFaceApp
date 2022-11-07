@@ -6,12 +6,7 @@ namespace BookFaceApp.Controllers
     {
         public IActionResult Index()
         {
-            if (User?.Identity?.IsAuthenticated ?? false)
-            {
-                return RedirectToAction("All", "Publication");
-            }
-
-            return View();
+            return RedirectToAction("All", "Publication");
         }
     }
 }

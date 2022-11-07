@@ -18,6 +18,7 @@ namespace BookFaceApp.Controllers
             publicationService = _publicationService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> All()
         {
