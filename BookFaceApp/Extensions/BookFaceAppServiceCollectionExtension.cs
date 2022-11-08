@@ -11,6 +11,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<IPublicationService, PublicationService>();
             services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IProfileService, ProfileService>();
 
             return services;
         }

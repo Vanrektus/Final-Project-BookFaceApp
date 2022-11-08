@@ -8,30 +8,35 @@ namespace BookFaceApp.Controllers
     [Authorize]
     public class ProfileController : Controller
     {
-        private readonly IPublicationService publicationService;
+        private readonly IProfileService profileService;
 
-        public ProfileController(IPublicationService _publicationService)
+        public ProfileController(IProfileService _profileService)
         {
-            publicationService = _publicationService;
+            profileService = _profileService;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> MyProfile()
         {
             var userId = User.Id();
 
-            var model = await publicationService.GetUserPublicationsAsync(userId!);
+            var model = await profileService.GetMyProfilePublicationsAsync(userId);
 
             return View(model);
         }
 
-        //public async Task<IActionResult> MyProfile()
-        //{
-
-        //}
-
-        public async Task<IActionResult> UserProfile(string UserName)
+        [HttpGet]
+        public async Task<IActionResult> UserProfile(string username)
         {
-            var model = await publicationService.GetUserPublicationsTestAsync(UserName);
+            var model = await profileService.GetUserProfilePublicationsAsync(username);
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> All()
+        {
+            var model = await profileService.GetAllUsersAsync();
 
             return View(model);
         }

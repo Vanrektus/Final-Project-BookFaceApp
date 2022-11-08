@@ -72,35 +72,6 @@ namespace BookFaceApp.Core.Services
                 });
         }
 
-        public async Task<IEnumerable<PublicationViewModel>> GetUserPublicationsAsync(string userId)
-        {
-            var entities = await repo.AllReadonly<Publication>()
-                .Where(p => p.UserId == userId)
-                .Where(p => p.IsDeleted == false)
-                .Include(p => p.User)
-                .Include(p => p.PublicationsComments
-                .Where(pc => pc.Comment.IsDeleted == false))
-                .ThenInclude(pc => pc.Comment)
-                .ThenInclude(c => c.User)
-                .Include(p => p.UsersPublications)
-                .ThenInclude(up => up.User)
-                .Include(p => p.Category)
-                .ToListAsync();
-
-            return entities
-                .Select(p => new PublicationViewModel()
-                {
-                    Id = p.Id,
-                    Title = p.Title,
-                    ImageUrl = p.ImageUrl!,
-                    UserName = p.User.UserName,
-                    UserId = p.UserId,
-                    Category = p.Category.Name,
-                    PublicationsComments = p.PublicationsComments,
-                    UsersPublications = p.UsersPublications,
-                });
-        }
-
         public async Task<PublicationViewModel> GetOnePublicationAsync(int publicationId)
         {
             var model = await repo.AllReadonly<Publication>()
@@ -246,35 +217,6 @@ namespace BookFaceApp.Core.Services
                 .ThenInclude(up => up.User)
                 .Include(p => p.Category)
                 .Take(3)
-                .ToListAsync();
-
-            return entities
-                .Select(p => new PublicationViewModel()
-                {
-                    Id = p.Id,
-                    Title = p.Title,
-                    ImageUrl = p.ImageUrl!,
-                    UserName = p.User.UserName,
-                    UserId = p.UserId,
-                    Category = p.Category.Name,
-                    PublicationsComments = p.PublicationsComments,
-                    UsersPublications = p.UsersPublications,
-                });
-        }
-
-        public async Task<IEnumerable<PublicationViewModel>> GetUserPublicationsTestAsync(string username)
-        {
-            var entities = await repo.AllReadonly<Publication>()
-                .Where(p => p.User.UserName == username)
-                .Where(p => p.IsDeleted == false)
-                .Include(p => p.User)
-                .Include(p => p.PublicationsComments
-                .Where(pc => pc.Comment.IsDeleted == false))
-                .ThenInclude(pc => pc.Comment)
-                .ThenInclude(c => c.User)
-                .Include(p => p.UsersPublications)
-                .ThenInclude(up => up.User)
-                .Include(p => p.Category)
                 .ToListAsync();
 
             return entities
