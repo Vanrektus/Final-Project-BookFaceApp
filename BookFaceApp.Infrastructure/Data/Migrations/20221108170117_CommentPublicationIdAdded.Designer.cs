@@ -4,6 +4,7 @@ using BookFaceApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookFaceApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BookFaceAppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221108170117_CommentPublicationIdAdded")]
+    partial class CommentPublicationIdAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,6 +84,9 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<int>("PublicationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -228,7 +233,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4c277e29-377e-4722-960d-8fbb0dfa35c5",
+                            ConcurrencyStamp = "523a248d-2417-4df1-982d-6cc005159a62",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Vancho",
@@ -236,9 +241,9 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEISCEJvJ2ABmIh+HLYDJW647AEQHXpxhKMsP7nHCSzwp9/DysvoIM+ftui9t7W9Uaw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDicBvC96ZM9ZKp2DEYIFR9KMqrWy68faoy2QRYflXXyTyi7Hm/CVTUpv3aq4QsEjw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "19f49a23-32e3-4108-8f96-b613940fe389",
+                            SecurityStamp = "7fb37429-8715-43b8-944a-66adc6bd65b8",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         },
@@ -246,7 +251,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8e9afd66-e5f1-4cec-9e30-23edc686ea66",
+                            ConcurrencyStamp = "06db6247-b503-4089-8bdc-0bc678479b2a",
                             Email = "guest@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Gostin",
@@ -254,9 +259,9 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "GUEST@MAIL.COM",
                             NormalizedUserName = "GUEST",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFlH8x+VDQTPJA55jDEAA6cfVZaAYdMIKl8gsd9XEcOpUnm0i+JzV5bTDR/pjTQmpg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJYhPzLqLSD3RAHQt6HhYLD328txYEVY36cuIR1AQtLPIUPcFgOT8yG4Ny/B6wIGJA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7f1e63e3-d553-4c5c-8fce-cec936e93454",
+                            SecurityStamp = "b4bbc832-c2f3-4ee0-aef6-331122c1224c",
                             TwoFactorEnabled = false,
                             UserName = "Guest"
                         });

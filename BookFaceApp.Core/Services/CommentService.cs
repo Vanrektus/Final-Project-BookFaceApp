@@ -99,9 +99,22 @@ namespace BookFaceApp.Core.Services
 
         public async Task<CommentEditModel> GetCommentForEditAsync(int commentId)
         {
-            var model = await repo.GetByIdAsync<Comment>(commentId);
+            var model = await repo.All<Comment>()
+                .Where(c => c.Id == commentId)
+                .Include(c => c.PublicationsComments)
+                .FirstOrDefaultAsync();
 
             if (model == null)
+            {
+                return null!;
+                //throw new ArgumentException("Invalid publication ID");
+            }
+
+            var publicationId = model.PublicationsComments
+                .Select(pc => pc.PublicationId)
+                .FirstOrDefault();
+
+            if (publicationId == null)
             {
                 return null!;
                 //throw new ArgumentException("Invalid publication ID");
@@ -111,6 +124,7 @@ namespace BookFaceApp.Core.Services
             {
                 Id = model.Id,
                 Text = model.Text,
+                Publicationid = publicationId,
                 UserId = model.UserId
             };
         }

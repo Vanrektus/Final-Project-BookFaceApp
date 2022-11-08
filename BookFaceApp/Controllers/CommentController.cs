@@ -92,7 +92,9 @@ namespace BookFaceApp.Controllers
 
             await commentService.EditCommentAsync(model);
 
-            return RedirectToAction("All", "Publication");
+            int id = model.Publicationid;
+
+            return RedirectToAction("Details", "Publication", new { id });
         }
 
         public async Task<IActionResult> Delete(int id)
