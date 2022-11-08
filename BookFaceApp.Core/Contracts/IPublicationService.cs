@@ -9,18 +9,22 @@ namespace BookFaceApp.Core.Contracts
 
         Task<IEnumerable<PublicationViewModel>> GetAllPublicationsAsync();
 
+        Task<IEnumerable<PublicationViewModel>> GetTop3PublicationsAsync();
+
+        Task<IEnumerable<PublicationViewModel>> GetUserPublicationsAsync(string userId);
+
+        Task<IEnumerable<PublicationViewModel>> GetUserPublicationsTestAsync(string username);
+
         Task<PublicationViewModel> GetOnePublicationAsync(int publicationId);
 
         Task<PublicationEditModel> GetPublicationForEditAsync(int publicationId);
 
-        Task<IEnumerable<Category>> GetCategoriesAsync();
-
         Task EditPublicationAsync(PublicationEditModel model);
-
-        Task<IEnumerable<PublicationViewModel>> GetUserPublicationsAsync(string userId);
 
         Task LikePublicationAsync(int publicationId, string userId);
 
         Task DeletePublicationAsync(int publicationId, string userId);
+
+        Task<IEnumerable<Category>> GetCategoriesAsync();
     }
 }

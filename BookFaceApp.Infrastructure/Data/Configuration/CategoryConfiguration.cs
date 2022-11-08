@@ -39,6 +39,11 @@ namespace BookFaceApp.Infrastructure.Data.Configuration
                 {
                     Id = 5,
                     Name = "Games"
+                },
+                new Category()
+                {
+                    Id = 6,
+                    Name = "Food"
                 }
             };
 

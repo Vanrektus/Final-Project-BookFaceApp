@@ -1,12 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BookFaceApp.Core.Contracts;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookFaceApp.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IPublicationService publicationService;
+
+        public HomeController(
+            IPublicationService _publicationService)
         {
-            return RedirectToAction("All", "Publication");
+            publicationService = _publicationService;
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var model = await publicationService.GetTop3PublicationsAsync();
+
+            return View(model);
         }
     }
 }

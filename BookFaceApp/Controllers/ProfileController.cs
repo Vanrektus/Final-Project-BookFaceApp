@@ -23,5 +23,17 @@ namespace BookFaceApp.Controllers
 
             return View(model);
         }
+
+        //public async Task<IActionResult> MyProfile()
+        //{
+
+        //}
+
+        public async Task<IActionResult> UserProfile(string UserName)
+        {
+            var model = await publicationService.GetUserPublicationsTestAsync(UserName);
+
+            return View(model);
+        }
     }
 }
