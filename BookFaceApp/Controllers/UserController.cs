@@ -26,7 +26,7 @@ namespace BookFaceApp.Controllers
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
-                return RedirectToAction("All", "Publication");
+                return RedirectToAction(nameof(PublicationController.All), "Publication");
             }
 
             var model = new RegisterViewModel();
@@ -53,7 +53,7 @@ namespace BookFaceApp.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction("Login", "User");
+                return RedirectToAction(nameof(UserController.Login), "User");
             }
 
             foreach (var error in result.Errors)
@@ -70,7 +70,7 @@ namespace BookFaceApp.Controllers
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
-                return RedirectToAction("All", "Publication");
+                return RedirectToAction(nameof(PublicationController.All), "Publication");
             }
 
             var model = new LoginViewModel();
@@ -95,7 +95,7 @@ namespace BookFaceApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("All", "Publication");
+                    return RedirectToAction(nameof(PublicationController.All), "Publication");
                 }
             }
 
@@ -108,7 +108,7 @@ namespace BookFaceApp.Controllers
         {
             await signInManager.SignOutAsync();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }
 }

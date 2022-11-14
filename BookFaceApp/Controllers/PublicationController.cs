@@ -74,7 +74,7 @@ namespace BookFaceApp.Controllers
 
             TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
 
-            return RedirectToAction("InvalidPublication", "Error");
+            return RedirectToAction(nameof(ErrorController.InvalidPublication), "Error");
         }
 
         [HttpGet]
@@ -95,7 +95,7 @@ namespace BookFaceApp.Controllers
             {
                 TempData[MessageConstant.ErrorMessage] = "You need to be the owner in order to perform this action!";
 
-                return RedirectToAction("NotOwner", "Error");
+                return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
             }
 
             return View(model);
@@ -144,7 +144,7 @@ namespace BookFaceApp.Controllers
                 Console.WriteLine(e);
 
                 throw;
-                //return RedirectToAction("NotOwner", "Error");
+                //return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
             }
 
             return RedirectToAction(nameof(All));

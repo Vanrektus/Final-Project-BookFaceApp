@@ -2,10 +2,12 @@
 using BookFaceApp.Core.Contracts;
 using BookFaceApp.Core.Models.Comment;
 using BookFaceApp.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookFaceApp.Controllers
 {
+    [Authorize]
     public class CommentController : Controller
     {
         private readonly ICommentService commentService;
@@ -38,20 +40,20 @@ namespace BookFaceApp.Controllers
 
                 await commentService.AddCommentAsync(model, id, userId!);
 
-                return RedirectToAction("All", "Publication");
+                return RedirectToAction(nameof(PublicationController.All), "Publication");
             }
             catch (ArgumentException ae)
             {
                 if (ae.Message == "Invalid user ID")
                 {
                     TempData[MessageConstant.ErrorMessage] = "Invalid user ID!";
-                    return RedirectToAction("NotOwner", "Error");
+                    return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
                 }
 
                 if (ae.Message == "Invalid publication ID")
                 {
                     TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
-                    return RedirectToAction("InvalidPublication", "Error");
+                    return RedirectToAction(nameof(ErrorController.InvalidPublication), "Error");
                 }
 
                 throw;
@@ -67,7 +69,7 @@ namespace BookFaceApp.Controllers
             {
                 TempData[MessageConstant.ErrorMessage] = "The comment you are looking for was not found :(";
                 
-                return RedirectToAction("InvalidPublication", "Error");
+                return RedirectToAction(nameof(ErrorController.InvalidPublication), "Error");
             }
 
             var userId = User.Id();
@@ -76,7 +78,7 @@ namespace BookFaceApp.Controllers
             {
                 TempData[MessageConstant.ErrorMessage] = "You need to be the owner in order to perform this action!";
 
-                return RedirectToAction("NotOwner", "Error");
+                return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
             }
 
             return View(model);
@@ -94,7 +96,7 @@ namespace BookFaceApp.Controllers
 
             int id = model.Publicationid;
 
-            return RedirectToAction("Details", "Publication", new { id });
+            return RedirectToAction(nameof(PublicationController.Details), "Publication", new { id });
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -110,23 +112,23 @@ namespace BookFaceApp.Controllers
                 if (ae.Message == "Invalid user ID")
                 {
                     TempData[MessageConstant.ErrorMessage] = "Invalid user ID!";
-                    return RedirectToAction("NotOwner", "Error");
+                    return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
                 }
 
                 if (ae.Message == "Invalid comment ID")
                 {
                     TempData[MessageConstant.ErrorMessage] = "The comment you are looking for was not found :(";
-                    return RedirectToAction("InvalidComment", "Error");
+                    return RedirectToAction(nameof(ErrorController.InvalidComment), "Error");
                 }
 
                 if (ae.Message == "Invalid owner ID")
                 {
                     TempData[MessageConstant.ErrorMessage] = "You need to be the owner in order to perform this action!";
-                    return RedirectToAction("NotOwner", "Error");
+                    return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
                 }
             }
 
-            return RedirectToAction("All", "Publication");
+            return RedirectToAction(nameof(PublicationController.All), "Publication");
         }
     }
 }
