@@ -18,7 +18,7 @@ namespace BookFaceApp.Controllers
         [HttpGet]
         public async Task<IActionResult> MyProfile()
         {
-            var userId = User.Id();
+            var userId = base.User.Id();
 
             var model = await profileService.GetMyProfilePublicationsAsync(userId);
 
@@ -26,9 +26,9 @@ namespace BookFaceApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> UserProfile(string username)
+        public async Task<IActionResult> User(string id)
         {
-            var model = await profileService.GetUserProfilePublicationsAsync(username);
+            var model = await profileService.GetUserProfilePublicationsAsync(id);
 
             return View(model);
         }
