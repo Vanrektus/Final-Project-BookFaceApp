@@ -12,6 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IPublicationService, PublicationService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<IGroupService, GroupService>();
 
             return services;
         }

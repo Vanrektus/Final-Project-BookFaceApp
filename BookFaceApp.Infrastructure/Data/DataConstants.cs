@@ -37,5 +37,11 @@
             public const int MinCategoryName = 2;
             public const int MaxCategoryName = 50;
         }
+
+        public class GroupConstants
+        {
+            public const int MinGroupName = 2;
+            public const int MaxGroupName = 50;
+        }
     }
 }

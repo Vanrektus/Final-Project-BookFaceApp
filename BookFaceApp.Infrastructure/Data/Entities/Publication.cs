@@ -33,5 +33,7 @@ namespace BookFaceApp.Infrastructure.Data.Entities
         public List<PublicationComment> PublicationsComments { get; set; } = new List<PublicationComment>();
 
         public List<UserPublication> UsersPublications { get; set; } = new List<UserPublication>();
+
+        public List<PublicationGroup> PublicationsGroups { get; set; } = new List<PublicationGroup>();
     }
 }

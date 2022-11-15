@@ -9,12 +9,12 @@ namespace BookFaceApp.Infrastructure.Data.Entities
         public int PublicationId { get; set; }
 
         [ForeignKey(nameof(PublicationId))]
-        public Publication Publication { get; set; }
+        public Publication Publication { get; set; } = null!;
 
         [Key]
         public int CommentId { get; set; }
 
         [ForeignKey(nameof(CommentId))]
-        public Comment Comment { get; set; }
+        public Comment Comment { get; set; } = null!;
     }
 }

@@ -17,6 +17,8 @@ namespace BookFaceApp.Infrastructure.Data
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<PublicationComment> PublicationsComments { get; set; } = null!;
         public DbSet<UserPublication> UsersPublications { get; set; } = null!;
+        public DbSet<UserGroup> UsersGroups { get; set; } = null!;
+        public DbSet<PublicationGroup> PublicationsGroups { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -24,6 +26,8 @@ namespace BookFaceApp.Infrastructure.Data
             builder.ApplyConfiguration(new CategoryConfiguration());
             builder.ApplyConfiguration(new PublicationCommentConfiguration());
             builder.ApplyConfiguration(new UserPublicationConfiguration());
+            builder.ApplyConfiguration(new UserGroupConfiguration());
+            builder.ApplyConfiguration(new PublicationGroupConfiguration());
 
             base.OnModelCreating(builder);
         }

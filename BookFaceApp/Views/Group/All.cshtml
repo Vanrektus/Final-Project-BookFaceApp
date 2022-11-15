@@ -1,0 +1,29 @@
+﻿@model IEnumerable<GroupViewModel>
+
+@{
+	ViewBag.Title = "All Groups";
+}
+
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div id="main-card" class="text-center row main-card">
+	@foreach (var group in Model)
+	{
+		<div class="card col-4" style="width: 375px; margin: 5px;">
+			<div class="card-body">
+				<h5 class="card-title mt-1">@group.Name</h5>
+				<h5 class="card-title mt-1">Category: @group.Category</h5>
+				<h5 class="card-title mt-1">@group.UsersGroups.Count members</h5>
+				<h5 class="card-title mt-1">@group.PublicationsGroups.Count publications</h5>
+			</div>
+
+			<div id="pub-det-btn">
+				<a class="btn btn-light" asp-area="" asp-controller="Group" asp-action="Details" asp-route-id="@group.Id">
+					<img src="/lib/bootstrap-icons/chat-dots.svg" alt="Bootstrap" width="35" height="35">
+				</a>
+			</div>
+		</div>
+	}
+</div>
