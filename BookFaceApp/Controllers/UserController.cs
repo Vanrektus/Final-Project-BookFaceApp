@@ -68,7 +68,7 @@ namespace BookFaceApp.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login()
+        public IActionResult Login()
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
@@ -77,7 +77,7 @@ namespace BookFaceApp.Controllers
 
             var model = new LoginViewModel();
 
-            model.ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            //model.ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             return View(model);
         }

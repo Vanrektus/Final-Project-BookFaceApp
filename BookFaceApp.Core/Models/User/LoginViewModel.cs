@@ -12,6 +12,6 @@ namespace BookFaceApp.Core.Models.User
         [DataType(DataType.Password)]
         public string Password { get; set; } = null!;
 
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
+        //public IList<AuthenticationScheme> ExternalLogins { get; set; }
     }
 }
