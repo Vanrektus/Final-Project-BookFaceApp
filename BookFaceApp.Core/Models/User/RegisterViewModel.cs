@@ -10,6 +10,14 @@ namespace BookFaceApp.Core.Models.User
         public string UserName { get; set; } = null!;
 
         [Required]
+        [StringLength(MaxUserFirstName, MinimumLength = MinUserFirstName)]
+        public string FirstName { get; set; } = null!;
+
+        [Required]
+        [StringLength(MaxUserLastName, MinimumLength = MinUserLastName)]
+        public string LastName { get; set; } = null!;
+
+        [Required]
         [EmailAddress]
         [StringLength(MaxUserEmail, MinimumLength = MinUserEmail)]
         public string Email { get; set; } = null!;

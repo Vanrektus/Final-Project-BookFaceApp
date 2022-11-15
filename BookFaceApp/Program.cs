@@ -1,3 +1,4 @@
+using BookFaceApp.ExternalLogin;
 using BookFaceApp.Infrastructure.Data;
 using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.ModelBinders;
@@ -47,6 +48,13 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
+builder.Services.AddAuthentication()
+    .AddFacebook(options =>
+    {
+        options.AppId = ExternalLoginFacebook.AppId;
+        options.AppSecret = ExternalLoginFacebook.AppSecret;
+    });
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -77,6 +85,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-//app.MapRazorPages();
+app.MapRazorPages();
 
 app.Run();
