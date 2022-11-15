@@ -95,7 +95,7 @@ namespace BookFaceApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction(nameof(PublicationController.All), "Publication");
+                    return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
             }
 

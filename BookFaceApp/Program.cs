@@ -1,6 +1,7 @@
 using BookFaceApp.Infrastructure.Data;
 using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.ModelBinders;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using static BookFaceApp.Infrastructure.Data.DataConstants.UserConstants;
 
@@ -21,6 +22,7 @@ builder.Services.AddDefaultIdentity<User>(options =>
     options.Password.RequireLowercase = builder.Configuration.GetValue<bool>("Identity:RequireLowercase"); ;
     options.Password.RequiredLength = MinUserPassword;
 })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BookFaceAppDbContext>();
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -35,6 +37,15 @@ builder.Services.AddControllersWithViews()
     });
 
 builder.Services.AddApplicationServices();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+    {
+        policy.RequireRole("Admin");
+        //policy.RequireClaim("AdminClaim");
+    });
+});
 
 var app = builder.Build();
 
@@ -66,6 +77,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
+//app.MapRazorPages();
 
 app.Run();
