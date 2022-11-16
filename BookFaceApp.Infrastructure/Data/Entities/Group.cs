@@ -31,6 +31,8 @@ namespace BookFaceApp.Infrastructure.Data.Entities
 
         public List<UserGroup> UsersGroups { get; set; } = new List<UserGroup>();
 
+        //public List<User> Users { get; set; } = new List<User>();
+
         public List<Publication> Publications { get; set; } = new List<Publication>();
     }
 }

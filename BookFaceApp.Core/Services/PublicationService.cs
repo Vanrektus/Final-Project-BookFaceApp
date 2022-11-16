@@ -46,6 +46,7 @@ namespace BookFaceApp.Core.Services
 
             entity.Title = model.Title;
             entity.ImageUrl = model.ImageUrl;
+            entity.CategoryId = model.CategoryId;
 
             await repo.SaveChangesAsync();
         }
@@ -129,7 +130,9 @@ namespace BookFaceApp.Core.Services
                 Id = model.Id,
                 Title = model.Title,
                 ImageUrl = model.ImageUrl,
-                UserId = model.UserId
+                UserId = model.UserId,
+                CategoryId = model.CategoryId,
+                Categories = await GetCategoriesAsync(),
             };
         }
 

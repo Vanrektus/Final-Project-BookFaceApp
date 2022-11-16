@@ -16,6 +16,8 @@ namespace BookFaceApp.Core.Models.Group
 
         public List<BookFaceApp.Infrastructure.Data.Entities.Publication> Publications { get; set; } = null!;
 
+        public List<BookFaceApp.Infrastructure.Data.Entities.User> Users { get; set; } = null!;
+
         public List<UserGroup> UsersGroups { get; set; } = null!;
     }
 }

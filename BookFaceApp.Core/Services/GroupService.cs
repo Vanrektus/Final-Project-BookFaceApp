@@ -3,6 +3,7 @@ using BookFaceApp.Core.Models.Group;
 using BookFaceApp.Core.Models.Publication;
 using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
+using BookFaceApp.Infrastructure.Data.Entities.Relationships;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookFaceApp.Core.Services
@@ -20,6 +21,11 @@ namespace BookFaceApp.Core.Services
         {
             var user = await repo.GetByIdAsync<User>(userId);
 
+            if (user == null)
+            {
+                throw new ArgumentException("Invalid user ID");
+            }
+
             var entity = new Group()
             {
                 Name = model.Name,
@@ -29,6 +35,18 @@ namespace BookFaceApp.Core.Services
             };
 
             await repo.AddAsync<Group>(entity);
+
+            if (!user.UsersGroups.Any(ug => ug.GroupId == entity.Id))
+            {
+                user.UsersGroups.Add(new UserGroup()
+                {
+                    UserId = user.Id,
+                    User = user,
+                    GroupId = entity.Id,
+                    Group = entity
+                });
+            }
+
             await repo.SaveChangesAsync();
         }
 
@@ -145,6 +163,11 @@ namespace BookFaceApp.Core.Services
                 .Where(g => g.Id == groupId)
                 .Include(g => g.User)
                 .Include(g => g.Publications)
+                .ThenInclude(p => p.UsersPublications)
+                .Include(g => g.Publications)
+                .ThenInclude(p => p.PublicationsComments)
+                .Include(g => g.Publications)
+                .ThenInclude(p => p.User)
                 .Include(g => g.Category)
                 .FirstOrDefaultAsync();
 
