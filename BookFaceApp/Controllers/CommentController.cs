@@ -40,7 +40,7 @@ namespace BookFaceApp.Controllers
 
                 await commentService.AddCommentAsync(model, id, userId!);
 
-                return RedirectToAction(nameof(PublicationController.All), "Publication");
+                return RedirectToAction(nameof(PublicationController.Details), "Publication", new { id });
             }
             catch (ArgumentException ae)
             {

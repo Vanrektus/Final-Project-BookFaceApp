@@ -35,6 +35,7 @@ namespace BookFaceApp.Core.Services
             var entities = await repo.AllReadonly<Publication>()
                 .Where(p => p.UserId == userId)
                 .Where(p => p.IsDeleted == false)
+                .Where(p => p.GroupId == null)
                 .Include(p => p.User)
                 .Include(p => p.PublicationsComments
                 .Where(pc => pc.Comment.IsDeleted == false))
@@ -64,6 +65,7 @@ namespace BookFaceApp.Core.Services
             var entities = await repo.AllReadonly<Publication>()
                 .Where(p => p.User.UserName == username)
                 .Where(p => p.IsDeleted == false)
+                .Where(p => p.GroupId == null)
                 .Include(p => p.User)
                 .Include(p => p.PublicationsComments
                 .Where(pc => pc.Comment.IsDeleted == false))
