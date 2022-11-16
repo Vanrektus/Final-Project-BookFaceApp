@@ -4,6 +4,7 @@ using BookFaceApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookFaceApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BookFaceAppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221116182921_PublicationGroupIdAdded")]
+    partial class PublicationGroupIdAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,6 +188,21 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                     b.ToTable("PublicationsComments");
                 });
 
+            modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.Relationships.PublicationGroup", b =>
+                {
+                    b.Property<int>("PublicationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PublicationId", "GroupId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("PublicationsGroups");
+                });
+
             modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.Relationships.UserGroup", b =>
                 {
                     b.Property<string>("UserId")
@@ -295,7 +312,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5d028ac0-3414-4da6-aa0b-e69b28040743",
+                            ConcurrencyStamp = "547b92d9-4aad-4c2e-88c4-17484e3977f5",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Vancho",
@@ -303,9 +320,9 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEF0mEemeYFyqo+fF3Y9WWqwR3a63c3PZK3ElfIjrFln6JwaIq44jwQiNGufIKLJe8A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKAQMN1k8qjP6jcSYcSEo/gqBizRyUyvXvAOIwYPB2UX2Y+YgNyEeOSWHOJTLkGLoA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4ebad136-d7dc-463f-94b0-090bffc13c3c",
+                            SecurityStamp = "f97e8623-0411-4440-b00e-71a594fb98a6",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         },
@@ -313,7 +330,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0817c328-5a70-429f-bdfb-1af4b7947aa9",
+                            ConcurrencyStamp = "3f65b624-38a1-4f9a-a347-50343e884461",
                             Email = "guest@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Gostin",
@@ -321,9 +338,9 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "GUEST@MAIL.COM",
                             NormalizedUserName = "GUEST",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFN9jbNrRRAQCaHz/XNhGBNAa6nbwpzrbg6EZZnzOAgdWl/Chx2SaX6F5GaJtQ8crw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBFE34XGzkXVdc38DoAbG08AYnQNpMskLKPtq6KyOk1gDrW+9X0yfqC5sBuP2UlSqg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "665a081f-4f92-47a1-9d5a-c5be61f7d3f2",
+                            SecurityStamp = "bdeb0d7d-7150-48c6-ae03-c92bfe5c592d",
                             TwoFactorEnabled = false,
                             UserName = "Guest"
                         });
@@ -540,6 +557,25 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                     b.Navigation("Publication");
                 });
 
+            modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.Relationships.PublicationGroup", b =>
+                {
+                    b.HasOne("BookFaceApp.Infrastructure.Data.Entities.Group", "Group")
+                        .WithMany("PublicationsGroups")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BookFaceApp.Infrastructure.Data.Entities.Publication", "Publication")
+                        .WithMany("PublicationsGroups")
+                        .HasForeignKey("PublicationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("Publication");
+                });
+
             modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.Relationships.UserGroup", b =>
                 {
                     b.HasOne("BookFaceApp.Infrastructure.Data.Entities.Group", "Group")
@@ -643,12 +679,16 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                 {
                     b.Navigation("Publications");
 
+                    b.Navigation("PublicationsGroups");
+
                     b.Navigation("UsersGroups");
                 });
 
             modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.Publication", b =>
                 {
                     b.Navigation("PublicationsComments");
+
+                    b.Navigation("PublicationsGroups");
 
                     b.Navigation("UsersPublications");
                 });

@@ -1,5 +1,6 @@
 ﻿using BookFaceApp.Core.Contracts;
 using BookFaceApp.Core.Models.Group;
+using BookFaceApp.Core.Models.Publication;
 using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -17,14 +18,31 @@ namespace BookFaceApp.Core.Services
 
         public async Task AddGroupAsync(GroupAddModel model, string userId)
         {
+            var user = await repo.GetByIdAsync<User>(userId);
+
             var entity = new Group()
             {
                 Name = model.Name,
                 CategoryId = model.CategoryId,
                 UserId = userId,
+                User = user
             };
 
             await repo.AddAsync<Group>(entity);
+            await repo.SaveChangesAsync();
+        }
+
+        public async Task AddGroupPublicationAsync(PublicationAddModel model, string userId)
+        {
+            var entity = new Publication()
+            {
+                Title = model.Title,
+                ImageUrl = model.ImageUrl,
+                CategoryId = model.CategoryId,
+                UserId = userId,
+            };
+
+            await repo.AddAsync<Publication>(entity);
             await repo.SaveChangesAsync();
         }
 
@@ -79,7 +97,7 @@ namespace BookFaceApp.Core.Services
                 .Where(g => g.IsDeleted == false)
                 .Include(g => g.User)
                 .Include(g => g.UsersGroups)
-                .Include(g => g.PublicationsGroups)
+                .Include(g => g.Publications)
                 .Include(g => g.Category)
                 .ToListAsync();
 
@@ -89,9 +107,10 @@ namespace BookFaceApp.Core.Services
                     Id = g.Id,
                     Name = g.Name,
                     UserId = g.UserId,
+                    Owner = g.User,
                     Category = g.Category.Name,
                     UsersGroups = g.UsersGroups,
-                    PublicationsGroups = g.PublicationsGroups,
+                    Publications = g.Publications,
                 });
         }
 
@@ -125,8 +144,7 @@ namespace BookFaceApp.Core.Services
             var model = await repo.AllReadonly<Group>()
                 .Where(g => g.Id == groupId)
                 .Include(g => g.User)
-                .Include(g => g.UsersGroups)
-                .Include(g => g.PublicationsGroups)
+                .Include(g => g.Publications)
                 .Include(g => g.Category)
                 .FirstOrDefaultAsync();
 
@@ -144,8 +162,7 @@ namespace BookFaceApp.Core.Services
                 Name = model.Name,
                 UserId = model.UserId,
                 Category = model.Category.Name,
-                UsersGroups = model.UsersGroups,
-                PublicationsGroups = model.PublicationsGroups,
+                Publications = model.Publications,
             };
         }
     }

@@ -13,16 +13,22 @@
 	{
 		<div class="card col-4" style="width: 375px; margin: 5px;">
 			<div class="card-body">
-				<h5 class="card-title mt-1">@group.Name</h5>
-				<h5 class="card-title mt-1">Category: @group.Category</h5>
-				<h5 class="card-title mt-1">@group.UsersGroups.Count members</h5>
-				<h5 class="card-title mt-1">@group.PublicationsGroups.Count publications</h5>
-			</div>
-
-			<div id="pub-det-btn">
-				<a class="btn btn-light" asp-area="" asp-controller="Group" asp-action="Details" asp-route-id="@group.Id">
-					<img src="/lib/bootstrap-icons/chat-dots.svg" alt="Bootstrap" width="35" height="35">
+				@if (group.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value)
+					{
+						<a class="btn btn-outline-info" asp-area="" asp-controller="Group" asp-action="Edit" asp-route-id="@group.Id">
+							<img src="/lib/bootstrap-icons/pencil.svg" alt="Bootstrap" width="35" height="35">
+						</a>
+						<a class="btn btn-outline-danger" asp-area="" asp-controller="Group" asp-action="Delete" asp-route-id="@group.Id" onclick="return confirm('Are you sure you want to delete this comment?')">
+							<img src="/lib/bootstrap-icons/x-square.svg" alt="Bootstrap" width="35" height="35">
+						</a>
+					}
+				<a asp-controller="Group" asp-action="Details" asp-route-id="@group.Id">
+					<h5 class="card-title mt-1">@group.Name</h5>
 				</a>
+				<h5 class="card-title mt-1">Category: @group.Category</h5>
+				<h5 class="card-title mt-1">Owner: @group.Owner.FirstName @group.Owner.LastName</h5>
+				<h5 class="card-title mt-1">@group.UsersGroups.Count members</h5>
+				<h5 class="card-title mt-1">@group.Publications.Count publications</h5>
 			</div>
 		</div>
 	}

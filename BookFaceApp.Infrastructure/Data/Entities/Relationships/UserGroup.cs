@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BookFaceApp.Infrastructure.Data.Entities
+namespace BookFaceApp.Infrastructure.Data.Entities.Relationships
 {
     public class UserGroup
     {

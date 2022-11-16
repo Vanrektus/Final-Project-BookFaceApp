@@ -1,4 +1,4 @@
-﻿using BookFaceApp.Infrastructure.Data.Entities;
+﻿using BookFaceApp.Infrastructure.Data.Entities.Relationships;
 
 namespace BookFaceApp.Core.Models.Publication
 {

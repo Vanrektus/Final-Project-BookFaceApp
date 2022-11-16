@@ -28,10 +28,11 @@ namespace BookFaceApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Add()
+        public async Task<IActionResult> Add(int id)
         {
             var model = new PublicationAddModel()
             {
+                GroupId = id,
                 Categories = await publicationService.GetCategoriesAsync()
             };
 

@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BookFaceApp.Infrastructure.Data.Entities
+namespace BookFaceApp.Infrastructure.Data.Entities.Relationships
 {
-    public class PublicationGroup
+    public class PublicationComment
     {
         [Key]
         public int PublicationId { get; set; }
@@ -12,9 +12,9 @@ namespace BookFaceApp.Infrastructure.Data.Entities
         public Publication Publication { get; set; } = null!;
 
         [Key]
-        public int GroupId { get; set; }
+        public int CommentId { get; set; }
 
-        [ForeignKey(nameof(GroupId))]
-        public Group Group { get; set; } = null!;
+        [ForeignKey(nameof(CommentId))]
+        public Comment Comment { get; set; } = null!;
     }
 }

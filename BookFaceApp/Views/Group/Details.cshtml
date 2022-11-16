@@ -1,0 +1,34 @@
+﻿@model GroupViewModel
+
+@{
+	ViewBag.Title = "Group publications";
+}
+
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="text-center row">
+	@if (Model.Publications.Count > 0)
+	{
+		<div class="card col-4" style="width: 20rem; ">
+			@foreach (var publication in Model.Publications)
+			{
+				<div class="card-body">
+					<h5 class="card-title mt-1">@publication.Title</h5>
+					<img class="card-img-top" style="width: 18rem;"
+				 src="@publication.ImageUrl" alt="Publication Image">
+				</div>
+			}
+		</div>
+	}
+	else
+	{
+		<h5 class="card-title mt-1">No publications yet.</h5>
+	}
+
+
+	<a class="btn btn-success" asp-area="" asp-controller="Publication" asp-action="Add" asp-route-id="@Model.Id">Add new publication</a>
+</div>
+
+<script src="/js/bootstrap.min.js"></script>

@@ -13,6 +13,8 @@ namespace BookFaceApp.Core.Models.Publication
         [Required]
         public string ImageUrl { get; set; } = null!;
 
+        public int? GroupId { get; set; }
+
         [Required]
         public int CategoryId { get; set; }
 

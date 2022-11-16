@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BookFaceApp.Infrastructure.Data.Entities.Relationships;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static BookFaceApp.Infrastructure.Data.DataConstants.GroupConstants;
 
@@ -30,6 +31,6 @@ namespace BookFaceApp.Infrastructure.Data.Entities
 
         public List<UserGroup> UsersGroups { get; set; } = new List<UserGroup>();
 
-        public List<PublicationGroup> PublicationsGroups { get; set; } = new List<PublicationGroup>();
+        public List<Publication> Publications { get; set; } = new List<Publication>();
     }
 }

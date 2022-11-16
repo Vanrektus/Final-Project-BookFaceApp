@@ -43,5 +43,14 @@
             public const int MinGroupName = 2;
             public const int MaxGroupName = 50;
         }
+
+        public class RequestConstants
+        {
+            public const int MinRequestName = 1;
+            public const int MaxRequestName = 20;
+
+            public const int MinRequestStatus = 7;
+            public const int MaxRequestStatus = 8;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BookFaceApp.Infrastructure.Data.Entities;
+using BookFaceApp.Infrastructure.Data.Entities.Relationships;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

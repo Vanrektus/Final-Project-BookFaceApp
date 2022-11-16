@@ -1,4 +1,5 @@
 ﻿using BookFaceApp.Core.Models.Group;
+using BookFaceApp.Core.Models.Publication;
 using BookFaceApp.Infrastructure.Data.Entities;
 
 namespace BookFaceApp.Core.Contracts
@@ -18,5 +19,7 @@ namespace BookFaceApp.Core.Contracts
         Task DeleteGroupAsync(int groupId, string userId);
 
         Task<IEnumerable<Category>> GetCategoriesAsync();
+
+        Task AddGroupPublicationAsync(PublicationAddModel model, string userId);
     }
 }

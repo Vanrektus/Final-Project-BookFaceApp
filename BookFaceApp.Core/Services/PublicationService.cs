@@ -2,6 +2,7 @@
 using BookFaceApp.Core.Models.Publication;
 using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
+using BookFaceApp.Infrastructure.Data.Entities.Relationships;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookFaceApp.Core.Services
@@ -24,6 +25,11 @@ namespace BookFaceApp.Core.Services
                 CategoryId = model.CategoryId,
                 UserId = userId,
             };
+
+            if (model.GroupId != null)
+            {
+                entity.GroupId = model.GroupId;
+            }
 
             await repo.AddAsync<Publication>(entity);
             await repo.SaveChangesAsync();
@@ -48,6 +54,7 @@ namespace BookFaceApp.Core.Services
         {
             var entities = await repo.AllReadonly<Publication>()
                 .Where(p => p.IsDeleted == false)
+                .Where(p => p.GroupId == null)
                 .Include(p => p.User)
                 .Include(p => p.PublicationsComments
                 .Where(pc => pc.Comment.IsDeleted == false))
@@ -206,6 +213,7 @@ namespace BookFaceApp.Core.Services
         {
             var entities = await repo.AllReadonly<Publication>()
                 .Where(p => p.IsDeleted == false)
+                .Where(p => p.GroupId == null)
                 .OrderByDescending(p => p.UsersPublications.Count)
                 .ThenByDescending(p => p.PublicationsComments.Count)
                 .Include(p => p.User)

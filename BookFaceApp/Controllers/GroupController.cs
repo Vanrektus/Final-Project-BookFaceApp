@@ -1,8 +1,6 @@
 ﻿using BookFaceApp.Core.Constants;
 using BookFaceApp.Core.Contracts;
 using BookFaceApp.Core.Models.Group;
-using BookFaceApp.Core.Models.Publication;
-using BookFaceApp.Core.Services;
 using BookFaceApp.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -62,6 +60,22 @@ namespace BookFaceApp.Controllers
                 return View(model);
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var model = await groupService.GetOneGroupAsync(id);
+
+            if (model != null)
+            {
+                return View(model);
+            }
+
+            TempData[MessageConstant.ErrorMessage] = "The group you are looking for was not found :(";
+
+            return RedirectToAction(nameof(ErrorController.InvalidPublication), "Error");
+        }
+
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {

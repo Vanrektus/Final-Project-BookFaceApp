@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BookFaceApp.Infrastructure.Data.Entities.Relationships;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static BookFaceApp.Infrastructure.Data.DataConstants.PublicationConstants;
 
@@ -30,10 +31,15 @@ namespace BookFaceApp.Infrastructure.Data.Entities
         [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; } = null!;
 
+        public int? GroupId { get; set; }
+
+        [ForeignKey(nameof(GroupId))]
+        public Group? Group { get; set; }
+
         public List<PublicationComment> PublicationsComments { get; set; } = new List<PublicationComment>();
 
         public List<UserPublication> UsersPublications { get; set; } = new List<UserPublication>();
 
-        public List<PublicationGroup> PublicationsGroups { get; set; } = new List<PublicationGroup>();
+        //public List<PublicationGroup> PublicationsGroups { get; set; } = new List<PublicationGroup>();
     }
 }

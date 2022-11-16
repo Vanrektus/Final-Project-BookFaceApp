@@ -2,6 +2,7 @@
 using BookFaceApp.Core.Models.Comment;
 using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
+using BookFaceApp.Infrastructure.Data.Entities.Relationships;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookFaceApp.Core.Services

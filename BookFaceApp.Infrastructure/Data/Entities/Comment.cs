@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BookFaceApp.Infrastructure.Data.Entities.Relationships;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static BookFaceApp.Infrastructure.Data.DataConstants.CommentConstants;
 
