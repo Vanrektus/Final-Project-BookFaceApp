@@ -7,8 +7,6 @@ namespace BookFaceApp.Core.Contracts
     {
         Task AddPublicationAsync(PublicationAddModel model, string userId);
 
-        Task<IEnumerable<PublicationViewModel>> GetAllPublicationsOLDAsync();
-
         Task<PublicationQueryModel> GetAllPublicationsAsync(
             string? category = null,
             string? searchTerm = null,

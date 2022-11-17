@@ -98,6 +98,8 @@ namespace BookFaceApp.Core.Services
                     Title = p.Title,
                     ImageUrl = p.ImageUrl!,
                     Category = p.Category.Name,
+                    UserId = p.UserId,
+                    UserName = p.User.UserName,
                     UsersPublications = p.UsersPublications,
                     PublicationsComments = p.PublicationsComments
                 })
@@ -278,35 +280,6 @@ namespace BookFaceApp.Core.Services
                 .Select(c => c.Name)
                 .Distinct()
                 .ToListAsync();
-        }
-
-        public async Task<IEnumerable<PublicationViewModel>> GetAllPublicationsOLDAsync()
-        {
-            var entities = await repo.AllReadonly<Publication>()
-                .Where(p => p.IsDeleted == false)
-                .Where(p => p.GroupId == null)
-                .Include(p => p.User)
-                .Include(p => p.PublicationsComments
-                .Where(pc => pc.Comment.IsDeleted == false))
-                .ThenInclude(pc => pc.Comment)
-                .ThenInclude(c => c.User)
-                .Include(p => p.UsersPublications)
-                .ThenInclude(up => up.User)
-                .Include(p => p.Category)
-                .ToListAsync();
-
-            return entities
-                .Select(p => new PublicationViewModel()
-                {
-                    Id = p.Id,
-                    Title = p.Title,
-                    ImageUrl = p.ImageUrl!,
-                    UserName = p.User.UserName,
-                    UserId = p.UserId,
-                    Category = p.Category.Name,
-                    PublicationsComments = p.PublicationsComments,
-                    UsersPublications = p.UsersPublications,
-                });
         }
     }
 }

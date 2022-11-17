@@ -37,15 +37,6 @@ namespace BookFaceApp.Controllers
             return View(query);
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> AllOLD()
-        {
-            var model = await publicationService.GetAllPublicationsAsync();
-
-            return View(model);
-        }
-
         [HttpGet]
         public async Task<IActionResult> Add(int id)
         {

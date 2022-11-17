@@ -109,7 +109,7 @@ namespace BookFaceApp.Core.Services
             await repo.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<GroupViewModel>> GetAllGroupsAsync()
+        public async Task<IEnumerable<GroupViewModel>> GetAllGroupsAsyncOLD()
         {
             var entities = await repo.AllReadonly<Group>()
                 .Where(g => g.IsDeleted == false)
@@ -130,6 +130,60 @@ namespace BookFaceApp.Core.Services
                     UsersGroups = g.UsersGroups,
                     Publications = g.Publications,
                 });
+        }
+
+        public async Task<GroupQueryModel> GetAllGroupsAsync(
+            string? category = null, 
+            string? searchTerm = null,
+            GroupSorting sorting = GroupSorting.Newest, 
+            int currentPage = 1, 
+            int groupsPerPage = 1)
+        {
+            var result = new GroupQueryModel();
+
+            var groups = repo.AllReadonly<Group>();
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                groups = groups
+                    .Where(p => p.Category.Name == category);
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = $"%{searchTerm.ToUpper()}%";
+
+                groups = groups
+                    .Where(p => EF.Functions.Like(p.Name.ToUpper(), searchTerm));
+            }
+
+            groups = sorting switch
+            {
+                GroupSorting.MostUsers => groups
+                .OrderByDescending(g => g.UsersGroups.Count),
+                GroupSorting.MostPublications => groups
+                .OrderByDescending(g => g.Publications.Count),
+                _ => groups.OrderByDescending(p => p.Id)
+            };
+
+            result.Groups = await groups
+                .Skip((currentPage - 1) * groupsPerPage)
+                .Take(groupsPerPage)
+                .Select(p => new GroupViewModel()
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Category = p.Category.Name,
+                    UserId = p.UserId,
+                    Owner = p.User,
+                    Publications = p.Publications,
+                    UsersGroups = p.UsersGroups
+                })
+                .ToListAsync();
+
+            result.TotalGroupsCount = await groups.CountAsync();
+
+            return result;
         }
 
         public async Task<IEnumerable<Category>> GetCategoriesAsync()
@@ -187,6 +241,14 @@ namespace BookFaceApp.Core.Services
                 Category = model.Category.Name,
                 Publications = model.Publications,
             };
+        }
+
+        public async Task<IEnumerable<string>> GetCategoriesNamesAsync()
+        {
+            return await repo.AllReadonly<Category>()
+                .Select(c => c.Name)
+                .Distinct()
+                .ToListAsync();
         }
     }
 }

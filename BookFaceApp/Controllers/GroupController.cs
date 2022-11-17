@@ -1,7 +1,9 @@
 ﻿using BookFaceApp.Core.Constants;
 using BookFaceApp.Core.Contracts;
 using BookFaceApp.Core.Models.Group;
+using BookFaceApp.Core.Services;
 using BookFaceApp.Extensions;
+using BookFaceApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,11 +21,29 @@ namespace BookFaceApp.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> AllOLD()
         {
             var model = await groupService.GetAllGroupsAsync();
 
             return View(model);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> All([FromQuery] AllGroupsQueryModel query)
+{
+            var result = await groupService.GetAllGroupsAsync(
+                query.Category,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                AllGroupsQueryModel.GroupsPerPage);
+
+            query.TotalGroupsCount = result.TotalGroupsCount;
+            query.Categories = await groupService.GetCategoriesNamesAsync();
+            query.Groups = result.Groups;
+
+            return View(query);
         }
 
         [HttpGet]
