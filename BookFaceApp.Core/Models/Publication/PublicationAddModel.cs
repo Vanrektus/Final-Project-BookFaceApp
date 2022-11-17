@@ -7,7 +7,7 @@ namespace BookFaceApp.Core.Models.Publication
     public class PublicationAddModel
     {
         [Required]
-        [MaxLength(MaxPublicationTitle)]
+        [StringLength(MaxPublicationTitle, MinimumLength = MinPublicationTitle)]
         public string Title { get; set; } = null!;
 
         [Required]

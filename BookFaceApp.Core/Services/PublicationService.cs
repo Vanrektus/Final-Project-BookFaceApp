@@ -51,33 +51,61 @@ namespace BookFaceApp.Core.Services
             await repo.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<PublicationViewModel>> GetAllPublicationsAsync()
+        public async Task<PublicationQueryModel> GetAllPublicationsAsync(
+            string? category = null, 
+            string? searchTerm = null, 
+            PublicationSorting sorting = PublicationSorting.Newest, 
+            int currentPage = 1, 
+            int publicationsPerPage = 1)
         {
-            var entities = await repo.AllReadonly<Publication>()
-                .Where(p => p.IsDeleted == false)
-                .Where(p => p.GroupId == null)
-                .Include(p => p.User)
-                .Include(p => p.PublicationsComments
-                .Where(pc => pc.Comment.IsDeleted == false))
-                .ThenInclude(pc => pc.Comment)
-                .ThenInclude(c => c.User)
-                .Include(p => p.UsersPublications)
-                .ThenInclude(up => up.User)
-                .Include(p => p.Category)
-                .ToListAsync();
+            var result = new PublicationQueryModel();
 
-            return entities
+            var publications = repo.AllReadonly<Publication>();
+                //.Include(p => p.PublicationsComments.Where(pc => pc.Comment.IsDeleted == false))
+                //.Include(p => p.UsersPublications)
+                //.Include(p => p.Category)
+                //.ToListAsync();
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                publications = publications
+                    .Where(p => p.Category.Name == category);
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = $"%{searchTerm.ToUpper()}%";
+
+                publications = publications
+                    .Where(p => EF.Functions.Like(p.Title.ToUpper(), searchTerm));
+            }
+
+            publications = sorting switch
+            {
+                PublicationSorting.MostLiked => publications
+                .OrderByDescending(p => p.UsersPublications.Count),
+                PublicationSorting.MostCommented => publications
+                .OrderByDescending(p => p.PublicationsComments.Count),
+                _ => publications.OrderByDescending(p => p.Id)
+            };
+
+            result.Publications = await publications
+                .Skip((currentPage - 1) * publicationsPerPage)
+                .Take(publicationsPerPage)
                 .Select(p => new PublicationViewModel()
                 {
                     Id = p.Id,
                     Title = p.Title,
                     ImageUrl = p.ImageUrl!,
-                    UserName = p.User.UserName,
-                    UserId = p.UserId,
                     Category = p.Category.Name,
-                    PublicationsComments = p.PublicationsComments,
                     UsersPublications = p.UsersPublications,
-                });
+                    PublicationsComments = p.PublicationsComments
+                })
+                .ToListAsync();
+
+            result.TotalPublicationsCount = await publications.CountAsync();
+
+            return result;
         }
 
         public async Task<PublicationViewModel> GetOnePublicationAsync(int publicationId)
@@ -228,6 +256,43 @@ namespace BookFaceApp.Core.Services
                 .ThenInclude(up => up.User)
                 .Include(p => p.Category)
                 .Take(3)
+                .ToListAsync();
+
+            return entities
+                .Select(p => new PublicationViewModel()
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    ImageUrl = p.ImageUrl!,
+                    UserName = p.User.UserName,
+                    UserId = p.UserId,
+                    Category = p.Category.Name,
+                    PublicationsComments = p.PublicationsComments,
+                    UsersPublications = p.UsersPublications,
+                });
+        }
+
+        public async Task<IEnumerable<string>> GetCategoriesNamesAsync()
+        {
+            return await repo.AllReadonly<Category>()
+                .Select(c => c.Name)
+                .Distinct()
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<PublicationViewModel>> GetAllPublicationsOLDAsync()
+        {
+            var entities = await repo.AllReadonly<Publication>()
+                .Where(p => p.IsDeleted == false)
+                .Where(p => p.GroupId == null)
+                .Include(p => p.User)
+                .Include(p => p.PublicationsComments
+                .Where(pc => pc.Comment.IsDeleted == false))
+                .ThenInclude(pc => pc.Comment)
+                .ThenInclude(c => c.User)
+                .Include(p => p.UsersPublications)
+                .ThenInclude(up => up.User)
+                .Include(p => p.Category)
                 .ToListAsync();
 
             return entities

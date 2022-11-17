@@ -2,6 +2,7 @@
 using BookFaceApp.Core.Contracts;
 using BookFaceApp.Core.Models.Publication;
 using BookFaceApp.Extensions;
+using BookFaceApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,25 @@ namespace BookFaceApp.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All([FromQuery] AllPublicationsQueryModel query)
+        {
+            var result = await publicationService.GetAllPublicationsAsync(
+                query.Category,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                AllPublicationsQueryModel.PublicationsPerPage);
+
+            query.TotalPublicationsCount = result.TotalPublicationsCount;
+            query.Categories = await publicationService.GetCategoriesNamesAsync();
+            query.Publications = result.Publications;
+
+            return View(query);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> AllOLD()
         {
             var model = await publicationService.GetAllPublicationsAsync();
 
@@ -32,9 +51,13 @@ namespace BookFaceApp.Controllers
         {
             var model = new PublicationAddModel()
             {
-                GroupId = id,
                 Categories = await publicationService.GetCategoriesAsync()
             };
+
+            if (id != 0)
+            {
+                model.GroupId = id;
+            }
 
             return View(model);
         }
@@ -130,6 +153,7 @@ namespace BookFaceApp.Controllers
             }
 
             return RedirectToAction(nameof(All));
+
         }
 
         public async Task<IActionResult> Delete(int id)

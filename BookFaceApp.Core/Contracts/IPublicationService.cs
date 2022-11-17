@@ -7,7 +7,14 @@ namespace BookFaceApp.Core.Contracts
     {
         Task AddPublicationAsync(PublicationAddModel model, string userId);
 
-        Task<IEnumerable<PublicationViewModel>> GetAllPublicationsAsync();
+        Task<IEnumerable<PublicationViewModel>> GetAllPublicationsOLDAsync();
+
+        Task<PublicationQueryModel> GetAllPublicationsAsync(
+            string? category = null,
+            string? searchTerm = null,
+            PublicationSorting sorting = PublicationSorting.Newest,
+            int currentPage = 1,
+            int publicationsPerPage = 1);
 
         Task<IEnumerable<PublicationViewModel>> GetTop3PublicationsAsync();
 
@@ -22,5 +29,7 @@ namespace BookFaceApp.Core.Contracts
         Task DeletePublicationAsync(int publicationId, string userId);
 
         Task<IEnumerable<Category>> GetCategoriesAsync();
+
+        Task<IEnumerable<string>> GetCategoriesNamesAsync();
     }
 }

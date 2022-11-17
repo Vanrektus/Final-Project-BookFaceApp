@@ -6,7 +6,7 @@ namespace BookFaceApp.Core.Models.Comment
 	public class CommentAddModel
     {
         [Required]
-        [MaxLength(MaxCommentText)]
+        [StringLength(MaxCommentText, MinimumLength = MinCommentText)]
         public string Text { get; set; } = null!;
 
         public int PublicationId { get; set; }
