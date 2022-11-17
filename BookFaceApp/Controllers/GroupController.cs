@@ -1,7 +1,6 @@
 ﻿using BookFaceApp.Core.Constants;
 using BookFaceApp.Core.Contracts;
 using BookFaceApp.Core.Models.Group;
-using BookFaceApp.Core.Services;
 using BookFaceApp.Extensions;
 using BookFaceApp.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -17,15 +16,6 @@ namespace BookFaceApp.Controllers
             IGroupService _groupService)
         {
             groupService = _groupService;
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> AllOLD()
-        {
-            var model = await groupService.GetAllGroupsAsync();
-
-            return View(model);
         }
 
         [AllowAnonymous]

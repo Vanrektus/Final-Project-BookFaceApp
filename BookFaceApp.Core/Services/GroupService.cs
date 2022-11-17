@@ -109,29 +109,6 @@ namespace BookFaceApp.Core.Services
             await repo.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<GroupViewModel>> GetAllGroupsAsyncOLD()
-        {
-            var entities = await repo.AllReadonly<Group>()
-                .Where(g => g.IsDeleted == false)
-                .Include(g => g.User)
-                .Include(g => g.UsersGroups)
-                .Include(g => g.Publications)
-                .Include(g => g.Category)
-                .ToListAsync();
-
-            return entities
-                .Select(g => new GroupViewModel()
-                {
-                    Id = g.Id,
-                    Name = g.Name,
-                    UserId = g.UserId,
-                    Owner = g.User,
-                    Category = g.Category.Name,
-                    UsersGroups = g.UsersGroups,
-                    Publications = g.Publications,
-                });
-        }
-
         public async Task<GroupQueryModel> GetAllGroupsAsync(
             string? category = null, 
             string? searchTerm = null,
@@ -141,7 +118,8 @@ namespace BookFaceApp.Core.Services
         {
             var result = new GroupQueryModel();
 
-            var groups = repo.AllReadonly<Group>();
+            var groups = repo.AllReadonly<Group>()
+                .Where(g => g.IsDeleted == false);
 
             if (!string.IsNullOrEmpty(category))
             {

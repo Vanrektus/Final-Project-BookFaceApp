@@ -8,8 +8,6 @@ namespace BookFaceApp.Core.Contracts
     {
         Task AddGroupAsync(GroupAddModel model, string userId);
 
-        Task<IEnumerable<GroupViewModel>> GetAllGroupsAsyncOLD();
-
         Task<GroupQueryModel> GetAllGroupsAsync(
             string? category = null,
             string? searchTerm = null,

@@ -60,11 +60,8 @@ namespace BookFaceApp.Core.Services
         {
             var result = new PublicationQueryModel();
 
-            var publications = repo.AllReadonly<Publication>();
-                //.Include(p => p.PublicationsComments.Where(pc => pc.Comment.IsDeleted == false))
-                //.Include(p => p.UsersPublications)
-                //.Include(p => p.Category)
-                //.ToListAsync();
+            var publications = repo.AllReadonly<Publication>()
+                .Where(p => p.GroupId == null);
 
             if (!string.IsNullOrEmpty(category))
             {
