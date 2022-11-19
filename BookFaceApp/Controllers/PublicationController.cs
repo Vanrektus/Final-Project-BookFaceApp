@@ -67,13 +67,21 @@ namespace BookFaceApp.Controllers
 
                 await publicationService.AddPublicationAsync(model, userId!);
 
+                if (model.GroupId != null)
+                {
+                    return RedirectToAction("Details", "Group", new { model.GroupId });
+                }
+
                 return RedirectToAction(nameof(All));
             }
             catch (Exception)
             {
                 ModelState.AddModelError("", "Something went wrong!");
+                
+                // !!! NOT THE RIGHT WAY !!!
+				return RedirectToAction(nameof(ErrorController.InvalidCategory), "Error");
 
-                return View(model);
+				return View(model);
             }
         }
 

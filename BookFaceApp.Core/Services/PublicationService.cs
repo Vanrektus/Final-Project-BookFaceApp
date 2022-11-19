@@ -28,7 +28,18 @@ namespace BookFaceApp.Core.Services
 
             if (model.GroupId != null)
             {
-                entity.GroupId = model.GroupId;
+                var group = await repo.GetByIdAsync<Group>(model.GroupId);
+
+                if (group != null)
+                {
+                    if (group.CategoryId != model.CategoryId)
+                    {
+                        throw new Exception("Publication category must match group's category!");
+                    }
+
+                    entity.GroupId = model.GroupId;
+                }
+
             }
 
             await repo.AddAsync<Publication>(entity);

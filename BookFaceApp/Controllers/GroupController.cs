@@ -67,7 +67,7 @@ namespace BookFaceApp.Controllers
             {
                 ModelState.AddModelError("", "Something went wrong!");
 
-                return View(model);
+				return View(model);
             }
         }
 

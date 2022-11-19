@@ -121,6 +121,8 @@ namespace BookFaceApp.Core.Services
             var groups = repo.AllReadonly<Group>()
                 .Where(g => g.IsDeleted == false);
 
+
+
             if (!string.IsNullOrEmpty(category))
             {
                 groups = groups
@@ -154,7 +156,7 @@ namespace BookFaceApp.Core.Services
                     Category = p.Category.Name,
                     UserId = p.UserId,
                     Owner = p.User,
-                    Publications = p.Publications,
+                    Publications = p.Publications.Where(p => p.IsDeleted == false).ToList(),
                     UsersGroups = p.UsersGroups
                 })
                 .ToListAsync();
@@ -194,11 +196,11 @@ namespace BookFaceApp.Core.Services
             var model = await repo.AllReadonly<Group>()
                 .Where(g => g.Id == groupId)
                 .Include(g => g.User)
-                .Include(g => g.Publications)
+                .Include(g => g.Publications.Where(p => p.IsDeleted == false))
                 .ThenInclude(p => p.UsersPublications)
-                .Include(g => g.Publications)
+                .Include(g => g.Publications.Where(p => p.IsDeleted == false))
                 .ThenInclude(p => p.PublicationsComments)
-                .Include(g => g.Publications)
+                .Include(g => g.Publications.Where(p => p.IsDeleted == false))
                 .ThenInclude(p => p.User)
                 .Include(g => g.Category)
                 .FirstOrDefaultAsync();

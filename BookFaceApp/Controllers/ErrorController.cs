@@ -20,5 +20,10 @@ namespace BookFaceApp.Controllers
         {
             return View();
         }
+
+        public IActionResult InvalidCategory()
+        {
+            return View();
+        }
     }
 }
