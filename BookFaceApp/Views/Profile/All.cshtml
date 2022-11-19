@@ -11,7 +11,7 @@
 	@foreach (var user in Model)
 	{
 		<div class="card col-4" style="width: 375px; margin: 5px;">
-			<a asp-controller="Profile" asp-action="UserProfile" asp-route-username="@user.UserName">
+			<a asp-controller="Profile" asp-action="User" asp-route-id="@user.UserName">
 				<h5 class="card-title mt-1">@user.UserName</h5>
 			</a>
 			<h5 class="card-title mt-1">@user.Publications.Count publications</h5>
