@@ -24,10 +24,18 @@ namespace BookFaceApp.Core.Contracts
 
         Task LikePublicationAsync(int publicationId, string userId);
 
-        Task DeletePublicationAsync(int publicationId, string userId);
+        Task DeletePublicationAsync(int publicationId);
 
         Task<IEnumerable<Category>> GetCategoriesAsync();
 
         Task<IEnumerable<string>> GetCategoriesNamesAsync();
+
+        Task<bool> CategoryExistsAsync(int categoryId);
+
+        Task<bool> ExistsAsync(int publicationId);
+
+        bool PublicationCatMatchesGroupCat(int groupCatId, int publicationCatId);
+
+        Task<bool> IsOwner(int publicationId, string userId);
     }
 }

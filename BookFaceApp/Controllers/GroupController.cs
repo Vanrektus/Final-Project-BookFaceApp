@@ -1,6 +1,7 @@
 ﻿using BookFaceApp.Core.Constants;
 using BookFaceApp.Core.Contracts;
 using BookFaceApp.Core.Models.Group;
+using BookFaceApp.Core.Services;
 using BookFaceApp.Extensions;
 using BookFaceApp.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookFaceApp.Controllers
 {
+    [Authorize]
     public class GroupController : Controller
     {
         private readonly IGroupService groupService;
@@ -52,23 +54,25 @@ namespace BookFaceApp.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model.Categories= await groupService.GetCategoriesAsync();
+
                 return View(model);
             }
 
-            try
+            if ((await groupService.CategoryExistsAsync(model.CategoryId)) == false)
             {
-                var userId = User.Id();
+                TempData[MessageConstant.ErrorMessage] = "Category does not exist!";
 
-                await groupService.AddGroupAsync(model, userId!);
+                model.Categories = await groupService.GetCategoriesAsync();
 
-                return RedirectToAction(nameof(All));
+                return View(model);
             }
-            catch (Exception)
-            {
-                ModelState.AddModelError("", "Something went wrong!");
 
-				return View(model);
-            }
+            var userId = User.Id();
+
+            await groupService.AddGroupAsync(model, userId!);
+
+            return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
@@ -76,14 +80,14 @@ namespace BookFaceApp.Controllers
         {
             var model = await groupService.GetOneGroupAsync(id);
 
-            if (model != null)
+            if (model == null)
             {
-                return View(model);
+                TempData[MessageConstant.ErrorMessage] = "The group you are looking for was not found :(";
+
+                return RedirectToAction(nameof(ErrorController.InvalidGroup), "Error");
             }
 
-            TempData[MessageConstant.ErrorMessage] = "The group you are looking for was not found :(";
-
-            return RedirectToAction(nameof(ErrorController.InvalidPublication), "Error");
+            return View(model);
         }
 
         [HttpGet]
@@ -93,10 +97,10 @@ namespace BookFaceApp.Controllers
 
             if (model == null)
             {
-                TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
+                TempData[MessageConstant.ErrorMessage] = "The group you are looking for was not found :(";
 
-                return RedirectToAction("InvalidPublication", "Error");
-            }
+				return RedirectToAction(nameof(ErrorController.InvalidGroup), "Error");
+			}
 
             var userId = User.Id();
 
@@ -115,8 +119,17 @@ namespace BookFaceApp.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model.Categories = await groupService.GetCategoriesAsync();
+
                 return View(model);
             }
+
+            if ((await groupService.ExistsByIdAsync(model.Id)) == false)
+			{
+				TempData[MessageConstant.ErrorMessage] = "The group you are looking for was not found :(";
+
+				return RedirectToAction(nameof(ErrorController.InvalidGroup), "Error");
+			}
 
             await groupService.EditGroupAsync(model);
 
@@ -125,21 +138,25 @@ namespace BookFaceApp.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                var userId = User.Id();
+			if ((await groupService.ExistsByIdAsync(id)) == false)
+			{
+				TempData[MessageConstant.ErrorMessage] = "The group you are looking for was not found :(";
 
-                await groupService.DeleteGroupAsync(id, userId!);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
+				return RedirectToAction(nameof(ErrorController.InvalidGroup), "Error");
+			}
 
-                throw;
-                //return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
-            }
+			var userId = User.Id();
 
-            return RedirectToAction(nameof(All));
+			if ((await groupService.IsOwner(id, userId)) == false)
+			{
+				TempData[MessageConstant.ErrorMessage] = "You must be the owner in order to perform this action!";
+
+				return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
+			}
+
+            await groupService.DeleteGroupAsync(id);
+
+			return RedirectToAction(nameof(All));
         }
     }
 }

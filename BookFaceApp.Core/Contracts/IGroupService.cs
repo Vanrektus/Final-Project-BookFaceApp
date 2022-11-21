@@ -21,12 +21,20 @@ namespace BookFaceApp.Core.Contracts
 
         Task EditGroupAsync(GroupEditModel model);
 
-        Task DeleteGroupAsync(int groupId, string userId);
+        Task DeleteGroupAsync(int groupId);
 
         Task<IEnumerable<Category>> GetCategoriesAsync();
 
         Task<IEnumerable<string>> GetCategoriesNamesAsync();
 
         Task AddGroupPublicationAsync(PublicationAddModel model, string userId);
-    }
+
+        Task<bool> ExistsByIdAsync(int? groupId);
+
+        Task<int> GetCategoryIdAsync(int? groupId);
+        
+        Task<bool> CategoryExistsAsync(int categoryId);
+
+		Task<bool> IsOwner(int groupId, string userId);
+	}
 }

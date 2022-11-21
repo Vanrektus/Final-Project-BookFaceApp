@@ -12,11 +12,14 @@ namespace BookFaceApp.Controllers
     public class PublicationController : Controller
     {
         private readonly IPublicationService publicationService;
+        private readonly IGroupService groupService;
 
         public PublicationController(
-            IPublicationService _publicationService)
+            IPublicationService _publicationService,
+            IGroupService _groupService)
         {
             publicationService = _publicationService;
+            groupService = _groupService;
         }
 
         [AllowAnonymous]
@@ -58,31 +61,45 @@ namespace BookFaceApp.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model.Categories = await publicationService.GetCategoriesAsync();
+
                 return View(model);
             }
 
-            try
+            if ((await publicationService.CategoryExistsAsync(model.CategoryId)) == false)
             {
-                var userId = User.Id();
+                TempData[MessageConstant.ErrorMessage] = "Category does not exist!";
+            }
 
-                await publicationService.AddPublicationAsync(model, userId!);
-
-                if (model.GroupId != null)
+            if (model.GroupId != null)
+            {
+                if ((await groupService.ExistsByIdAsync(model.GroupId)) != false)
                 {
-                    return RedirectToAction("Details", "Group", new { model.GroupId });
+                    TempData[MessageConstant.ErrorMessage] = "The group, you are trying to add this publication to, does not exist!";
                 }
 
-                return RedirectToAction(nameof(All));
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError("", "Something went wrong!");
-                
-                // !!! NOT THE RIGHT WAY !!!
-				return RedirectToAction(nameof(ErrorController.InvalidCategory), "Error");
+                var groupCategoryId = await groupService.GetCategoryIdAsync(model.GroupId);
 
-				return View(model);
+                if (publicationService.PublicationCatMatchesGroupCat(model.CategoryId, groupCategoryId) == false)
+                {
+                    TempData[MessageConstant.ErrorMessage] = "Publication category must match the group category.";
+
+                    model.Categories = await publicationService.GetCategoriesAsync();
+
+                    return View(model);
+                }
             }
+
+            var userId = User.Id();
+
+            await publicationService.AddPublicationAsync(model, userId!);
+
+            if (model.GroupId != null)
+            {
+                return RedirectToAction("Details", "Group", new { model.GroupId });
+            }
+
+            return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
@@ -90,14 +107,14 @@ namespace BookFaceApp.Controllers
         {
             var model = await publicationService.GetOnePublicationAsync(id);
 
-            if (model != null)
+            if (model == null)
             {
-                return View(model);
+                TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
+
+                return RedirectToAction(nameof(ErrorController.InvalidPublication), "Error");
             }
 
-            TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
-
-            return RedirectToAction(nameof(ErrorController.InvalidPublication), "Error");
+            return View(model);
         }
 
         [HttpGet]
@@ -109,7 +126,7 @@ namespace BookFaceApp.Controllers
             {
                 TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
 
-                return RedirectToAction("InvalidPublication", "Error");
+                return RedirectToAction(nameof(ErrorController.InvalidPublication), "Error");
             }
 
             var userId = User.Id();
@@ -129,8 +146,17 @@ namespace BookFaceApp.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model.Categories = await publicationService.GetCategoriesAsync();
+
                 return View(model);
             }
+
+            if ((await publicationService.ExistsAsync(model.Id)) == false)
+			{
+				TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
+
+				return RedirectToAction(nameof(ErrorController.InvalidPublication), "Error");
+			}
 
             await publicationService.EditPublicationAsync(model);
 
@@ -140,36 +166,40 @@ namespace BookFaceApp.Controllers
         [HttpPost]
         public async Task<IActionResult> LikePublication(int id)
         {
-            try
+            if ((await publicationService.ExistsAsync(id)) == false)
             {
-                var userId = User.Id();
+                TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
 
-                await publicationService.LikePublicationAsync(id, userId!);
+                return RedirectToAction(nameof(ErrorController.InvalidPublication), "Error");
             }
-            catch (Exception)
-            {
-                throw;
-            }
+
+            var userId = User.Id();
+
+            await publicationService.LikePublicationAsync(id, userId!);
 
             return RedirectToAction(nameof(All));
 
         }
 
         public async Task<IActionResult> Delete(int id)
-		{
-			try
+        {
+            if ((await publicationService.ExistsAsync(id)) == false)
             {
-                var userId = User.Id();
+                TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
 
-                await publicationService.DeletePublicationAsync(id, userId!);
+                return RedirectToAction(nameof(ErrorController.InvalidPublication), "Error");
             }
-			catch (Exception e)
+
+            var userId = User.Id();
+
+            if ((await publicationService.IsOwner(id, userId)) == false)
             {
-                Console.WriteLine(e);
+                TempData[MessageConstant.ErrorMessage] = "You must be the owner in order to perform this action!";
 
-                throw;
-                //return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
+                return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
             }
+
+            await publicationService.DeletePublicationAsync(id);
 
             return RedirectToAction(nameof(All));
         }

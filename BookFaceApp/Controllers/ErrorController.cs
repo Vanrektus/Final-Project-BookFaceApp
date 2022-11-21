@@ -25,5 +25,10 @@ namespace BookFaceApp.Controllers
         {
             return View();
         }
+
+        public IActionResult InvalidGroup()
+        {
+            return View();
+        }
     }
 }

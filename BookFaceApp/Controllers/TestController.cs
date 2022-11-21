@@ -5,7 +5,7 @@ namespace BookFaceApp.Controllers
 {
     public class TestController : Controller
     {
-        [Authorize(Policy = "AdminPolicy")]
+        //[Authorize(Policy = "AdminPolicy")]
         public IActionResult Test()
         {
             return View();

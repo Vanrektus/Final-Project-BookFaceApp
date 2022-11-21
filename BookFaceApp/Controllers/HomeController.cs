@@ -1,4 +1,5 @@
 ﻿using BookFaceApp.Core.Contracts;
+using BookFaceApp.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,11 @@ namespace BookFaceApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            if (User.Id() != null)
+            {
+                return RedirectToAction(nameof(PublicationController.All), "Publication");
+            }
+
             var model = await publicationService.GetTop3PublicationsAsync();
 
             return View(model);

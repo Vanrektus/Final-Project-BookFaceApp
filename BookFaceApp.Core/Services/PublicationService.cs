@@ -4,6 +4,8 @@ using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.Infrastructure.Data.Entities.Relationships;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
+using Group = BookFaceApp.Infrastructure.Data.Entities.Group;
 
 namespace BookFaceApp.Core.Services
 {
@@ -49,11 +51,6 @@ namespace BookFaceApp.Core.Services
         public async Task EditPublicationAsync(PublicationEditModel model)
         {
             var entity = await repo.GetByIdAsync<Publication>(model.Id);
-
-            if (entity == null)
-            {
-                throw new ArgumentException("Invalid publication");
-            }
 
             entity.Title = model.Title;
             entity.ImageUrl = model.ImageUrl;
@@ -189,11 +186,6 @@ namespace BookFaceApp.Core.Services
             var publication = await repo.All<Publication>()
                 .FirstOrDefaultAsync(b => b.Id == publicationId);
 
-            if (publication == null)
-            {
-                throw new ArgumentException("Invalid publication ID");
-            }
-
             if (!user.UsersPublications.Any(up => up.PublicationId == publicationId))
             {
                 user.UsersPublications.Add(new UserPublication()
@@ -213,32 +205,12 @@ namespace BookFaceApp.Core.Services
             await repo.SaveChangesAsync();
         }
 
-        public async Task DeletePublicationAsync(int publicationId, string userId)
+        public async Task DeletePublicationAsync(int publicationId)
         {
-            var user = await repo.All<User>()
-                .Where(u => u.Id == userId)
-                .Include(u => u.UsersPublications)
-                .FirstOrDefaultAsync();
-
-            if (user == null)
-            {
-                throw new ArgumentException("Invalid user ID");
-            }
-
             var publication = await repo.All<Publication>()
                 .FirstOrDefaultAsync(b => b.Id == publicationId);
 
-            if (publication == null)
-            {
-                throw new ArgumentException("Invalid publication ID");
-            }
-
-            if (publication.UserId != user.Id)
-            {
-                throw new ArgumentException("Invalid owner ID");
-            }
-
-            publication.IsDeleted = true;
+            publication!.IsDeleted = true;
 
             await repo.SaveChangesAsync();
         }
@@ -288,6 +260,29 @@ namespace BookFaceApp.Core.Services
                 .Select(c => c.Name)
                 .Distinct()
                 .ToListAsync();
+        }
+
+        public async Task<bool> CategoryExistsAsync(int categoryId)
+        {
+            return await repo.GetByIdAsync<Category>(categoryId) == null ? false : true;
+        }
+
+        public bool PublicationCatMatchesGroupCat(int groupCatId, int publicationCatId)
+        {
+            return groupCatId == publicationCatId;
+        }
+
+        public async Task<bool> ExistsAsync(int publicationId)
+        {
+            return await repo.AllReadonly<Publication>()
+                .AnyAsync(g => g.Id == publicationId);
+        }
+
+        public async Task<bool> IsOwner(int publicationId, string userId)
+        {
+            var publication = await repo.GetByIdAsync<Publication>(publicationId);
+
+            return publication.UserId == userId;
         }
     }
 }

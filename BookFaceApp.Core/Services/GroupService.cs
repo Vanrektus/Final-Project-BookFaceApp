@@ -64,32 +64,12 @@ namespace BookFaceApp.Core.Services
             await repo.SaveChangesAsync();
         }
 
-        public async Task DeleteGroupAsync(int groupId, string userId)
+        public async Task DeleteGroupAsync(int groupId)
         {
-            var user = await repo.All<User>()
-                .Where(u => u.Id == userId)
-                .Include(u => u.UsersPublications)
-                .FirstOrDefaultAsync();
-
-            if (user == null)
-            {
-                throw new ArgumentException("Invalid user ID");
-            }
-
             var group = await repo.All<Group>()
                 .FirstOrDefaultAsync(b => b.Id == groupId);
 
-            if (group == null)
-            {
-                throw new ArgumentException("Invalid publication ID");
-            }
-
-            if (group.UserId != user.Id)
-            {
-                throw new ArgumentException("Invalid owner ID");
-            }
-
-            group.IsDeleted = true;
+            group!.IsDeleted = true;
 
             await repo.SaveChangesAsync();
         }
@@ -98,13 +78,8 @@ namespace BookFaceApp.Core.Services
         {
             var entity = await repo.GetByIdAsync<Group>(model.Id);
 
-            if (entity == null)
-            {
-                throw new ArgumentException("Invalid group");
-            }
-
             entity.Name = model.Name;
-            //entity.Category = model.Category;
+            entity.CategoryId = model.CategoryId;
 
             await repo.SaveChangesAsync();
         }
@@ -168,10 +143,10 @@ namespace BookFaceApp.Core.Services
 
         public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
-            return await repo.All<Category>()
-                .OrderBy(c => c.Name)
-                .ToListAsync();
-        }
+			return await repo.All<Category>()
+				.OrderBy(c => c.Name)
+				.ToListAsync();
+		}
 
         public async Task<GroupEditModel> GetGroupForEditAsync(int groupId)
         {
@@ -230,5 +205,30 @@ namespace BookFaceApp.Core.Services
                 .Distinct()
                 .ToListAsync();
         }
-    }
+
+        public async Task<bool> ExistsByIdAsync(int? groupId)
+        {
+            return await repo.AllReadonly<Group>()
+                .AnyAsync(g => g.Id == groupId);
+        }
+
+        public async Task<int> GetCategoryIdAsync(int? groupId)
+        {
+            var group = await repo.GetByIdAsync<Group>(groupId);
+
+            return group.CategoryId;
+        }
+
+        public async Task<bool> CategoryExistsAsync(int categoryId)
+        {
+            return await repo.GetByIdAsync<Category>(categoryId) == null ? false : true;
+        }
+
+		public async Task<bool> IsOwner(int groupId, string userId)
+		{
+			var group = await repo.GetByIdAsync<Group>(groupId);
+
+			return group.UserId == userId;
+		}
+	}
 }

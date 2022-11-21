@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BookFaceApp.Infrastructure.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 using static BookFaceApp.Infrastructure.Data.DataConstants.GroupConstants;
 
 namespace BookFaceApp.Core.Models.Group
@@ -12,6 +13,11 @@ namespace BookFaceApp.Core.Models.Group
         [MaxLength(MaxGroupName)]
         public string Name { get; set; } = null!;
 
-        public string? UserId { get; set; }
+		[Required]
+		public int CategoryId { get; set; }
+
+		public IEnumerable<Category> Categories { get; set; } = new List<Category>();
+
+		public string? UserId { get; set; }
     }
 }
