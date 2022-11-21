@@ -7,128 +7,117 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookFaceApp.Controllers
 {
-    [Authorize]
-    public class CommentController : Controller
-    {
-        private readonly ICommentService commentService;
+	[Authorize]
+	public class CommentController : Controller
+	{
+		private readonly ICommentService commentService;
+		private readonly IPublicationService publicationService;
 
-        public CommentController(
-            ICommentService _commentService)
-        {
-            commentService = _commentService;
-        }
+		public CommentController(
+			ICommentService _commentService,
+			IPublicationService _publicationService)
+		{
+			commentService = _commentService;
+			publicationService = _publicationService;
+		}
 
-        [HttpGet]
-        public IActionResult Add()
-        {
-            var model = new CommentAddModel();
+		[HttpGet]
+		public IActionResult Add()
+		{
+			var model = new CommentAddModel();
 
-            return View(model);
-        }
+			return View(model);
+		}
 
-        [HttpPost]
-        public async Task<IActionResult> Add(CommentAddModel model, int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+		[HttpPost]
+		public async Task<IActionResult> Add(CommentAddModel model, int id)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
 
-            try
-            {
-                var userId = User.Id();
+			if ((await publicationService.ExistsAsync(id)) == false)
+			{
+				TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
 
-                await commentService.AddCommentAsync(model, id, userId!);
+				return RedirectToAction(nameof(ErrorController.InvalidPublication), "Error");
+			}
 
-                return RedirectToAction(nameof(PublicationController.Details), "Publication", new { id });
-            }
-            catch (ArgumentException ae)
-            {
-                if (ae.Message == "Invalid user ID")
-                {
-                    TempData[MessageConstant.ErrorMessage] = "Invalid user ID!";
-                    return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
-                }
+			var userId = User.Id();
 
-                if (ae.Message == "Invalid publication ID")
-                {
-                    TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
-                    return RedirectToAction(nameof(ErrorController.InvalidPublication), "Error");
-                }
+			await commentService.AddCommentAsync(model, id, userId!);
 
-                throw;
-            }
-        }
+			return RedirectToAction(nameof(PublicationController.Details), "Publication", new { id });
+		}
 
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var model = await commentService.GetCommentForEditAsync(id);
+		[HttpGet]
+		public async Task<IActionResult> Edit(int id)
+		{
+			var model = await commentService.GetCommentForEditAsync(id);
 
-            if (model == null)
-            {
-                TempData[MessageConstant.ErrorMessage] = "The comment you are looking for was not found :(";
-                
-                return RedirectToAction(nameof(ErrorController.InvalidPublication), "Error");
-            }
+			if (model == null)
+			{
+				TempData[MessageConstant.ErrorMessage] = "The comment you are looking for was not found :(";
 
-            var userId = User.Id();
+				return RedirectToAction(nameof(ErrorController.InvalidComment), "Error");
+			}
 
-            if (model.UserId != userId)
-            {
-                TempData[MessageConstant.ErrorMessage] = "You need to be the owner in order to perform this action!";
+			var userId = User.Id();
 
-                return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
-            }
+			if (model.UserId != userId)
+			{
+				TempData[MessageConstant.ErrorMessage] = "You need to be the owner in order to perform this action!";
 
-            return View(model);
-        }
+				return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
+			}
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(CommentEditModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+			return View(model);
+		}
 
-            await commentService.EditCommentAsync(model);
+		[HttpPost]
+		public async Task<IActionResult> Edit(CommentEditModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
 
-            int id = model.Publicationid;
+			if ((await commentService.ExistsAsync(model.Id)) == false)
+			{
+				TempData[MessageConstant.ErrorMessage] = "The comment you are looking for was not found :(";
 
-            return RedirectToAction(nameof(PublicationController.Details), "Publication", new { id });
-        }
+				return RedirectToAction(nameof(ErrorController.InvalidComment), "Error");
+			}
 
-        public async Task<IActionResult> Delete(int id)
-        {
-            try
-            {
-                var userId = User.Id();
+			await commentService.EditCommentAsync(model);
 
-                await commentService.DeleteCommentAsync(id, userId!);
-            }
-            catch (ArgumentException ae)
-            {
-                if (ae.Message == "Invalid user ID")
-                {
-                    TempData[MessageConstant.ErrorMessage] = "Invalid user ID!";
-                    return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
-                }
+			int id = model.Publicationid;
 
-                if (ae.Message == "Invalid comment ID")
-                {
-                    TempData[MessageConstant.ErrorMessage] = "The comment you are looking for was not found :(";
-                    return RedirectToAction(nameof(ErrorController.InvalidComment), "Error");
-                }
+			return RedirectToAction(nameof(PublicationController.Details), "Publication", new { id });
+		}
 
-                if (ae.Message == "Invalid owner ID")
-                {
-                    TempData[MessageConstant.ErrorMessage] = "You need to be the owner in order to perform this action!";
-                    return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
-                }
-            }
+		public async Task<IActionResult> Delete(int id)
+		{
+			if ((await commentService.ExistsAsync(id)) == false)
+			{
+				TempData[MessageConstant.ErrorMessage] = "The comment you are looking for was not found :(";
 
-            return RedirectToAction(nameof(PublicationController.All), "Publication");
-        }
-    }
+				return RedirectToAction(nameof(ErrorController.InvalidComment), "Error");
+			}
+
+			var userId = User.Id();
+
+			if (( await commentService.IsOwner(id, userId)) == false)
+			{
+				TempData[MessageConstant.ErrorMessage] = "You need to be the owner in order to perform this action!";
+
+				return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
+			}
+
+			await commentService.DeleteCommentAsync(id, userId!);
+
+			return RedirectToAction(nameof(PublicationController.Details), "Publication", new { id });
+		}
+	}
 }

@@ -76,7 +76,11 @@ namespace BookFaceApp.Controllers
                 if ((await groupService.ExistsByIdAsync(model.GroupId)) != false)
                 {
                     TempData[MessageConstant.ErrorMessage] = "The group, you are trying to add this publication to, does not exist!";
-                }
+
+					model.Categories = await publicationService.GetCategoriesAsync();
+
+					return View(model);
+				}
 
                 var groupCategoryId = await groupService.GetCategoryIdAsync(model.GroupId);
 

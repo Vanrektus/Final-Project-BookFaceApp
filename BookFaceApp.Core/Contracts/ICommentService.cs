@@ -10,6 +10,10 @@ namespace BookFaceApp.Core.Contracts
 
 		Task EditCommentAsync(CommentEditModel model);
 
-		Task DeleteCommentAsync(int publicationId, string userId);
+		Task DeleteCommentAsync(int publicationId);
+
+		Task<bool> ExistsAsync(int commentId);
+
+		Task<bool> IsOwner(int commentId, string userId);
 	}
 }

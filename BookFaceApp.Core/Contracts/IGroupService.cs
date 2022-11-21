@@ -27,8 +27,6 @@ namespace BookFaceApp.Core.Contracts
 
         Task<IEnumerable<string>> GetCategoriesNamesAsync();
 
-        Task AddGroupPublicationAsync(PublicationAddModel model, string userId);
-
         Task<bool> ExistsByIdAsync(int? groupId);
 
         Task<int> GetCategoryIdAsync(int? groupId);

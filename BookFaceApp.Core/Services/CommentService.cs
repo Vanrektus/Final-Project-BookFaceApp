@@ -21,11 +21,6 @@ namespace BookFaceApp.Core.Services
             var user = await repo.All<User>()
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
-            if (user == null)
-            {
-                throw new ArgumentException("Invalid user ID");
-            }
-
             var publication = await repo.All<Publication>()
                 .Where(p => p.Id == publicationId)
                 .Include(p => p.PublicationsComments
@@ -34,19 +29,14 @@ namespace BookFaceApp.Core.Services
                 .ThenInclude(c => c.User)
                 .FirstOrDefaultAsync();
 
-            if (publication == null)
-            {
-                throw new ArgumentException("Invalid publication ID");
-            }
-
-            publication.PublicationsComments.Add(new PublicationComment()
+            publication!.PublicationsComments.Add(new PublicationComment()
             {
                 PublicationId = publication.Id,
                 Publication = publication,
                 Comment = new Comment()
                 {
                     Text = model.Text,
-                    User = user,
+                    User = user!,
                     UserId = userId
                 }
             });
@@ -54,32 +44,12 @@ namespace BookFaceApp.Core.Services
             await repo.SaveChangesAsync();
         }
 
-        public async Task DeleteCommentAsync(int commentId, string userId)
+        public async Task DeleteCommentAsync(int commentId)
         {
-            var user = await repo.All<User>()
-                .Where(u => u.Id == userId)
-                .Include(u => u.UsersPublications)
-                .FirstOrDefaultAsync();
-
-            if (user == null)
-            {
-                throw new ArgumentException("Invalid user ID");
-            }
-
             var comment = await repo.All<Comment>()
                 .FirstOrDefaultAsync(b => b.Id == commentId);
 
-            if (comment == null)
-            {
-                throw new ArgumentException("Invalid comment ID");
-            }
-
-            if (comment.UserId != user.Id)
-            {
-                throw new ArgumentException("Invalid owner ID");
-            }
-
-            comment.IsDeleted = true;
+            comment!.IsDeleted = true;
 
             await repo.SaveChangesAsync();
         }
@@ -88,38 +58,25 @@ namespace BookFaceApp.Core.Services
         {
             var entity = await repo.GetByIdAsync<Comment>(model.Id);
 
-            if (entity == null)
-            {
-                throw new ArgumentException("Invalid comment");
-            }
-
-            entity.Text = model.Text;
+            entity!.Text = model.Text;
 
             await repo.SaveChangesAsync();
         }
 
-        public async Task<CommentEditModel> GetCommentForEditAsync(int commentId)
+		public async Task<bool> ExistsAsync(int commentId)
+			=> await repo.AllReadonly<Comment>()
+				.AnyAsync(g => g.Id == commentId);
+
+		public async Task<CommentEditModel> GetCommentForEditAsync(int commentId)
         {
             var model = await repo.All<Comment>()
                 .Where(c => c.Id == commentId)
                 .Include(c => c.PublicationsComments)
                 .FirstOrDefaultAsync();
 
-            if (model == null)
-            {
-                return null!;
-                //throw new ArgumentException("Invalid publication ID");
-            }
-
-            var publicationId = model.PublicationsComments
+            var publicationId = model!.PublicationsComments
                 .Select(pc => pc.PublicationId)
                 .FirstOrDefault();
-
-            if (publicationId == null)
-            {
-                return null!;
-                //throw new ArgumentException("Invalid publication ID");
-            }
 
             return new CommentEditModel()
             {
@@ -129,5 +86,12 @@ namespace BookFaceApp.Core.Services
                 UserId = model.UserId
             };
         }
-    }
+
+		public async Task<bool> IsOwner(int commentId, string userId)
+		{
+			var comment = await repo.GetByIdAsync<Comment>(commentId);
+
+			return comment.UserId == userId;
+		}
+	}
 }
