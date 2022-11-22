@@ -115,7 +115,7 @@ namespace BookFaceApp.Controllers
 				return RedirectToAction(nameof(ErrorController.NotOwner), "Error");
 			}
 
-			await commentService.DeleteCommentAsync(id, userId!);
+			await commentService.DeleteCommentAsync(id);
 
 			return RedirectToAction(nameof(PublicationController.Details), "Publication", new { id });
 		}
