@@ -95,6 +95,17 @@
 <div class="row">
 	@foreach (var publication in Model.Publications)
 	{
+		@Html.HiddenFor(p => publication.Id)
 		<partial name="_PublicationPartial" model="@publication" />
 	}
 </div>
+
+@*@section Scripts {
+	<script>
+		$('#likeButton').on('click', e => {
+			$.get('/api/statistics', (data) => {
+				$('#totalLikes').text(data.totalLikes + " likes")
+			});
+		});
+	</script>
+}*@

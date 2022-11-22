@@ -3,6 +3,7 @@
 
 
 <div class="card col-4" style="width: 375px; margin: 5px;">
+    @Html.HiddenFor(p => p.Id)
     <a asp-controller="Profile" asp-action="User" asp-route-id="@Model.UserName">
         <h5 class="card-title mt-1">@Model.UserName</h5>
     </a>
@@ -11,7 +12,7 @@
     <div class="card-body">
         <h5 class="card-title mt-1">@Model.Title</h5>
         <h5 class="card-title mt-1">Category: @Model.Category</h5>
-        <h5 class="card-title mt-1">@Model.UsersPublications.Count likes</h5>
+        <h5 class="card-title mt-1" id="totalLikes">@Model.UsersPublications.Count likes</h5>
         <h5 class="card-title mt-1">@Model.PublicationsComments.Count comments</h5>
     </div>
 
@@ -19,16 +20,16 @@
         <div id="pub-like-btn">
             @if (Model.UsersPublications.Any(up => up.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value))
             {
-                <form class="input-group-sm" asp-controller="Publication" asp-action="LikePublication" asp-route-id="@Model.Id">
-                    <button type="submit" class="btn btn-light">
+                <form class="input-group-sm" id="likeButton" asp-controller="Publication" asp-action="LikePublication" asp-route-id="@Model.Id">
+                    <button type="submit" id="likeButton" class="btn btn-light">
                         <img src="/lib/bootstrap-icons/heart-fill.svg" alt="Bootstrap" width="35" height="35">
                     </button>
                 </form>
             }
             else
             {
-                <form class="input-group-sm" asp-controller="Publication" asp-action="LikePublication" asp-route-id="@Model.Id">
-                    <button type="submit" class="btn btn-outline-light">
+                <form class="input-group-sm" id="likeButton" asp-controller="Publication" asp-action="LikePublication" asp-route-id="@Model.Id">
+                    <button type="submit" id="likeButton" class="btn btn-outline-light">
                         <img src="/lib/bootstrap-icons/heart.svg" alt="Bootstrap" width="35" height="35">
                     </button>
                 </form>
@@ -40,5 +41,20 @@
                 <img src="/lib/bootstrap-icons/chat-dots.svg" alt="Bootstrap" width="35" height="35">
             </a>
         </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                <button class="btn btn-primary" id="likeButton">Test button</button>
+            </div>
+        </div>
     </div>
 </div>
+
+@*@section Scripts {
+    <script>
+        $('#likeButton').on('click', e => {
+            $.get('/api/statistics', (data) => {
+                $('#totalLikes').text(data.totalLikes + " likes")
+            });
+        });
+    </script>
+}*@
