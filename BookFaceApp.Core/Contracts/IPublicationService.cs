@@ -36,6 +36,10 @@ namespace BookFaceApp.Core.Contracts
 
         bool PublicationCatMatchesGroupCat(int groupCatId, int publicationCatId);
 
-        Task<bool> IsOwner(int publicationId, string userId);
-    }
+        Task<bool> IsOwnerAsync(int publicationId, string userId);
+
+        Task<bool> IsInGroupAsync(int publicationId);
+
+		Task<int> GetPublicationGroupIdAsync(int publicationId);
+	}
 }

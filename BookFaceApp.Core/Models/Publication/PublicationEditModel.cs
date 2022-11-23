@@ -20,6 +20,8 @@ namespace BookFaceApp.Core.Models.Publication
 
         public IEnumerable<Category> Categories { get; set; } = new List<Category>();
 
+        public int? GroupId { get; set; }
+
         public string? UserId { get; set; }
     }
 }

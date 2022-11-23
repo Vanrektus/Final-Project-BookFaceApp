@@ -116,7 +116,7 @@ namespace BookFaceApp.Core.Services
 				.Include(p => p.Category)
 				.FirstOrDefaultAsync();
 
-			var user = await repo.GetByIdAsync<User>(model.UserId);
+			var user = await repo.GetByIdAsync<User>(model!.UserId);
 
 			return new PublicationViewModel()
 			{
@@ -143,6 +143,7 @@ namespace BookFaceApp.Core.Services
 				UserId = model.UserId,
 				CategoryId = model.CategoryId,
 				Categories = await GetCategoriesAsync(),
+				GroupId= model.GroupId,
 			};
 		}
 
@@ -153,21 +154,16 @@ namespace BookFaceApp.Core.Services
 				.Include(u => u.UsersPublications)
 				.FirstOrDefaultAsync();
 
-			if (user == null)
-			{
-				throw new ArgumentException("Invalid user ID");
-			}
-
 			var publication = await repo.All<Publication>()
 				.FirstOrDefaultAsync(b => b.Id == publicationId);
 
-			if (!user.UsersPublications.Any(up => up.PublicationId == publicationId))
+			if (!(user!.UsersPublications.Any(up => up.PublicationId == publicationId)))
 			{
 				user.UsersPublications.Add(new UserPublication()
 				{
 					UserId = user.Id,
 					User = user,
-					PublicationId = publication.Id,
+					PublicationId = publication!.Id,
 					Publication = publication,
 				});
 			}
@@ -236,7 +232,7 @@ namespace BookFaceApp.Core.Services
 				.ToListAsync();
 
 		public async Task<bool> CategoryExistsAsync(int categoryId)
-			=> await repo.GetByIdAsync<Category>(categoryId) == null ? false : true;
+			=> await repo.GetByIdAsync<Category>(categoryId) != null;
 
 		public bool PublicationCatMatchesGroupCat(int groupCatId, int publicationCatId)
 			=> groupCatId == publicationCatId;
@@ -245,11 +241,34 @@ namespace BookFaceApp.Core.Services
 			=> await repo.AllReadonly<Publication>()
 				.AnyAsync(g => g.Id == publicationId);
 
-		public async Task<bool> IsOwner(int publicationId, string userId)
+		public async Task<bool> IsOwnerAsync(int publicationId, string userId)
 		{
 			var publication = await repo.GetByIdAsync<Publication>(publicationId);
 
 			return publication.UserId == userId;
+		}
+
+		public async Task<bool> IsInGroupAsync(int publicationId)
+		{
+			var publication = await repo.AllReadonly<Publication>()
+				.FirstOrDefaultAsync(p => p.Id == publicationId);
+
+			return publication!.GroupId != null;
+		}
+
+		public async Task<int> GetPublicationGroupIdAsync(int publicationId)
+		{
+			var publication = await repo.AllReadonly<Publication>()
+				.FirstOrDefaultAsync(p => p.Id == publicationId);
+
+			int? groupId = publication!.GroupId;
+
+			if (groupId != null)
+			{
+				return (int)groupId;
+			}
+
+			return 0;
 		}
 	}
 }

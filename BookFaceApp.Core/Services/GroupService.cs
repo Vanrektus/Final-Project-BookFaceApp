@@ -1,6 +1,5 @@
 ﻿using BookFaceApp.Core.Contracts;
 using BookFaceApp.Core.Models.Group;
-using BookFaceApp.Core.Models.Publication;
 using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.Infrastructure.Data.Entities.Relationships;
@@ -153,7 +152,7 @@ namespace BookFaceApp.Core.Services
 				.Include(g => g.Category)
 				.FirstOrDefaultAsync();
 
-			var user = await repo.GetByIdAsync<User>(model.UserId);
+			var user = await repo.GetByIdAsync<User>(model!.UserId);
 
 			return new GroupViewModel()
 			{
@@ -164,15 +163,6 @@ namespace BookFaceApp.Core.Services
 				Publications = model.Publications,
 			};
 		}
-
-		public async Task<IEnumerable<string>> GetCategoriesNamesAsync()
-			=> await repo.AllReadonly<Category>()
-			.Select(c => c.Name)
-			.Distinct()
-			.ToListAsync();
-
-		public async Task<bool> ExistsByIdAsync(int? groupId) 
-			=> await repo.AllReadonly<Group>().AnyAsync(g => g.Id == groupId);
 
 		public async Task<int> GetCategoryIdAsync(int? groupId)
 		{
@@ -186,16 +176,19 @@ namespace BookFaceApp.Core.Services
 			return group.CategoryId;
 		}
 
-		public async Task<bool> CategoryExistsAsync(int categoryId)
-		{
-			return await repo.GetByIdAsync<Category>(categoryId) == null ? false : true;
-		}
+		public async Task<IEnumerable<string>> GetCategoriesNamesAsync()
+			=> await repo.AllReadonly<Category>()
+			.Select(c => c.Name)
+			.Distinct()
+			.ToListAsync();
 
-		public async Task<bool> IsOwner(int groupId, string userId)
-		{
-			var group = await repo.GetByIdAsync<Group>(groupId);
+		public async Task<bool> ExistsByIdAsync(int? groupId)
+			=> await repo.AllReadonly<Group>().AnyAsync(g => g.Id == groupId);
 
-			return group.UserId == userId;
-		}
+		public async Task<bool> CategoryExistsAsync(int categoryId) 
+			=> await repo.GetByIdAsync<Category>(categoryId) != null;
+
+		public async Task<bool> IsOwner(int groupId, string userId) 
+			=> (await repo.GetByIdAsync<Group>(groupId)).UserId == userId;
 	}
 }
