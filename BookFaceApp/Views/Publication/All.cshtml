@@ -104,7 +104,9 @@
 	<script>
 		$('#likeButton').on('click', e => {
 			$.get('/api/statistics', (data) => {
-				$('#totalLikes').text(data.totalLikes + " likes")
+				$('#totalLikes').text(data.totalLikes + " likes");
+				$('#statistics').removeClass('d-none');
+				$('#likeButton').hide();
 			});
 		});
 	</script>

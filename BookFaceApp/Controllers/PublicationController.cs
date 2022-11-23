@@ -3,6 +3,7 @@ using BookFaceApp.Core.Contracts;
 using BookFaceApp.Core.Models.Publication;
 using BookFaceApp.Extensions;
 using BookFaceApp.Models;
+using BookFaceApp.WebApi.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static BookFaceApp.Controllers.Constants.ControllersNamesConstants;

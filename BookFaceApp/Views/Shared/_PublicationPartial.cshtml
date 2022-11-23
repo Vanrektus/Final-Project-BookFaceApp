@@ -41,15 +41,29 @@
                 <img src="/lib/bootstrap-icons/chat-dots.svg" alt="Bootstrap" width="35" height="35">
             </a>
         </div>
+
+        @*<div class="row">
+            <div class="col-12 text-center">
+                <button class="btn btn-primary" id="likeButton">Test button</button>
+            </div>
+        </div>
+
+        <div class="mt-4 p-5 bg-light d-none" id="statistics">
+            <div class="row">
+                <h2 class="col-md-6 text-center" id="totaLikes"></h2>
+            </div>
+        </div>*@
     </div>
 </div>
 
 @*@section Scripts {
-    <script>
-        $('#likeButton').on('click', e => {
-            $.get('/api/statistics', (data) => {
-                $('#totalLikes').text(data.totalLikes + " likes")
+        <script>
+            $('#likeButton').on('click', e => {
+                $.get('/api/statistics', (data) => {
+                    $('#totalLikes').text(data.totalLikes + " likes");
+                    $('#statistics').removeClass('d-none');
+                    $('#likeButton').hide();
+                });
             });
-        });
-    </script>
+        </script>
 }*@
