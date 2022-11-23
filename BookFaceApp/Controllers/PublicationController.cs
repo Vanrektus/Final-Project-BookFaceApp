@@ -211,6 +211,8 @@ namespace BookFaceApp.Controllers
 
             await publicationService.LikePublicationAsync(id, userId!);
 
+            //return RedirectToAction(nameof(StatisticsApiController), "StatisticsApi", new { id });
+
             return RedirectToAction(nameof(All));
 
         }

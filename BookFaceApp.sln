@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFaceApp.Core", "BookFac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookFaceApp.UnitTests", "BookFaceApp.UnitTests\BookFaceApp.UnitTests.csproj", "{9BF7F991-1C3F-4182-8240-C6F10FB6344E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookFaceApp.WebApi", "BookFaceApp.WebApi\BookFaceApp.WebApi.csproj", "{61DDA088-E385-47E7-AB87-8B1FD13B3338}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{9BF7F991-1C3F-4182-8240-C6F10FB6344E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BF7F991-1C3F-4182-8240-C6F10FB6344E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BF7F991-1C3F-4182-8240-C6F10FB6344E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61DDA088-E385-47E7-AB87-8B1FD13B3338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61DDA088-E385-47E7-AB87-8B1FD13B3338}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61DDA088-E385-47E7-AB87-8B1FD13B3338}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61DDA088-E385-47E7-AB87-8B1FD13B3338}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

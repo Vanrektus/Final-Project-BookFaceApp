@@ -22,9 +22,9 @@ namespace BookFaceApp.Core.Services
 				.Include(p => p.UsersPublications)
 				.FirstOrDefaultAsync();
 
-
             return new StatisticsServiceModel
 			{
+				Id = publication.Id,
 				TotalLikes = publication.UsersPublications.Count()
 			};
 		}
