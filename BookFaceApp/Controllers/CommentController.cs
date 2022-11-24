@@ -116,9 +116,11 @@ namespace BookFaceApp.Controllers
 				return RedirectToAction(nameof(ErrorController.NotOwner), ErrorControllerName);
 			}
 
+			var ID = await commentService.GetPublicationIdByCommentIdAsync(id);
+
 			await commentService.DeleteCommentAsync(id);
 
-			return RedirectToAction(nameof(PublicationController.Details), PublicationControllerName, new { id });
+			return RedirectToAction(nameof(PublicationController.Details), PublicationControllerName, new { ID });
 		}
 	}
 }

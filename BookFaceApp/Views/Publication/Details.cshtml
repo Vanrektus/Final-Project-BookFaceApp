@@ -1,64 +1,75 @@
 ﻿@model PublicationViewModel
 
 @{
-	ViewBag.Title = "Publication details";
+    ViewBag.Title = "Publication details";
 }
 
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-<div class="text-center row">
-	<div class="card col-4" style="width: 20rem; ">
-		<div>
-			<h5 class="card-title mt-1">@Model.UserName</h5>
+<div class="row">
+    <div class="card" style="width: 26rem; height: 320rem; margin: 5px;">
+        @Html.HiddenFor(p => p.Id)
+        <a asp-controller="Profile" asp-action="User" asp-route-id="@Model.UserName">
+            <h4 class="card-title mt-1" style="padding-bottom: 20px; padding-top: 5px; padding-left: 5px;">@Model.FirstName @Model.LastName</h4>
+        </a>
+        @if (@Model.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value)
+        {
+            <div style="position: absolute; top: 10px; right: 80px;">
+                <a class="btn btn-outline-info" asp-area="" asp-controller="Publication" asp-action="Edit" asp-route-id="@Model.Id">
+                    <img src="/lib/bootstrap-icons/pencil.svg" alt="Bootstrap" width="30" height="30">
+                </a>
+            </div>
+            <div style="position: absolute; top: 10px; right: 15px;">
+                <a class="btn btn-outline-danger" asp-area="" asp-controller="Publication" asp-action="Delete" asp-route-id="@Model.Id" onclick="return confirm('Are you sure you want to delete this publication?')">
+                    <img src="/lib/bootstrap-icons/x-square.svg" alt="Bootstrap" width="30" height="30">
+                </a>
+            </div>
+        }
+        <img src="@Model.ImageUrl" class="card-img-top" alt="..." style="height: 240px; width: 390px;">
 
-			@if (@Model.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value)
-			{
-				<a class="btn btn-outline-info" asp-area="" asp-controller="Publication" asp-action="Edit" asp-route-id="@Model.Id">
-					<img src="/lib/bootstrap-icons/pencil.svg" alt="Bootstrap" width="35" height="35">
-				</a>
-				<a class="btn btn-outline-danger" asp-area="" asp-controller="Publication" asp-action="Delete" asp-route-id="@Model.Id" onclick="return confirm('Are you sure you want to delete this publication?')">
-					<img src="/lib/bootstrap-icons/x-square.svg" alt="Bootstrap" width="35" height="35">
-				</a>
-			}
-		</div>
+        <div class="card-body">
+            <h4 class="card-title text-center">@Model.Title</h4>
+            <h6 class="card-text text-center">Category: @Model.Category</h6>
+            <hr />
 
-		<img class="card-img-top" style="width: 18rem;"
-			 src="@Model.ImageUrl" alt="Publication Image">
-		<div class="card-body">
-			<h5 class="card-title mt-1">@Model.Title</h5>
-			<h5 class="card-title mt-1">Category: @Model.Category</h5>
-			<hr />
-		</div>
+            @if (Model.PublicationsComments.Count > 0)
+            {
+                @foreach (var comment in Model.PublicationsComments)
+                {
+                    <div class="card-body">
+                        @if (@comment.Comment.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value)
+                        {
+                            <div style="float: right;">
+                            <a class="btn btn-outline-danger" asp-area="" asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.CommentId" onclick="return confirm('Are you sure you want to delete this comment?')">
+                                <img src="/lib/bootstrap-icons/x-square.svg" alt="Bootstrap" width="35" height="35">
+                            </a>
+                            </div>
+                            <div style="float: right; margin-right: 10px;">
+                            <a class="btn btn-outline-info" asp-area="" asp-controller="Comment" asp-action="Edit" asp-route-id="@comment.CommentId">
+                                <img src="/lib/bootstrap-icons/pencil.svg" alt="Bootstrap" width="35" height="35">
+                            </a>
+                            </div>                            
+                        }
+                        <a asp-controller="Profile" asp-action="User" asp-route-id="@comment.Comment.User.UserName">
+                            <h5 class="card-title mt-1">@comment.Comment.User.FirstName @comment.Comment.User.LastName</h5>
+                        </a>
+                        <h5 class="card-title mt-1">@comment.Comment.Text</h5>
+                        
+                        <hr />
+                    </div>
+                }
+            }
+            else
+            {
+                <h5 class="card-title mt-1">No comments yet.</h5>
+            }
 
-		@if (Model.PublicationsComments.Count > 0)
-		{
-			@foreach (var comment in Model.PublicationsComments)
-			{
-				<div class="card-body">
-					<h5 class="card-title mt-1">@comment.Comment.User.UserName</h5>
-					<h5 class="card-title mt-1">@comment.Comment.Text</h5>
-					@if (@comment.Comment.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value)
-					{
-						<a class="btn btn-outline-info" asp-area="" asp-controller="Comment" asp-action="Edit" asp-route-id="@comment.CommentId">
-							<img src="/lib/bootstrap-icons/pencil.svg" alt="Bootstrap" width="35" height="35">
-						</a>
-						<a class="btn btn-outline-danger" asp-area="" asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.CommentId" onclick="return confirm('Are you sure you want to delete this comment?')">
-							<img src="/lib/bootstrap-icons/x-square.svg" alt="Bootstrap" width="35" height="35">
-						</a>
-					}
-					<hr />
-				</div>
-			}
-		}
-		else
-		{
-			<h5 class="card-title mt-1">No comments yet.</h5>
-		}
+            <a class="btn btn-success" asp-area="" asp-controller="Comment" asp-action="Add" asp-route-id="@Model.Id">Add new comment</a>
 
-		<a class="btn btn-success" asp-area="" asp-controller="Comment" asp-action="Add" asp-route-id="@Model.Id">Add new comment</a>
-	</div>
+        </div>
+    </div>
 </div>
 
 <script src="/js/bootstrap.min.js"></script>

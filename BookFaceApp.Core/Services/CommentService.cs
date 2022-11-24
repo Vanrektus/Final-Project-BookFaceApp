@@ -63,7 +63,7 @@ namespace BookFaceApp.Core.Services
             await repo.SaveChangesAsync();
         }
 
-		public async Task<CommentEditModel> GetCommentForEditAsync(int commentId)
+        public async Task<CommentEditModel> GetCommentForEditAsync(int commentId)
         {
             var model = await repo.All<Comment>()
                 .Where(c => c.Id == commentId)
@@ -83,11 +83,24 @@ namespace BookFaceApp.Core.Services
             };
         }
 
-		public async Task<bool> ExistsAsync(int commentId)
-			=> await repo.AllReadonly<Comment>()
-				.AnyAsync(g => g.Id == commentId);
+        public async Task<bool> ExistsAsync(int commentId)
+            => await repo.AllReadonly<Comment>()
+                .AnyAsync(g => g.Id == commentId);
 
-		public async Task<bool> IsOwner(int commentId, string userId) 
+        public async Task<bool> IsOwner(int commentId, string userId)
             => (await repo.GetByIdAsync<Comment>(commentId)).UserId == userId;
-	}
+
+        public async Task<int> GetPublicationIdByCommentIdAsync(int commentId)
+        {
+            var comment = await repo.AllReadonly<Comment>()
+                .Include(c => c.PublicationsComments)
+                .FirstOrDefaultAsync(c => c.Id == commentId);
+
+            int publicationId = comment!.PublicationsComments
+                .FirstOrDefault(pc => pc.CommentId == commentId)!.PublicationId;
+
+            return publicationId;
+        }
+            
+    }
 }

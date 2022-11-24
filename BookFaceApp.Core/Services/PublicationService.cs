@@ -82,7 +82,10 @@ namespace BookFaceApp.Core.Services
 			};
 
 			result.Publications = await publications
-				.Skip((currentPage - 1) * publicationsPerPage)
+    //            .Include(p => p.PublicationsComments)
+    //            .ThenInclude(pc => pc.Comment)
+				//.ThenInclude(c => c.User)
+                .Skip((currentPage - 1) * publicationsPerPage)
 				.Take(publicationsPerPage)
 				.Select(p => new PublicationViewModel()
 				{
@@ -92,6 +95,8 @@ namespace BookFaceApp.Core.Services
 					Category = p.Category.Name,
 					UserId = p.UserId,
 					UserName = p.User.UserName,
+					FirstName = p.User.FirstName,
+					LastName = p.User.LastName,
 					UsersPublications = p.UsersPublications,
 					PublicationsComments = p.PublicationsComments
 				})
@@ -124,6 +129,8 @@ namespace BookFaceApp.Core.Services
 				Title = model.Title,
 				ImageUrl = model.ImageUrl!,
 				UserName = user.UserName,
+				FirstName = user.FirstName,
+				LastName = user.LastName,
 				UserId = model.UserId,
 				Category = model.Category.Name,
 				PublicationsComments = model.PublicationsComments,

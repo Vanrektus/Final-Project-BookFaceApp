@@ -95,7 +95,6 @@
 <div class="row">
 	@foreach (var publication in Model.Publications)
 	{
-		@Html.HiddenFor(p => publication.Id)
 		<partial name="_PublicationPartial" model="@publication" />
 	}
 </div>

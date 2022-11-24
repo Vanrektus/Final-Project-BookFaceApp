@@ -146,7 +146,7 @@ namespace BookFaceApp.Core.Services
 				.Include(g => g.Publications.Where(p => p.IsDeleted == false))
 				.ThenInclude(p => p.UsersPublications)
 				.Include(g => g.Publications.Where(p => p.IsDeleted == false))
-				.ThenInclude(p => p.PublicationsComments)
+				.ThenInclude(p => p.PublicationsComments.Where(pc => pc.Comment.IsDeleted == false))
 				.Include(g => g.Publications.Where(p => p.IsDeleted == false))
 				.ThenInclude(p => p.User)
 				.Include(g => g.Category)
