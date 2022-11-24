@@ -17,12 +17,12 @@
         @if (@Model.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value)
         {
             <div style="position: absolute; top: 10px; right: 80px;">
-                <a class="btn btn-outline-info" asp-area="" asp-controller="Publication" asp-action="Edit" asp-route-id="@Model.Id">
+                <a class="btn btn-primary" asp-area="" asp-controller="Publication" asp-action="Edit" asp-route-id="@Model.Id">
                     <img src="/lib/bootstrap-icons/pencil.svg" alt="Bootstrap" width="30" height="30">
                 </a>
             </div>
             <div style="position: absolute; top: 10px; right: 15px;">
-                <a class="btn btn-outline-danger" asp-area="" asp-controller="Publication" asp-action="Delete" asp-route-id="@Model.Id" onclick="return confirm('Are you sure you want to delete this publication?')">
+                <a class="btn btn-primary" asp-area="" asp-controller="Publication" asp-action="Delete" asp-route-id="@Model.Id" onclick="return confirm('Are you sure you want to delete this publication?')">
                     <img src="/lib/bootstrap-icons/x-square.svg" alt="Bootstrap" width="30" height="30">
                 </a>
             </div>
@@ -42,12 +42,12 @@
                         @if (@comment.Comment.UserId == User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value)
                         {
                             <div style="float: right;">
-                            <a class="btn btn-outline-danger" asp-area="" asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.CommentId" onclick="return confirm('Are you sure you want to delete this comment?')">
+                                <a class="btn btn-primary" asp-area="" asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.CommentId" onclick="return confirm('Are you sure you want to delete this comment?')">
                                 <img src="/lib/bootstrap-icons/x-square.svg" alt="Bootstrap" width="35" height="35">
                             </a>
                             </div>
                             <div style="float: right; margin-right: 10px;">
-                            <a class="btn btn-outline-info" asp-area="" asp-controller="Comment" asp-action="Edit" asp-route-id="@comment.CommentId">
+                            <a class="btn btn-primary" asp-area="" asp-controller="Comment" asp-action="Edit" asp-route-id="@comment.CommentId">
                                 <img src="/lib/bootstrap-icons/pencil.svg" alt="Bootstrap" width="35" height="35">
                             </a>
                             </div>                            
@@ -66,7 +66,7 @@
                 <h5 class="card-title mt-1">No comments yet.</h5>
             }
 
-            <a class="btn btn-success" asp-area="" asp-controller="Comment" asp-action="Add" asp-route-id="@Model.Id">Add new comment</a>
+            <a class="btn btn-primary" asp-area="" asp-controller="Comment" asp-action="Add" asp-route-id="@Model.Id">Add new comment</a>
 
         </div>
     </div>
