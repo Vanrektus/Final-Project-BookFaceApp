@@ -37,10 +37,10 @@
             }
         </div>
         <div id="pub-det-btn">
-            <form class="input-group-sm" asp-controller="Publication" asp-action="Details" asp-route-id="@Model.Id" method="get">
-                <button type="submit" class="btn btn-primary">
+            <form method="get" class="input-group-sm" asp-controller="Publication" asp-action="Details" asp-route-id="@Model.Id" asp-route-information="@Model.GetInformation()">
+                <a class="btn btn-primary" asp-controller="Publication" asp-action="Details" asp-route-id="@Model.Id" asp-route-information="@Model.GetInformation()">
                     <img src="/lib/bootstrap-icons/chat-dots.svg" alt="Bootstrap" width="35" height="35">
-                </button>
+                </a>
             </form>
         </div>
 

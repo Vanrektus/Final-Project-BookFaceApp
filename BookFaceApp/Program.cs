@@ -3,6 +3,7 @@ using BookFaceApp.Infrastructure.Data;
 using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.ModelBinders;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static BookFaceApp.Infrastructure.Data.DataConstants.UserConstants;
 
@@ -34,10 +35,21 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
     {
+        options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
         options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
     });
 
 builder.Services.AddApplicationServices();
+builder.Services.AddResponseCaching();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("all", opt =>
+    {
+        opt.AllowAnyOrigin();
+        opt.AllowAnyMethod();
+    });
+});
 
 builder.Services.AddAuthorization(options =>
 {
@@ -74,6 +86,7 @@ app.Use((context, next) =>
     return next();
 });
 
+app.UseCors("all");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -82,9 +95,28 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+      name: "default",
+      pattern: "{controller=Home}/{action=Index}/{id?}"
+    );
+
+    endpoints.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+
+    endpoints.MapControllerRoute(
+      name: "publicationDetails",
+      pattern: "Publication/Details/{id}/{information}",
+      defaults: new { controller = "Publication", action = "Details" }
+    );
+
+    endpoints.MapDefaultControllerRoute();
+    endpoints.MapRazorPages();
+});
+
+app.UseResponseCaching();
 
 app.Run();

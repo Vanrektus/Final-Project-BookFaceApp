@@ -1,8 +1,9 @@
-﻿using BookFaceApp.Infrastructure.Data.Entities.Relationships;
+﻿using BookFaceApp.Core.Contracts;
+using BookFaceApp.Infrastructure.Data.Entities.Relationships;
 
 namespace BookFaceApp.Core.Models.Publication
 {
-    public class PublicationViewModel
+    public class PublicationViewModel : IPublicationModel
     {
         public int Id { get; init; }
 

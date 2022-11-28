@@ -1,5 +1,6 @@
 ﻿using BookFaceApp.Core.Constants;
 using BookFaceApp.Core.Contracts;
+using BookFaceApp.Core.Extensions;
 using BookFaceApp.Core.Models.Publication;
 using BookFaceApp.Extensions;
 using BookFaceApp.Models;
@@ -112,9 +113,9 @@ namespace BookFaceApp.Controllers
 
             return RedirectToAction(nameof(All));
         }
-
+         
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, string information)
         {
 			if ((await publicationService.ExistsAsync(id)) == false)
 			{
@@ -124,6 +125,13 @@ namespace BookFaceApp.Controllers
 			}
 
 			var model = await publicationService.GetOnePublicationAsync(id);
+
+            if (information != model.GetInformation())
+            {
+                TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
+
+                return RedirectToAction(nameof(ErrorController.InvalidPublication), ErrorControllerName);
+            }
 
             return View(model);
         }
@@ -194,7 +202,7 @@ namespace BookFaceApp.Controllers
 
 			await publicationService.EditPublicationAsync(model);
 
-            return RedirectToAction(nameof(Details), new { model.Id });
+            return RedirectToAction(nameof(Details), new { id = model.Id, information = model.GetInformation() });
         }
 
         [HttpPost]

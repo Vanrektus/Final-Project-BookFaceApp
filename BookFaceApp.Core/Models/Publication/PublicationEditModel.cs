@@ -1,10 +1,11 @@
-﻿using BookFaceApp.Infrastructure.Data.Entities;
+﻿using BookFaceApp.Core.Contracts;
+using BookFaceApp.Infrastructure.Data.Entities;
 using System.ComponentModel.DataAnnotations;
 using static BookFaceApp.Infrastructure.Data.DataConstants.PublicationConstants;
 
 namespace BookFaceApp.Core.Models.Publication
 {
-    public class PublicationEditModel
+    public class PublicationEditModel : IPublicationModel
     {
         [Required]
         public int Id { get; set; }
