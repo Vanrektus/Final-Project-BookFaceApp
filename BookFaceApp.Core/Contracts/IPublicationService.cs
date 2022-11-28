@@ -5,7 +5,7 @@ namespace BookFaceApp.Core.Contracts
 {
     public interface IPublicationService
     {
-        Task AddPublicationAsync(PublicationAddModel model, string userId);
+        Task<int> AddPublicationAsync(PublicationAddModel model, string userId);
 
         Task<PublicationQueryModel> GetAllPublicationsAsync(
             string? category = null,

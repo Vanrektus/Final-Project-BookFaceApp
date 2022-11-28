@@ -16,7 +16,7 @@ namespace BookFaceApp.Core.Services
 			repo = _repo;
 		}
 
-		public async Task AddPublicationAsync(PublicationAddModel model, string userId)
+		public async Task<int> AddPublicationAsync(PublicationAddModel model, string userId)
 		{
 			var entity = new Publication()
 			{
@@ -33,6 +33,8 @@ namespace BookFaceApp.Core.Services
 
 			await repo.AddAsync<Publication>(entity);
 			await repo.SaveChangesAsync();
+
+			return entity.Id;
 		}
 
 		public async Task EditPublicationAsync(PublicationEditModel model)
@@ -56,6 +58,7 @@ namespace BookFaceApp.Core.Services
 			var result = new PublicationQueryModel();
 
 			var publications = repo.AllReadonly<Publication>()
+				.Where(p => p.IsDeleted == false)
 				.Where(p => p.GroupId == null);
 
 			if (!string.IsNullOrEmpty(category))

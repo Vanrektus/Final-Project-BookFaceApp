@@ -109,7 +109,7 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapControllerRoute(
       name: "publicationDetails",
-      pattern: "Publication/Details/{id}/{information}",
+      pattern: "Publication/Details/{id}/{information?}",
       defaults: new { controller = "Publication", action = "Details" }
     );
 

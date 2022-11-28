@@ -102,16 +102,16 @@ namespace BookFaceApp.Controllers
 
             var userId = User.Id();
 
-            await publicationService.AddPublicationAsync(model, userId!);
+            int id = await publicationService.AddPublicationAsync(model, userId!);
 
             if (model.GroupId != null)
             {
-                int? id = model.GroupId;
+                int? ID = model.GroupId;
 
-                return RedirectToAction(nameof(GroupController.Details), GroupControllerName, new { id });
+                return RedirectToAction(nameof(GroupController.Details), GroupControllerName, new { ID });
             }
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Details), new { id = id, information = model.GetInformation() });
         }
          
         [HttpGet]
@@ -126,7 +126,7 @@ namespace BookFaceApp.Controllers
 
 			var model = await publicationService.GetOnePublicationAsync(id);
 
-            if (information != model.GetInformation())
+            if (information != null && information != model.GetInformation())
             {
                 TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
 
