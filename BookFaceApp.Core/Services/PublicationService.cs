@@ -205,7 +205,7 @@ namespace BookFaceApp.Core.Services
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<PublicationViewModel>> GetTop3PublicationsAsync()
+        public async Task<IEnumerable<PublicationViewModel>> GetRandomPublications()
         {
             var entities = await repo.AllReadonly<Publication>()
                 .Where(p => p.IsDeleted == false)

@@ -14,7 +14,7 @@ namespace BookFaceApp.Core.Contracts
             int currentPage = 1,
             int publicationsPerPage = 1);
 
-        Task<IEnumerable<PublicationViewModel>> GetTop3PublicationsAsync();
+        Task<IEnumerable<PublicationViewModel>> GetRandomPublications();
 
         Task<PublicationViewModel> GetOnePublicationAsync(int publicationId);
 
