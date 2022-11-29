@@ -127,5 +127,22 @@ namespace BookFaceApp.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var role = await roleManager.FindByIdAsync(id);
+
+            if (role == null)
+            {
+                TempData[MessageConstant.ErrorMessage] = "The role you are looking for was not found :(";
+
+                return RedirectToAction(nameof(ErrorController.InvalidRole), ErrorControllerName);
+            }
+
+            await roleManager.DeleteAsync(role);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
