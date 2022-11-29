@@ -24,7 +24,6 @@ namespace BookFaceApp.Controllers
             groupService = _groupService;
         }
 
-        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> All([FromQuery] AllPublicationsQueryModel query)
         {

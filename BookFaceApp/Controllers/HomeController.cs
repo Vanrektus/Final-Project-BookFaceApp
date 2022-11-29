@@ -19,10 +19,10 @@ namespace BookFaceApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            if (User.Id() != null)
-            {
-                return RedirectToAction(nameof(PublicationController.All), "Publication");
-            }
+            //if (User.Id() != null)
+            //{
+            //    return RedirectToAction(nameof(PublicationController.All), "Publication");
+            //}
 
             var model = await publicationService.GetTop3PublicationsAsync();
 
