@@ -1,5 +1,4 @@
 ﻿using BookFaceApp.Core.Models.User;
-using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,19 +11,13 @@ namespace BookFaceApp.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
-        private readonly RoleManager<IdentityRole> roleManager;
-        private readonly IRepository repo;
 
         public UserController(
             UserManager<User> _userManager,
-            SignInManager<User> _signInManager,
-            RoleManager<IdentityRole> _roleManager,
-            IRepository _repo)
+            SignInManager<User> _signInManager)
         {
             userManager = _userManager;
             signInManager = _signInManager;
-            roleManager = _roleManager;
-            repo = _repo;
         }
 
         [HttpGet]
@@ -165,28 +158,6 @@ namespace BookFaceApp.Controllers
             {
                 return RedirectToAction("Register");
             }
-        }
-
-        [AllowAnonymous]
-        public async Task<IActionResult> ManageRoles()
-        {
-            //await roleManager.CreateAsync(new IdentityRole()
-            //{
-            //    Name = "Administrator"
-            //});
-
-            //var getRole = await roleManager.FindByNameAsync("roleName");
-
-            //if (getRole != null)
-            //{
-            //    await roleManager.DeleteAsync(getRole);
-            //}
-
-            var user = await repo.GetByIdAsync<User>("dea12856-c198-4129-b3f3-b893d8395082");
-
-            await userManager.AddToRoleAsync(user, "Administrator");
-
-            return Ok();
         }
     }
 }
