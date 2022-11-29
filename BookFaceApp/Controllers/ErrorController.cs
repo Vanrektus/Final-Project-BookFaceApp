@@ -30,5 +30,15 @@ namespace BookFaceApp.Controllers
         {
             return View();
         }
+
+        public IActionResult CreationError()
+        {
+            return View();
+        }
+
+        public IActionResult InvalidRole()
+        {
+            return View();
+        }
     }
 }

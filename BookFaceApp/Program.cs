@@ -55,8 +55,8 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", policy =>
     {
-        policy.RequireRole("Admin");
-        policy.RequireClaim("AdminNumber", "123");
+        policy.RequireRole("Administrator");
+        //policy.RequireClaim("AdminNumber", "123");
     });
 });
 
