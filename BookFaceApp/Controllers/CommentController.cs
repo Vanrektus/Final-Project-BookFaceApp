@@ -4,7 +4,6 @@ using BookFaceApp.Core.Models.Comment;
 using BookFaceApp.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static BookFaceApp.Controllers.Constants.ControllersConstants;
 using static BookFaceApp.Controllers.Constants.ControllersConstants.ControllersNamesConstants;
 using static BookFaceApp.Controllers.Constants.ControllersConstants.RolesNamesConstants;
 
@@ -69,7 +68,7 @@ namespace BookFaceApp.Controllers
 			var userId = User.Id();
 
 			if ((await commentService.IsOwnerAsync(model.Id, userId)) == false 
-				&& User.IsInRole(RolesNamesConstants.Admin) == false
+				&& User.IsInRole(Admin) == false
 				&& (await publicationService.IsOwnerAsync(model.Publicationid, userId)) == false)
 			{
 				TempData[MessageConstant.ErrorMessage] = "You need to be the owner in order to perform this action!";
@@ -111,10 +110,12 @@ namespace BookFaceApp.Controllers
 				return RedirectToAction(nameof(ErrorController.InvalidComment), ErrorControllerName);
 			}
 
+			var publicationId = await commentService.GetPublicationIdByCommentIdAsync(id);
 			var userId = User.Id();
 
-			if (( await commentService.IsOwnerAsync(id, userId)) == false
-				&& User.IsInRole(RolesNamesConstants.Admin) == false)
+            if ((await commentService.IsOwnerAsync(id, userId)) == false 
+				&& (await publicationService.IsOwnerAsync(publicationId, userId)) == false
+				&& User.IsInRole(Admin) == false)
 			{
 				TempData[MessageConstant.ErrorMessage] = "You need to be the owner in order to perform this action!";
 

@@ -32,7 +32,7 @@ namespace BookFaceApp.Core.Services
             {
                 entity.GroupId = model.GroupId;
             }
-            
+
             await repo.AddAsync<Publication>(entity);
             await repo.SaveChangesAsync();
 
@@ -87,9 +87,9 @@ namespace BookFaceApp.Core.Services
             };
 
             result.Publications = await publications
-                //            .Include(p => p.PublicationsComments)
-                //            .ThenInclude(pc => pc.Comment)
-                //.ThenInclude(c => c.User)
+                .Include(p => p.PublicationsComments.Where(pc => pc.Comment.IsDeleted == false))
+                .ThenInclude(pc => pc.Comment)
+                .ThenInclude(c => c.User)
                 .Skip((currentPage - 1) * publicationsPerPage)
                 .Take(publicationsPerPage)
                 .Select(p => new PublicationViewModel()
@@ -137,7 +137,7 @@ namespace BookFaceApp.Core.Services
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 UserId = model.UserId,
-                GroupId= model.GroupId,
+                GroupId = model.GroupId,
                 Category = model.Category.Name,
                 PublicationsComments = model.PublicationsComments,
                 UsersPublications = model.UsersPublications
