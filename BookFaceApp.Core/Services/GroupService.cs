@@ -134,7 +134,9 @@ namespace BookFaceApp.Core.Services
 			{
 				Id = model.Id,
 				Name = model.Name,
-				UserId = model.UserId
+				UserId = model.UserId,
+				CategoryId = model.CategoryId,
+				Categories = await GetCategoriesAsync()
 			};
 		}
 
@@ -149,6 +151,8 @@ namespace BookFaceApp.Core.Services
 				.ThenInclude(p => p.PublicationsComments.Where(pc => pc.Comment.IsDeleted == false))
 				.Include(g => g.Publications.Where(p => p.IsDeleted == false))
 				.ThenInclude(p => p.User)
+				.Include(g => g.Publications.Where(p => p.IsDeleted == false))
+				.ThenInclude(p => p.Category)
 				.Include(g => g.Category)
 				.FirstOrDefaultAsync();
 

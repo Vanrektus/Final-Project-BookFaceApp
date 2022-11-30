@@ -32,7 +32,7 @@ namespace BookFaceApp.Core.Services
             {
                 entity.GroupId = model.GroupId;
             }
-
+            
             await repo.AddAsync<Publication>(entity);
             await repo.SaveChangesAsync();
 
