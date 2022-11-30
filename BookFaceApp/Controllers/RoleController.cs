@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using static BookFaceApp.Controllers.Constants.ControllersNamesConstants;
+using static BookFaceApp.Controllers.Constants.ControllersConstants.ControllersNamesConstants;
 
 namespace BookFaceApp.Controllers
 {

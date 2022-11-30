@@ -192,7 +192,7 @@ namespace BookFaceApp.Core.Services
 		public async Task<bool> CategoryExistsAsync(int categoryId) 
 			=> await repo.GetByIdAsync<Category>(categoryId) != null;
 
-		public async Task<bool> IsOwner(int groupId, string userId) 
+		public async Task<bool> IsOwnerAsync(int groupId, string userId) 
 			=> (await repo.GetByIdAsync<Group>(groupId)).UserId == userId;
 	}
 }

@@ -5,7 +5,9 @@ using BookFaceApp.Extensions;
 using BookFaceApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static BookFaceApp.Controllers.Constants.ControllersNamesConstants;
+using static BookFaceApp.Controllers.Constants.ControllersConstants;
+using static BookFaceApp.Controllers.Constants.ControllersConstants.ControllersNamesConstants;
+using static BookFaceApp.Controllers.Constants.ControllersConstants.RolesNamesConstants;
 
 namespace BookFaceApp.Controllers
 {
@@ -104,7 +106,8 @@ namespace BookFaceApp.Controllers
 
             var userId = User.Id();
 
-			if ((await groupService.IsOwner(id, userId)) == false)
+			if ((await groupService.IsOwnerAsync(id, userId)) == false
+                && User.IsInRole(RolesNamesConstants.Admin) == false)
 			{
 				TempData[MessageConstant.ErrorMessage] = "You must be the owner in order to perform this action!";
 
@@ -156,7 +159,8 @@ namespace BookFaceApp.Controllers
 
 			var userId = User.Id();
 
-			if ((await groupService.IsOwner(id, userId)) == false)
+			if ((await groupService.IsOwnerAsync(id, userId)) == false
+                && User.IsInRole(RolesNamesConstants.Admin) == false)
 			{
 				TempData[MessageConstant.ErrorMessage] = "You must be the owner in order to perform this action!";
 

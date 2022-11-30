@@ -87,7 +87,7 @@ namespace BookFaceApp.Core.Services
             => await repo.AllReadonly<Comment>()
                 .AnyAsync(g => g.Id == commentId);
 
-        public async Task<bool> IsOwner(int commentId, string userId)
+        public async Task<bool> IsOwnerAsync(int commentId, string userId)
             => (await repo.GetByIdAsync<Comment>(commentId)).UserId == userId;
 
         public async Task<int> GetPublicationIdByCommentIdAsync(int commentId)
@@ -101,6 +101,5 @@ namespace BookFaceApp.Core.Services
 
             return publicationId;
         }
-            
     }
 }

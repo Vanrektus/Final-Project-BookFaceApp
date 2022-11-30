@@ -33,6 +33,6 @@ namespace BookFaceApp.Core.Contracts
         
         Task<bool> CategoryExistsAsync(int categoryId);
 
-		Task<bool> IsOwner(int groupId, string userId);
+		Task<bool> IsOwnerAsync(int groupId, string userId);
 	}
 }

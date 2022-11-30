@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static BookFaceApp.Infrastructure.Data.DataConstants.UserConstants;
+using static BookFaceApp.Controllers.Constants.ControllersConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,7 +56,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", policy =>
     {
-        policy.RequireRole("Administrator");
+        policy.RequireRole(RolesNamesConstants.Admin);
         //policy.RequireClaim("AdminNumber", "123");
     });
 });

@@ -14,7 +14,7 @@ namespace BookFaceApp.Core.Contracts
 
 		Task<bool> ExistsAsync(int commentId);
 
-		Task<bool> IsOwner(int commentId, string userId);
+		Task<bool> IsOwnerAsync(int commentId, string userId);
 
 		Task<int> GetPublicationIdByCommentIdAsync(int commentId);
 

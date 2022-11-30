@@ -137,6 +137,7 @@ namespace BookFaceApp.Core.Services
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 UserId = model.UserId,
+                GroupId= model.GroupId,
                 Category = model.Category.Name,
                 PublicationsComments = model.PublicationsComments,
                 UsersPublications = model.UsersPublications
