@@ -60,7 +60,6 @@ namespace BookFaceApp.Core.Services
             var result = new PublicationQueryModel();
 
             var publications = repo.AllReadonly<Publication>()
-                .Include(p => p.PublicationsComments.Where(pc => pc.Comment.IsDeleted == false))
                 .Where(p => p.IsDeleted == false)
                 .Where(p => p.GroupId == null);
 
@@ -88,9 +87,6 @@ namespace BookFaceApp.Core.Services
             };
 
             result.Publications = await publications
-                .Include(p => p.PublicationsComments.Where(pc => pc.Comment.IsDeleted == false))
-                .ThenInclude(pc => pc.Comment)
-                .ThenInclude(c => c.User)
                 .Skip((currentPage - 1) * publicationsPerPage)
                 .Take(publicationsPerPage)
                 .Select(p => new PublicationViewModel()
@@ -104,7 +100,7 @@ namespace BookFaceApp.Core.Services
                     FirstName = p.User.FirstName,
                     LastName = p.User.LastName,
                     UsersPublications = p.UsersPublications,
-                    PublicationsComments = p.PublicationsComments
+                    PublicationsComments = p.PublicationsComments.Where(pc => pc.Comment.IsDeleted == false).ToList(),
                 })
                 .ToListAsync();
 
