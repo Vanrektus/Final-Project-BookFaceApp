@@ -100,7 +100,7 @@ namespace BookFaceApp.Core.Services
                     FirstName = p.User.FirstName,
                     LastName = p.User.LastName,
                     UsersPublications = p.UsersPublications,
-                    PublicationsComments = p.PublicationsComments.Where(pc => pc.Comment.IsDeleted == false).ToList(),
+                    PublicationsComments = p.PublicationsComments//.Where(pc => pc.Comment.IsDeleted == false).ToList(),
                 })
                 .ToListAsync();
 

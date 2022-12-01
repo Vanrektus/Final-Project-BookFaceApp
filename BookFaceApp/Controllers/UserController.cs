@@ -1,8 +1,11 @@
-﻿using BookFaceApp.Core.Models.User;
+﻿using BookFaceApp.Areas.Admin.Controllers;
+using BookFaceApp.Core.Models.User;
 using BookFaceApp.Infrastructure.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static BookFaceApp.Controllers.Constants.ControllersConstants.ControllersNamesConstants;
+using static BookFaceApp.Controllers.Constants.ControllersConstants.RolesNamesConstants;
 
 namespace BookFaceApp.Controllers
 {
@@ -55,7 +58,7 @@ namespace BookFaceApp.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction(nameof(UserController.Login), "User");
+                return RedirectToAction(nameof(UserController.Login));
             }
 
             foreach (var error in result.Errors)
@@ -72,7 +75,7 @@ namespace BookFaceApp.Controllers
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
-                return RedirectToAction(nameof(PublicationController.All), "Publication");
+                return RedirectToAction(nameof(PublicationController.All), PublicationControllerName);
             }
 
             var model = new LoginViewModel();
@@ -99,7 +102,12 @@ namespace BookFaceApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                    if (await userManager.IsInRoleAsync(user, Admin))
+                    {
+                        return RedirectToAction(nameof(AdminController.Index), AdminControllerName, new { area = "Admin" });
+                    }
+
+                    return RedirectToAction(nameof(HomeController.Index), HomeControllerName);
                 }
             }
 
@@ -112,7 +120,7 @@ namespace BookFaceApp.Controllers
         {
             await signInManager.SignOutAsync();
 
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(HomeController.Index), HomeControllerName);
         }
 
         [HttpPost]

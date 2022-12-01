@@ -31,6 +31,7 @@ builder.Services.AddDefaultIdentity<User>(options =>
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/User/Login";
+    //options.AccessDeniedPath = "/Error/Forbidden";
 });
 
 builder.Services.AddControllersWithViews()
