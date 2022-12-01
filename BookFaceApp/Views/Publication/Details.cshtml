@@ -11,6 +11,15 @@
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
+@if (Model.GroupId != null)
+{
+    <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.GroupId" class="btn btn-primary">Back</a>
+}
+else
+{
+    <a asp-controller="Publication" asp-action="All" class="btn btn-primary">Back</a>
+}
+
 <div class="row">
     <div class="card" style="width: 26rem; height: 320rem; margin: 5px;">
         @Html.HiddenFor(p => p.Id)
