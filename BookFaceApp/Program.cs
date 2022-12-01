@@ -5,8 +5,8 @@ using BookFaceApp.ModelBinders;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static BookFaceApp.Infrastructure.Data.DataConstants.UserConstants;
 using static BookFaceApp.Controllers.Constants.ControllersConstants;
+using static BookFaceApp.Infrastructure.Data.DataConstants.UserConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -101,11 +101,6 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
       name: "default",
-      pattern: "{controller=Home}/{action=Index}/{id?}"
-    );
-
-    endpoints.MapControllerRoute(
-      name: "areas",
       pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
     );
 

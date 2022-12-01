@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
-namespace BookFaceApp.CustomTagHelpers
+namespace BookFaceApp.Areas.Admin.CustomTagHelpers
 {
     [HtmlTargetElement("td", Attributes = "i-role")]
     public class RoleUserTagHelper : TagHelper
     {
-        private UserManager<User> userManager;
-        private RoleManager<IdentityRole> roleManager;
+        private readonly UserManager<User> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
         public RoleUserTagHelper(UserManager<User> _userManager, RoleManager<IdentityRole> _roleManager)
         {
