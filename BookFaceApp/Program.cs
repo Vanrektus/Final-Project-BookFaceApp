@@ -5,8 +5,8 @@ using BookFaceApp.ModelBinders;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static BookFaceApp.Controllers.Constants.ControllersConstants;
 using static BookFaceApp.Infrastructure.Data.DataConstants.UserConstants;
+using static BookFaceApp.Controllers.Constants.ControllersConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +31,7 @@ builder.Services.AddDefaultIdentity<User>(options =>
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/User/Login";
+    options.LogoutPath = "/User/Logout";
     //options.AccessDeniedPath = "/Error/Forbidden";
 });
 
@@ -101,6 +102,11 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
       name: "default",
+      pattern: "{controller=Home}/{action=Index}/{id?}"
+    );
+
+    endpoints.MapControllerRoute(
+      name: "areas",
       pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
     );
 

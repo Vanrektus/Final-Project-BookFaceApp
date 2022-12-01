@@ -34,13 +34,13 @@ namespace BookFaceApp.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult Create()
+		public IActionResult Add()
 		{
 			return View();
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Create([Required] string name)
+		public async Task<IActionResult> Add([Required] string name)
 		{
 			if (!ModelState.IsValid)
 			{
