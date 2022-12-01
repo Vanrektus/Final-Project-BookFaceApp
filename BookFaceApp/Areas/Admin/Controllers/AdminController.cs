@@ -23,12 +23,14 @@ namespace BookFaceApp.Areas.Admin.Controllers
 			userManager = _userManager;
 		}
 
-		public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index()
         {
             return View();
         }
 
-		public IActionResult Roles()
+        [HttpGet]
+        public IActionResult Roles()
 		{
 			return View(roleManager.Roles);
 		}
