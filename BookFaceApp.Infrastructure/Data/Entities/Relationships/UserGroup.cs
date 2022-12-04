@@ -16,5 +16,8 @@ namespace BookFaceApp.Infrastructure.Data.Entities.Relationships
 
         [ForeignKey(nameof(GroupId))]
         public Group Group { get; set; } = null!;
+
+        [Required]
+        public bool IsAccepted { get; set; } = false;
     }
 }

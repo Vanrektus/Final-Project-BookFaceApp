@@ -19,5 +19,24 @@
         <h5 class="card-title mt-1">Owner: @Model.Owner.FirstName @Model.Owner.LastName</h5>
         <h5 class="card-title mt-1">@Model.UsersGroups.Count members</h5>
         <h5 class="card-title mt-1">@Model.Publications.Count publications</h5>
+        @if (await grpService.IsUserInGroup(Model.Id, User.Id()))
+        {
+            <form asp-controller="Group" asp-action="Leave" asp-route-id="@Model.Id">
+                <button type="submit" class="btn btn-primary">Leave group</button>
+            </form>
+        }
+        else
+        {
+            @if (await grpService.IsUserRequested(Model.Id, User.Id()))
+            {
+                <button class="btn btn-primary" disabled>Requested</button>
+            }
+            else
+            {
+                <form asp-controller="Group" asp-action="RequestJoin" asp-route-id="@Model.Id">
+                    <button type="submit" class="btn btn-primary">Request to join</button>
+                </form>
+            }
+        }
     </div>
 </div>

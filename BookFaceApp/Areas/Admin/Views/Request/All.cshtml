@@ -1,0 +1,29 @@
+﻿@model IEnumerable<UserGroup>
+@{
+    ViewBag.Title = "All Unaccepted Users";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<table class="table table-sm table-bordered table-bordered">
+    <tr><th>Group Name</th><th>Reqeusted Person Username</th><th>Requested Person Full Name</th><th>Accept</th><th>Deny</th></tr>
+    @foreach (var userGroup in Model)
+    {
+        <tr>
+            <td>@userGroup.Group.Name</td>
+            <td>@userGroup.User.UserName</td>
+            <td>@userGroup.User.FirstName @userGroup.User.LastName</td>
+            <td>
+                <form asp-area="Admin" asp-controller="Request" asp-action="Accept" asp-route-groupId="@userGroup.GroupId" asp-route-userId="@userGroup.UserId">
+                    <button type="submit" class="btn btn-primary">Accept</button>
+                </form>
+            </td>
+            <td>
+                <form asp-area="Admin" asp-controller="Request" asp-action="Deny" asp-route-groupId="@userGroup.GroupId" asp-route-userId="@userGroup.UserId">
+                    <button type="submit" class="btn btn-primary">Deny</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>

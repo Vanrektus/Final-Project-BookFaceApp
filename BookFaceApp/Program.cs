@@ -117,6 +117,12 @@ app.UseEndpoints(endpoints =>
       defaults: new { controller = "Publication", action = "Details" }
     );
 
+    endpoints.MapControllerRoute(
+     name: "userGroup",
+     pattern: "Admin/Request/Accept/{groupId}/{userId}",
+     defaults: new { area = "Admin", controller = "Request", action = "Accept" }
+   );
+
     endpoints.MapDefaultControllerRoute();
     endpoints.MapRazorPages();
 });

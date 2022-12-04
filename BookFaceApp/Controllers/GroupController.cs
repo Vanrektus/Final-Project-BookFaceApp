@@ -86,6 +86,15 @@ namespace BookFaceApp.Controllers
 				return RedirectToAction(nameof(ErrorController.InvalidGroup), ErrorControllerName);
 			}
 
+			var userId = User.Id();
+
+			if ((await groupService.IsUserInGroup(id, userId)) == false)
+            {
+                TempData[MessageConstant.ErrorMessage] = "You must be in the group in order to see its publications :(";
+
+                return RedirectToAction(nameof(ErrorController.NotInGroup), ErrorControllerName);
+            }
+
 			var model = await groupService.GetOneGroupAsync(id);
 
 			return View(model);
@@ -170,5 +179,25 @@ namespace BookFaceApp.Controllers
 
 			return RedirectToAction(nameof(All));
 		}
-	}
+
+        [HttpPost]
+        public async Task<IActionResult> RequestJoin(int id)
+        {
+            var userId = User.Id();
+
+            await groupService.RequestToJoin(id, userId);
+
+            return RedirectToAction(nameof(All));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Leave(int id)
+        {
+            var userId = User.Id();
+
+            await groupService.RemoveUserFromGroup(id, userId);
+
+            return RedirectToAction(nameof(All));
+        }
+    }
 }

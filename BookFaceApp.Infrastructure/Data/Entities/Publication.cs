@@ -19,7 +19,7 @@ namespace BookFaceApp.Infrastructure.Data.Entities
 		[Required]
         public bool IsDeleted { get; set; } = false;
 
-		[Required]
+        [Required]
         public string UserId { get; set; } = null!;
 
         [ForeignKey(nameof(UserId))]

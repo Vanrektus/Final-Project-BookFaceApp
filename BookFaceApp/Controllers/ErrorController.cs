@@ -40,6 +40,10 @@ namespace BookFaceApp.Controllers
         {
             return View();
         }
+        public IActionResult NotInGroup()
+        {
+            return View();
+        }
 
         public IActionResult SomethingWentWrong()
         {

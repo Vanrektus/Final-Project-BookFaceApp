@@ -1,6 +1,7 @@
 ﻿using BookFaceApp.Core.Models.Group;
 using BookFaceApp.Core.Models.Publication;
 using BookFaceApp.Infrastructure.Data.Entities;
+using BookFaceApp.Infrastructure.Data.Entities.Relationships;
 
 namespace BookFaceApp.Core.Contracts
 {
@@ -34,5 +35,19 @@ namespace BookFaceApp.Core.Contracts
         Task<bool> CategoryExistsAsync(int categoryId);
 
 		Task<bool> IsOwnerAsync(int groupId, string userId);
-	}
+
+        Task RequestToJoin(int groupId, string userId);
+
+        Task AddUserToGroup(int groupId, string userId);
+
+        Task RemoveUserFromGroup(int groupId, string userId);
+
+        Task<bool> IsAccepted(int groupId, string userId);
+
+        Task<IEnumerable<UserGroup>> GetAllUnacceptedUsers();
+
+        Task<bool> IsUserInGroup(int groupId, string userId);
+
+        Task<bool> IsUserRequested(int groupId, string userId);
+    }
 }
