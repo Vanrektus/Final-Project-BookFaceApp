@@ -183,7 +183,14 @@ namespace BookFaceApp.Controllers
         [HttpPost]
         public async Task<IActionResult> RequestJoin(int id)
         {
-            var userId = User.Id();
+			if ((await groupService.ExistsByIdAsync(id)) == false)
+			{
+				TempData[MessageConstant.ErrorMessage] = "The group you are looking for was not found :(";
+
+				return RedirectToAction(nameof(ErrorController.InvalidGroup), ErrorControllerName);
+			}
+
+			var userId = User.Id();
 
             await groupService.RequestToJoin(id, userId);
 
@@ -193,7 +200,14 @@ namespace BookFaceApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Leave(int id)
         {
-            var userId = User.Id();
+			if ((await groupService.ExistsByIdAsync(id)) == false)
+			{
+				TempData[MessageConstant.ErrorMessage] = "The group you are looking for was not found :(";
+
+				return RedirectToAction(nameof(ErrorController.InvalidGroup), ErrorControllerName);
+			}
+
+			var userId = User.Id();
 
             await groupService.RemoveUserFromGroup(id, userId);
 

@@ -1,6 +1,8 @@
-﻿using BookFaceApp.Core.Contracts;
-using BookFaceApp.Extensions;
+﻿using BookFaceApp.Controllers;
+using BookFaceApp.Core.Constants;
+using BookFaceApp.Core.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using static BookFaceApp.Controllers.Constants.ControllersConstants.ControllersNamesConstants;
 
 namespace BookFaceApp.Areas.Admin.Controllers
 {
@@ -24,15 +26,29 @@ namespace BookFaceApp.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Accept(int groupId, string userId)
         {
-            await groupService.AddUserToGroup(groupId, userId);
+			if ((await groupService.ExistsByIdAsync(groupId)) == false)
+			{
+				TempData[MessageConstant.ErrorMessage] = "The group you are looking for was not found :(";
+
+				return RedirectToAction(nameof(ErrorController.InvalidGroup), ErrorControllerName);
+			}
+
+			await groupService.AddUserToGroup(groupId, userId);
 
             return RedirectToAction(nameof(All));
         }
 
         [HttpPost]
         public async Task<IActionResult> Deny(int groupId, string userId)
-        {
-            await groupService.RemoveUserFromGroup(groupId, userId);
+		{
+			if ((await groupService.ExistsByIdAsync(groupId)) == false)
+			{
+				TempData[MessageConstant.ErrorMessage] = "The group you are looking for was not found :(";
+
+				return RedirectToAction(nameof(ErrorController.InvalidGroup), ErrorControllerName);
+			}
+
+			await groupService.RemoveUserFromGroup(groupId, userId);
 
             return RedirectToAction(nameof(All));
         }

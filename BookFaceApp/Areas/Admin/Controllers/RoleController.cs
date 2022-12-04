@@ -68,6 +68,13 @@ namespace BookFaceApp.Areas.Admin.Controllers
 			List<User> users = new List<User>();
 			List<User> nonUsers = new List<User>();
 
+			if (role == null)
+			{
+				TempData[MessageConstant.ErrorMessage] = "The role you are looking for was not found :(";
+
+				return RedirectToAction(nameof(ErrorController.InvalidRole), ErrorControllerName);
+			}
+
 			var allUsers = await userManager.Users.ToListAsync();
 
 			foreach (User user in allUsers)
@@ -90,46 +97,43 @@ namespace BookFaceApp.Areas.Admin.Controllers
 		{
 			IdentityResult result;
 
-			if (ModelState.IsValid)
+			if (!ModelState.IsValid)
 			{
-				foreach (string userId in model.AddIds ?? new string[] { })
+				return await Update(model.RoleId);
+			}
+
+			foreach (string userId in model.AddIds ?? new string[] { })
+			{
+				User user = await userManager.FindByIdAsync(userId);
+
+				if (user != null)
 				{
-					User user = await userManager.FindByIdAsync(userId);
+					result = await userManager.AddToRoleAsync(user, model.RoleName);
 
-					if (user != null)
+					if (!result.Succeeded)
 					{
-						result = await userManager.AddToRoleAsync(user, model.RoleName);
+						TempData[MessageConstant.ErrorMessage] = "Could not get users to add :(";
 
-						if (!result.Succeeded)
-						{
-							TempData[MessageConstant.ErrorMessage] = "Could not get users to add :(";
-
-							return RedirectToAction(nameof(ErrorController.CreationError), ErrorControllerName);
-						}
-					}
-				}
-
-				foreach (string userId in model.DeleteIds ?? new string[] { })
-				{
-					User user = await userManager.FindByIdAsync(userId);
-
-					if (user != null)
-					{
-						result = await userManager.RemoveFromRoleAsync(user, model.RoleName);
-
-						if (!result.Succeeded)
-						{
-							TempData[MessageConstant.ErrorMessage] = "Could not get users to delete :(";
-
-							return RedirectToAction(nameof(ErrorController.CreationError), ErrorControllerName);
-						}
+						return RedirectToAction(nameof(ErrorController.CreationError), ErrorControllerName);
 					}
 				}
 			}
 
-			if (!ModelState.IsValid)
+			foreach (string userId in model.DeleteIds ?? new string[] { })
 			{
-				return await Update(model.RoleId);
+				User user = await userManager.FindByIdAsync(userId);
+
+				if (user != null)
+				{
+					result = await userManager.RemoveFromRoleAsync(user, model.RoleName);
+
+					if (!result.Succeeded)
+					{
+						TempData[MessageConstant.ErrorMessage] = "Could not get users to delete :(";
+
+						return RedirectToAction(nameof(ErrorController.CreationError), ErrorControllerName);
+					}
+				}
 			}
 
 			return RedirectToAction(nameof(All));
