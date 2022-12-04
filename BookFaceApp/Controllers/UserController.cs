@@ -4,6 +4,7 @@ using BookFaceApp.Infrastructure.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static BookFaceApp.Controllers.Constants.ControllersConstants.AdminAreaControllersNamesConstants;
 using static BookFaceApp.Controllers.Constants.ControllersConstants.ControllersNamesConstants;
 using static BookFaceApp.Controllers.Constants.ControllersConstants.RolesNamesConstants;
 
@@ -104,7 +105,7 @@ namespace BookFaceApp.Controllers
                 {
                     if (await userManager.IsInRoleAsync(user, Admin))
                     {
-                        return RedirectToAction(nameof(AdminController.Index), AdminControllerName, new { area = "Admin" });
+                        return RedirectToAction(nameof(RoleController.Index), RoleControllerName, new { area = "Admin" });
                     }
 
                     return RedirectToAction(nameof(HomeController.Index), HomeControllerName);

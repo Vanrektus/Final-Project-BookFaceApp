@@ -10,7 +10,11 @@
             public const string GroupControllerName = "Group";
             public const string ProfileControllerName = "Profile";
             public const string PublicationControllerName = "Publication";
-            public const string AdminControllerName = "Admin";
+        }
+
+        public class AdminAreaControllersNamesConstants
+        {
+            public const string RoleControllerName = "Role";
         }
 
         public class RolesNamesConstants
