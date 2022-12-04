@@ -8,10 +8,14 @@ namespace BookFaceApp.Areas.Admin.Controllers
 {
     public class RequestController : AdminController
     {
+        private readonly IRequestService requestService;
         private readonly IGroupService groupService;
 
-        public RequestController(IGroupService _groupService)
+        public RequestController(
+            IRequestService _requestService,
+            IGroupService _groupService)
         {
+            requestService= _requestService;
             groupService = _groupService;
         }
 
