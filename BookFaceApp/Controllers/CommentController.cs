@@ -11,8 +11,8 @@ namespace BookFaceApp.Controllers
 {
 	[Authorize]
 	public class CommentController : Controller
-    {
-        private readonly ICommentService commentService;
+	{
+		private readonly ICommentService commentService;
 		private readonly IPublicationService publicationService;
 
 		public CommentController(
@@ -67,7 +67,7 @@ namespace BookFaceApp.Controllers
 
 			var userId = User.Id();
 
-			if ((await commentService.IsOwnerAsync(model.Id, userId)) == false 
+			if ((await commentService.IsOwnerAsync(model.Id, userId)) == false
 				&& User.IsInRole(Admin) == false
 				&& (await publicationService.IsOwnerAsync(model.Publicationid, userId)) == false)
 			{
@@ -113,7 +113,7 @@ namespace BookFaceApp.Controllers
 			var publicationId = await commentService.GetPublicationIdByCommentIdAsync(id);
 			var userId = User.Id();
 
-            if ((await commentService.IsOwnerAsync(id, userId)) == false 
+			if ((await commentService.IsOwnerAsync(id, userId)) == false
 				&& (await publicationService.IsOwnerAsync(publicationId, userId)) == false
 				&& User.IsInRole(Admin) == false)
 			{

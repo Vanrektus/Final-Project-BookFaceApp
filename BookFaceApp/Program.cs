@@ -5,8 +5,8 @@ using BookFaceApp.ModelBinders;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static BookFaceApp.Infrastructure.Data.DataConstants.UserConstants;
 using static BookFaceApp.Controllers.Constants.ControllersConstants;
+using static BookFaceApp.Infrastructure.Data.DataConstants.UserConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,11 +74,12 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
+    //app.UseDeveloperExceptionPage();
+	app.UseExceptionHandler("/Error/SomethingWentWrong");
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Error/SomethingWentWrong");
     app.UseHsts();
 }
 

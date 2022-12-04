@@ -40,5 +40,10 @@ namespace BookFaceApp.Controllers
         {
             return View();
         }
+
+        public IActionResult SomethingWentWrong()
+        {
+            return View();
+        }
     }
 }

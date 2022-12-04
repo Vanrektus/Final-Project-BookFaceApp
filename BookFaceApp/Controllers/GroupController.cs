@@ -10,75 +10,75 @@ using static BookFaceApp.Controllers.Constants.ControllersConstants.RolesNamesCo
 
 namespace BookFaceApp.Controllers
 {
-    [Authorize]
-    public class GroupController : Controller
-    {
-        private readonly IGroupService groupService;
+	[Authorize]
+	public class GroupController : Controller
+	{
+		private readonly IGroupService groupService;
 
-        public GroupController(
-            IGroupService _groupService)
-        {
-            groupService = _groupService;
-        }
+		public GroupController(
+			IGroupService _groupService)
+		{
+			groupService = _groupService;
+		}
 
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> All([FromQuery] AllGroupsQueryModel query)
-{
-            var result = await groupService.GetAllGroupsAsync(
-                query.Category,
-                query.SearchTerm,
-                query.Sorting,
-                query.CurrentPage,
-                AllGroupsQueryModel.GroupsPerPage);
+		[AllowAnonymous]
+		[HttpGet]
+		public async Task<IActionResult> All([FromQuery] AllGroupsQueryModel query)
+		{
+			var result = await groupService.GetAllGroupsAsync(
+					query.Category,
+					query.SearchTerm,
+					query.Sorting,
+					query.CurrentPage,
+					AllGroupsQueryModel.GroupsPerPage);
 
-            query.TotalGroupsCount = result.TotalGroupsCount;
-            query.Categories = await groupService.GetCategoriesNamesAsync();
-            query.Groups = result.Groups;
+			query.TotalGroupsCount = result.TotalGroupsCount;
+			query.Categories = await groupService.GetCategoriesNamesAsync();
+			query.Groups = result.Groups;
 
-            return View(query);
-        }
+			return View(query);
+		}
 
-        [HttpGet]
-        public async Task<IActionResult> Add()
-        {
-            var model = new GroupAddModel()
-            {
-                Categories = await groupService.GetCategoriesAsync()
-            };
+		[HttpGet]
+		public async Task<IActionResult> Add()
+		{
+			var model = new GroupAddModel()
+			{
+				Categories = await groupService.GetCategoriesAsync()
+			};
 
-            return View(model);
-        }
+			return View(model);
+		}
 
-        [HttpPost]
-        public async Task<IActionResult> Add(GroupAddModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                model.Categories= await groupService.GetCategoriesAsync();
+		[HttpPost]
+		public async Task<IActionResult> Add(GroupAddModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				model.Categories = await groupService.GetCategoriesAsync();
 
-                return View(model);
-            }
+				return View(model);
+			}
 
-            if ((await groupService.CategoryExistsAsync(model.CategoryId)) == false)
-            {
-                TempData[MessageConstant.ErrorMessage] = "Category does not exist!";
+			if ((await groupService.CategoryExistsAsync(model.CategoryId)) == false)
+			{
+				TempData[MessageConstant.ErrorMessage] = "Category does not exist!";
 
-                model.Categories = await groupService.GetCategoriesAsync();
+				model.Categories = await groupService.GetCategoriesAsync();
 
-                return View(model);
-            }
+				return View(model);
+			}
 
-            var userId = User.Id();
+			var userId = User.Id();
 
-            await groupService.AddGroupAsync(model, userId!);
+			await groupService.AddGroupAsync(model, userId!);
 
-            return RedirectToAction(nameof(All));
-        }
+			return RedirectToAction(nameof(All));
+		}
 
-        [HttpGet]
-        public async Task<IActionResult> Details(int id)
-        {
+		[HttpGet]
+		public async Task<IActionResult> Details(int id)
+		{
 			if ((await groupService.ExistsByIdAsync(id)) == false)
 			{
 				TempData[MessageConstant.ErrorMessage] = "The group you are looking for was not found :(";
@@ -88,12 +88,12 @@ namespace BookFaceApp.Controllers
 
 			var model = await groupService.GetOneGroupAsync(id);
 
-            return View(model);
-        }
+			return View(model);
+		}
 
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
+		[HttpGet]
+		public async Task<IActionResult> Edit(int id)
+		{
 			if ((await groupService.ExistsByIdAsync(id)) == false)
 			{
 				TempData[MessageConstant.ErrorMessage] = "The group you are looking for was not found :(";
@@ -103,28 +103,28 @@ namespace BookFaceApp.Controllers
 
 			var model = await groupService.GetGroupForEditAsync(id);
 
-            var userId = User.Id();
+			var userId = User.Id();
 
 			if ((await groupService.IsOwnerAsync(id, userId)) == false
-                && User.IsInRole(Admin) == false)
+				&& User.IsInRole(Admin) == false)
 			{
 				TempData[MessageConstant.ErrorMessage] = "You must be the owner in order to perform this action!";
 
 				return RedirectToAction(nameof(ErrorController.NotOwner), ErrorControllerName);
 			}
 
-            return View(model);
-        }
+			return View(model);
+		}
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(GroupEditModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                model.Categories = await groupService.GetCategoriesAsync();
+		[HttpPost]
+		public async Task<IActionResult> Edit(GroupEditModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				model.Categories = await groupService.GetCategoriesAsync();
 
-                return View(model);
-            }
+				return View(model);
+			}
 
 			if ((await groupService.ExistsByIdAsync(model.Id)) == false)
 			{
@@ -140,15 +140,15 @@ namespace BookFaceApp.Controllers
 				model.Categories = await groupService.GetCategoriesAsync();
 
 				return View(model);
-			}			
+			}
 
-            await groupService.EditGroupAsync(model);
+			await groupService.EditGroupAsync(model);
 
-            return RedirectToAction(nameof(All));
-        }
+			return RedirectToAction(nameof(All));
+		}
 
-        public async Task<IActionResult> Delete(int id)
-        {
+		public async Task<IActionResult> Delete(int id)
+		{
 			if ((await groupService.ExistsByIdAsync(id)) == false)
 			{
 				TempData[MessageConstant.ErrorMessage] = "The group you are looking for was not found :(";
@@ -159,16 +159,16 @@ namespace BookFaceApp.Controllers
 			var userId = User.Id();
 
 			if ((await groupService.IsOwnerAsync(id, userId)) == false
-                && User.IsInRole(Admin) == false)
+				&& User.IsInRole(Admin) == false)
 			{
 				TempData[MessageConstant.ErrorMessage] = "You must be the owner in order to perform this action!";
 
 				return RedirectToAction(nameof(ErrorController.NotOwner), ErrorControllerName);
 			}
 
-            await groupService.DeleteGroupAsync(id);
+			await groupService.DeleteGroupAsync(id);
 
 			return RedirectToAction(nameof(All));
-        }
-    }
+		}
+	}
 }
