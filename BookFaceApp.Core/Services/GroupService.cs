@@ -15,7 +15,7 @@ namespace BookFaceApp.Core.Services
 		{
 			repo = _repo;
 		}
-		
+
 		public async Task AddGroupAsync(GroupAddModel model, string userId)
 		{
 			var user = await repo.GetByIdAsync<User>(userId);
@@ -190,97 +190,95 @@ namespace BookFaceApp.Core.Services
 		public async Task<bool> ExistsByIdAsync(int? groupId)
 			=> await repo.AllReadonly<Group>().AnyAsync(g => g.Id == groupId);
 
-		public async Task<bool> CategoryExistsAsync(int categoryId) 
+		public async Task<bool> CategoryExistsAsync(int categoryId)
 			=> await repo.GetByIdAsync<Category>(categoryId) != null;
 
-		public async Task<bool> IsOwnerAsync(int groupId, string userId) 
+		public async Task<bool> IsOwnerAsync(int groupId, string userId)
 			=> (await repo.GetByIdAsync<Group>(groupId)).UserId == userId;
 
-        public async Task RequestToJoin(int groupId, string userId)
-        {
-            var user = await repo.All<User>()
-                .Where(u => u.Id == userId)
-                .Include(u => u.UsersGroups)
-                .FirstOrDefaultAsync();
-
-            var group = await repo.All<Group>()
-                .FirstOrDefaultAsync(b => b.Id == groupId);
-
-            if (!(user!.UsersGroups.Any(ug => ug.GroupId == groupId)))
-            {
-                user.UsersGroups.Add(new UserGroup()
-                {
-                    UserId = user.Id,
-                    User = user,
-                    GroupId = group!.Id,
-                    Group = group,
-					IsAccepted = false
-                });
-            }
-
-            await repo.SaveChangesAsync();
-        }
-
-        public async Task AddUserToGroup(int groupId, string userId)
+		public async Task RequestToJoin(int groupId, string userId)
 		{
-            var user = await repo.All<User>()
-                .Where(u => u.Id == userId)
-                .Include(u => u.UsersGroups)
-                .FirstOrDefaultAsync();
+			var user = await repo.All<User>()
+				.Where(u => u.Id == userId)
+				.Include(u => u.UsersGroups)
+				.FirstOrDefaultAsync();
 
-            var group = await repo.All<Group>()
-                .FirstOrDefaultAsync(b => b.Id == groupId);
+			var group = await repo.All<Group>()
+				.FirstOrDefaultAsync(b => b.Id == groupId);
+
+			if (!(user!.UsersGroups.Any(ug => ug.GroupId == groupId)))
+			{
+				user.UsersGroups.Add(new UserGroup()
+				{
+					UserId = user.Id,
+					User = user,
+					GroupId = group!.Id,
+					Group = group,
+					IsAccepted = false
+				});
+			}
+
+			await repo.SaveChangesAsync();
+		}
+
+		public async Task AddUserToGroup(int groupId, string userId)
+		{
+			var user = await repo.All<User>()
+				.Where(u => u.Id == userId)
+				.Include(u => u.UsersGroups)
+				.FirstOrDefaultAsync();
+
+			var group = await repo.All<Group>()
+				.FirstOrDefaultAsync(b => b.Id == groupId);
 
 			var userGroup = user!.UsersGroups.First(ug => ug.GroupId == groupId && ug.UserId == userId);
 
-            if (userGroup != null)
-            {
+			if (userGroup != null)
+			{
 				userGroup.IsAccepted = true;
-            }
+			}
 
-            await repo.SaveChangesAsync();
-        }
+			await repo.SaveChangesAsync();
+		}
 
 		public async Task RemoveUserFromGroup(int groupId, string userId)
 		{
-            var user = await repo.All<User>()
-                .Where(u => u.Id == userId)
-                .Include(u => u.UsersGroups)
-                .FirstOrDefaultAsync();
+			var user = await repo.All<User>()
+				.Where(u => u.Id == userId)
+				.Include(u => u.UsersGroups)
+				.FirstOrDefaultAsync();
 
-            var group = await repo.All<Group>()
-                .FirstOrDefaultAsync(b => b.Id == groupId);
+			var group = await repo.All<Group>()
+				.FirstOrDefaultAsync(b => b.Id == groupId);
 
 			if (user!.UsersGroups.Any(ug => ug.GroupId == groupId))
 			{
-                user.UsersGroups.Remove(user.UsersGroups
-                    .FirstOrDefault(up => up.GroupId == groupId)!);
-            }
+				user.UsersGroups.Remove(user.UsersGroups
+					.FirstOrDefault(up => up.GroupId == groupId)!);
+			}
 
-            await repo.SaveChangesAsync();
-        }
+			await repo.SaveChangesAsync();
+		}
 
 		public async Task<bool> IsAccepted(int groupId, string userId)
-        {
-            var user = await repo.All<User>()
-                .Where(u => u.Id == userId)
-                .Include(u => u.UsersGroups)
-                .FirstOrDefaultAsync();
-
-            var group = await repo.All<Group>()
-                .FirstOrDefaultAsync(b => b.Id == groupId);
-
-            return user!.UsersGroups.First(ug => ug.GroupId == groupId && ug.UserId == userId).IsAccepted;
-        }
-
-        public async Task<IEnumerable<UserGroup>> GetAllUnacceptedUsers()
 		{
-			return await repo.AllReadonly<UserGroup>()
+			var user = await repo.All<User>()
+				.Where(u => u.Id == userId)
+				.Include(u => u.UsersGroups)
+				.FirstOrDefaultAsync();
+
+			var group = await repo.All<Group>()
+				.FirstOrDefaultAsync(b => b.Id == groupId);
+
+			return user!.UsersGroups.First(ug => ug.GroupId == groupId && ug.UserId == userId).IsAccepted;
+		}
+
+		public async Task<IEnumerable<UserGroup>> GetAllUnacceptedUsers()
+			=> await repo.AllReadonly<UserGroup>()
 				.Include(ug => ug.User)
 				.Include(ug => ug.Group)
 				.Where(ug => ug.IsAccepted == false)
 				.ToListAsync();
-		}
 
 		public async Task<bool> IsUserInGroup(int groupId, string userId)
 		{
@@ -293,12 +291,12 @@ namespace BookFaceApp.Core.Services
 			}
 
 			return false;
-        }
+		}
 
 		public async Task<bool> IsUserRequested(int groupId, string userId)
 		{
 			var userGroup = await repo.All<UserGroup>().
-            FirstOrDefaultAsync(ug => ug.GroupId == groupId && ug.UserId == userId);
+			FirstOrDefaultAsync(ug => ug.GroupId == groupId && ug.UserId == userId);
 
 			if (userGroup != null)
 			{
@@ -306,6 +304,6 @@ namespace BookFaceApp.Core.Services
 			}
 
 			return false;
-        }
-    }
+		}
+	}
 }

@@ -1,5 +1,4 @@
-﻿using BookFaceApp.Areas.Admin.Contracts;
-using BookFaceApp.Controllers;
+﻿using BookFaceApp.Controllers;
 using BookFaceApp.Core.Constants;
 using BookFaceApp.Core.Models.Role;
 using BookFaceApp.Infrastructure.Data.Entities;
@@ -13,16 +12,13 @@ namespace BookFaceApp.Areas.Admin.Controllers
 {
 	public class RoleController : AdminController
 	{
-		private readonly IRoleService roleService;
 		private readonly RoleManager<IdentityRole> roleManager;
 		private readonly UserManager<User> userManager;
 
 		public RoleController(
-			IRoleService _roleService,
 			RoleManager<IdentityRole> _roleManager,
 			UserManager<User> _userManager)
 		{
-			roleService = _roleService;
 			roleManager = _roleManager;
 			userManager = _userManager;
 		}
@@ -110,16 +106,20 @@ namespace BookFaceApp.Areas.Admin.Controllers
 			{
 				User user = await userManager.FindByIdAsync(userId);
 
-				if (user != null)
+				if (user == null)
 				{
-					result = await userManager.AddToRoleAsync(user, model.RoleName);
+					TempData[MessageConstant.ErrorMessage] = "The user you are looking for was not found :(";
 
-					if (!result.Succeeded)
-					{
-						TempData[MessageConstant.ErrorMessage] = "Could not get users to add :(";
+					return RedirectToAction(nameof(ErrorController.InvalidUser), ErrorControllerName);
+				}
 
-						return RedirectToAction(nameof(ErrorController.CreationError), ErrorControllerName);
-					}
+				result = await userManager.AddToRoleAsync(user, model.RoleName);
+
+				if (!result.Succeeded)
+				{
+					TempData[MessageConstant.ErrorMessage] = "Could not add user to role :(";
+
+					return RedirectToAction(nameof(ErrorController.SomethingWentWrong), ErrorControllerName);
 				}
 			}
 
@@ -127,16 +127,20 @@ namespace BookFaceApp.Areas.Admin.Controllers
 			{
 				User user = await userManager.FindByIdAsync(userId);
 
-				if (user != null)
+				if (user == null)
 				{
-					result = await userManager.RemoveFromRoleAsync(user, model.RoleName);
+					TempData[MessageConstant.ErrorMessage] = "The user you are looking for was not found :(";
 
-					if (!result.Succeeded)
-					{
-						TempData[MessageConstant.ErrorMessage] = "Could not get users to delete :(";
+					return RedirectToAction(nameof(ErrorController.InvalidUser), ErrorControllerName);
+				}
 
-						return RedirectToAction(nameof(ErrorController.CreationError), ErrorControllerName);
-					}
+				result = await userManager.RemoveFromRoleAsync(user, model.RoleName);
+
+				if (!result.Succeeded)
+				{
+					TempData[MessageConstant.ErrorMessage] = "Could not remove user from role :(";
+
+					return RedirectToAction(nameof(ErrorController.SomethingWentWrong), ErrorControllerName);
 				}
 			}
 

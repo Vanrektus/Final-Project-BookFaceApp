@@ -30,7 +30,7 @@ namespace BookFaceApp.Controllers
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
-                return RedirectToAction(nameof(PublicationController.All), "Publication");
+                return RedirectToAction(nameof(PublicationController.All), PublicationControllerName);
             }
 
             var model = new RegisterViewModel();

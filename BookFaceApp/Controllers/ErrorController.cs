@@ -49,5 +49,10 @@ namespace BookFaceApp.Controllers
         {
             return View();
         }
-    }
+
+		public IActionResult InvalidUser()
+		{
+			return View();
+		}
+	}
 }
