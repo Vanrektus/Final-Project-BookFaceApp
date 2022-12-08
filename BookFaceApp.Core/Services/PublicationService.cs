@@ -4,8 +4,6 @@ using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.Infrastructure.Data.Entities.Relationships;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 
 namespace BookFaceApp.Core.Services
 {
