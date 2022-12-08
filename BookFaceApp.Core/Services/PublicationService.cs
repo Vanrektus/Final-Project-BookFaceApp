@@ -112,6 +112,7 @@ namespace BookFaceApp.Core.Services
         {
             var model = await repo.AllReadonly<Publication>()
                 .Where(p => p.Id == publicationId)
+                .Where(p => p.IsDeleted == false)
                 .Include(p => p.User)
                 .Include(p => p.PublicationsComments
                 .Where(pc => pc.Comment.IsDeleted == false))
