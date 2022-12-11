@@ -1,10 +1,11 @@
 # BookFaceApp
 
-**Application functionality:**
+<ins>**Application functionality:**</ins>
 
 This is a facebook like application, with similar functionality ( not everything ) and definitely not even close look to the original app.
+<br>
 
-**Application access and more detailed functionality:**
+<ins>**Application access and more detailed functionality:**</ins>
 
 Logged out user:
 - **`Random publications`** - Home page that shows 3 random publications.
