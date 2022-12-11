@@ -55,6 +55,7 @@ else
                     <div class="card-body">
                         @if (await comService.IsOwnerAsync(comment.CommentId, User.Id())
                        || await pubService.IsOwnerAsync(Model.Id, User.Id())
+                       || await grpService.IsOwnerAsync((await pubService.GetPublicationGroupIdAsync(comment.PublicationId)), User.Id())
                        || User.IsInRole("Administrator"))
                         {
                             <div style="float: right;">

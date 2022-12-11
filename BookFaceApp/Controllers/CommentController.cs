@@ -14,13 +14,16 @@ namespace BookFaceApp.Controllers
 	{
 		private readonly ICommentService commentService;
 		private readonly IPublicationService publicationService;
+		private readonly IGroupService groupService;
 
 		public CommentController(
 			ICommentService _commentService,
-			IPublicationService _publicationService)
+			IPublicationService _publicationService,
+            IGroupService _groupService)
 		{
 			commentService = _commentService;
 			publicationService = _publicationService;
+			groupService = _groupService;
 		}
 
 		[HttpGet]
@@ -67,9 +70,12 @@ namespace BookFaceApp.Controllers
 
 			var userId = User.Id();
 
+			var groupId = await publicationService.GetPublicationGroupIdAsync(model.Publicationid);
+
 			if ((await commentService.IsOwnerAsync(model.Id, userId)) == false
 				&& User.IsInRole(Admin) == false
-				&& (await publicationService.IsOwnerAsync(model.Publicationid, userId)) == false)
+				&& (await publicationService.IsOwnerAsync(model.Publicationid, userId)) == false
+				&& (await groupService.IsOwnerAsync(groupId, userId)) == false)
 			{
 				TempData[MessageConstant.ErrorMessage] = "You need to be the owner in order to perform this action!";
 
