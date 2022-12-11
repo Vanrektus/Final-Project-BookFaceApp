@@ -4,6 +4,7 @@ using BookFaceApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookFaceApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BookFaceAppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221211173621_FilesTableAdded")]
+    partial class FilesTableAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +23,25 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.ApplicationFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("Content")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Files");
+                });
 
             modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.Category", b =>
                 {
@@ -129,32 +150,6 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Group");
-                });
-
-            modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.ProfilePicture", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<byte[]>("Content")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("ProfilePictures");
                 });
 
             modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.Publication", b =>
@@ -297,9 +292,6 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ProfilePictureId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -327,7 +319,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bdfdafb4-4d76-466d-b365-88e911ea0ad3",
+                            ConcurrencyStamp = "4c468993-e206-450a-829b-0f2eaf27c967",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Vancho",
@@ -335,9 +327,9 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAED2gdD3incjh2OweMKaEf16wL0VUaULa65a+wcjpZ6cJayVOuquveNMQlhqGtjG0AA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEP4t8+hnATxyBaECqn4C4lVldjtyZYbwoqMiaoVqB1Z7esbpTtafGr46JX46hwW6Gg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ba5e4163-0988-4be3-bece-281f9f76673f",
+                            SecurityStamp = "5a9e5b4f-839b-46d2-bfb4-a949507f8ffa",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         },
@@ -345,7 +337,7 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a40b9cf5-e997-4639-a551-c3a374eb388c",
+                            ConcurrencyStamp = "eceaded1-caf2-4c46-8e37-baf27409de7e",
                             Email = "guest@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Gostin",
@@ -353,9 +345,9 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "GUEST@MAIL.COM",
                             NormalizedUserName = "GUEST",
-                            PasswordHash = "AQAAAAEAACcQAAAAEP+cmdHkP6SimR0lqBUhoZ1JCK1Vaq+rba0+xB/AU27CcRdxK9utZ0yAAVOwS8vLgA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEL9Pr+hd0BqRrZM7bHK1ZY+jmaIaqooIaAawGp7BlhSmG83Hpfv+1eEAYEZINdPTrA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b7b042f3-6b16-4c71-b298-811f8e7e0b55",
+                            SecurityStamp = "f11301bf-1215-4a03-965f-4336a1a57cd9",
                             TwoFactorEnabled = false,
                             UserName = "Guest"
                         });
@@ -528,15 +520,6 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.ProfilePicture", b =>
-                {
-                    b.HasOne("BookFaceApp.Infrastructure.Data.Entities.User", null)
-                        .WithOne("ProfilePicture")
-                        .HasForeignKey("BookFaceApp.Infrastructure.Data.Entities.ProfilePicture", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.Publication", b =>
                 {
                     b.HasOne("BookFaceApp.Infrastructure.Data.Entities.Category", "Category")
@@ -697,8 +680,6 @@ namespace BookFaceApp.Infrastructure.Data.Migrations
             modelBuilder.Entity("BookFaceApp.Infrastructure.Data.Entities.User", b =>
                 {
                     b.Navigation("Groups");
-
-                    b.Navigation("ProfilePicture");
 
                     b.Navigation("Publications");
 

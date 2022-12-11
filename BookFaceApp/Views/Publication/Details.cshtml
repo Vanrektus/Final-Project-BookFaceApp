@@ -23,8 +23,8 @@ else
 <div class="row">
     <div class="card" style="width: 26rem; height: 320rem; margin: 5px;">
         @Html.HiddenFor(p => p.Id)
-        <a asp-controller="Profile" asp-action="User" asp-route-id="@Model.UserName">
-            <h4 class="card-title mt-1" style="padding-bottom: 20px; padding-top: 5px; padding-left: 5px;">@Model.FirstName @Model.LastName</h4>
+        <a asp-controller="Profile" asp-action="User" asp-route-id="@Model.User.UserName">
+            <h4 class="card-title mt-1" style="padding-bottom: 20px; padding-top: 5px; padding-left: 5px;">@Model.User.FirstName @Model.User.LastName</h4>
         </a>
         @if (await pubService.IsOwnerAsync(Model.Id, User.Id())
         || User.IsInRole("Administrator")

@@ -11,13 +11,9 @@ namespace BookFaceApp.Core.Models.Publication
 
         public string ImageUrl { get; init; } = null!;
 
-        public string UserName { get; init; } = null!;
-
-        public string FirstName { get; init; } = null!;
-
-        public string LastName { get; init; } = null!;
-
         public string UserId { get; init; } = null!;
+
+        public Infrastructure.Data.Entities.User User { get; set; } = null!;
 
         public int? GroupId { get; set; }
 

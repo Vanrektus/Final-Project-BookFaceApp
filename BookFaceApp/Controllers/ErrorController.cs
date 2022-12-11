@@ -54,5 +54,10 @@ namespace BookFaceApp.Controllers
 		{
 			return View();
 		}
+
+        public IActionResult InvalidPictureFormat()
+		{
+			return View();
+		}
 	}
 }

@@ -13,8 +13,8 @@
 	{
         <div class="card" style="width: 26rem; height: 32rem; margin: 5px;">
             @Html.HiddenFor(p => publication.Id)
-            <a asp-controller="Profile" asp-action="User" asp-route-id="@publication.UserName">
-                <h5 class="card-title mt-1" style="padding: 5px;">@publication.FirstName @publication.LastName</h5>
+            <a asp-controller="Profile" asp-action="User" asp-route-id="@publication.User.UserName">
+                <h5 class="card-title mt-1" style="padding: 5px;">@publication.User.FirstName @publication.User.LastName</h5>
             </a>
             <img src="@publication.ImageUrl" class="card-img-top" alt="..." style="height: 240px; width: 390px;">
 

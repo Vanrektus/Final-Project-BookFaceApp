@@ -19,6 +19,7 @@ namespace BookFaceApp.Infrastructure.Data
         public DbSet<PublicationComment> PublicationsComments { get; set; } = null!;
         public DbSet<UserPublication> UsersPublications { get; set; } = null!;
         public DbSet<UserGroup> UsersGroups { get; set; } = null!;
+        public DbSet<ProfilePicture> ProfilePictures { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

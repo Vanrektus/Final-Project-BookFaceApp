@@ -1,10 +1,11 @@
 ﻿@model PublicationViewModel
 
 
-<div class="card" style="width: 26rem; height: 32rem; margin: 5px;">
+<div class="card" style="width: 26rem; height: 34rem; margin: 5px;">
     @Html.HiddenFor(p => p.Id)
-    <a asp-controller="Profile" asp-action="User" asp-route-id="@Model.UserName">
-        <h5 class="card-title mt-1" style="padding: 5px;">@Model.FirstName @Model.LastName</h5>
+    <a asp-controller="Profile" asp-action="User" asp-route-id="@Model.User.UserName">
+        @*<img src="@Model.User.ProfilePicture.Content" />*@
+        <h5 class="card-title mt-1" style="padding: 5px;">@Model.User.FirstName @Model.User.LastName</h5>
     </a>
     <img src="@Model.ImageUrl" class="card-img-top" alt="..." style="height: 240px; width: 390px;">
 

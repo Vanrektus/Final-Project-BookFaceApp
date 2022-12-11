@@ -13,6 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<IFileService, FileService>();
 
             return services;
         }

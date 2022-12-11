@@ -5,7 +5,7 @@
 }
 
 
-<h2 class="text-center">@Model.Select(p => p.UserName).First().ToString()</h2>
+<h2 class="text-center">@Model.Select(p => p.User.UserName).First().ToString()</h2>
 <h3 class="text-center">@ViewBag.Title</h3>
 <hr />
 
@@ -13,8 +13,8 @@
     @foreach (var publication in Model)
     {
         <div class="card" style="width: 26rem; height: 32rem; margin: 5px;">
-            <a asp-controller="Profile" asp-action="User" asp-route-id="@publication.UserName">
-                <h5 class="card-title mt-1" style="padding: 5px;">@publication.FirstName @publication.LastName</h5>
+            <a asp-controller="Profile" asp-action="User" asp-route-id="@publication.User.UserName">
+                <h5 class="card-title mt-1" style="padding: 5px;">@publication.User.FirstName @publication.User.LastName</h5>
             </a>
             <img src="@publication.ImageUrl" class="card-img-top" alt="..." style="height: 240px; width: 390px;">
 

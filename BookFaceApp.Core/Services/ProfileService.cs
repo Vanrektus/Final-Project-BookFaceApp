@@ -38,6 +38,7 @@ namespace BookFaceApp.Core.Services
                 .Where(p => p.IsDeleted == false)
                 .Where(p => p.GroupId == null)
                 .Include(p => p.User)
+                .ThenInclude(u => u.ProfilePicture)
                 .Include(p => p.PublicationsComments
                 .Where(pc => pc.Comment.IsDeleted == false))
                 .ThenInclude(pc => pc.Comment)
@@ -53,10 +54,8 @@ namespace BookFaceApp.Core.Services
                     Id = p.Id,
                     Title = p.Title,
                     ImageUrl = p.ImageUrl!,
-                    UserName = p.User.UserName,
-                    FirstName = p.User.FirstName,
-                    LastName = p.User.LastName,
                     UserId = p.UserId,
+                    User = p.User,
                     Category = p.Category.Name,
                     PublicationsComments = p.PublicationsComments,
                     UsersPublications = p.UsersPublications,
@@ -85,10 +84,8 @@ namespace BookFaceApp.Core.Services
                     Id = p.Id,
                     Title = p.Title,
                     ImageUrl = p.ImageUrl!,
-                    UserName = p.User.UserName,
-                    FirstName = p.User.FirstName,
-                    LastName= p.User.LastName,
                     UserId = p.UserId,
+                    User = p.User,
                     Category = p.Category.Name,
                     PublicationsComments = p.PublicationsComments,
                     UsersPublications = p.UsersPublications,
