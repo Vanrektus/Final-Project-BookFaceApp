@@ -5,6 +5,7 @@ using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.Infrastructure.Data.Entities.Relationships;
 using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel.Design;
 
 namespace BookFaceApp.Test.ServiceTests
 {
@@ -201,16 +202,21 @@ namespace BookFaceApp.Test.ServiceTests
         public async Task DeletePublicationShouldWorkCorrectly()
         {
             var service = serviceProvider.GetService<IPublicationService>();
+            var repo = serviceProvider.GetService<IRepository>();
 
             var publicationId = 1;
 
-            var publicationBeforeDelete = await service!.GetOnePublicationAsync(publicationId);
+            var publicationBeforeDelete = await repo!.GetByIdAsync<Publication>(publicationId);
 
             Assert.IsNotNull(publicationBeforeDelete);
+            Assert.That(publicationBeforeDelete.IsDeleted == false);
 
             await service.DeletePublicationAsync(publicationId);
 
-            Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetOnePublicationAsync(publicationId));
+            var publicationAfterDelete = await repo!.GetByIdAsync<Publication>(publicationId);
+
+            Assert.IsNotNull(publicationAfterDelete);
+            Assert.That(publicationAfterDelete.IsDeleted == true);
         }
 
         [Test]
