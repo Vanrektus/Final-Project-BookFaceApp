@@ -19,8 +19,7 @@ namespace BookFaceApp.Core.Services
         public async Task<IEnumerable<AllUsersViewModel>> GetAllUsersAsync()
         {
             var entities = await repo.All<User>()
-                .Include(u => u.Publications
-                .Where(p => p.IsDeleted == false && p.GroupId == null))
+                .Include(u => u.Publications.Where(p => p.IsDeleted == false && p.GroupId == null))
                 .ToListAsync();
 
             return entities
