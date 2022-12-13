@@ -61,7 +61,7 @@ namespace BookFaceApp.Controllers
 
                 if (file.ContentType != "image/jpeg" && file.ContentType != "image/png")
                 {
-                    TempData[MessageConstant.ErrorMessage] = "Picture format must be JPEG or PNG!";
+                    TempData[MessageConstant.ErrorMessage] = "Picture format must be PNG or JPEG!";
 
                     return RedirectToAction(nameof(ErrorController.InvalidPictureFormat), ErrorControllerName);
                 }

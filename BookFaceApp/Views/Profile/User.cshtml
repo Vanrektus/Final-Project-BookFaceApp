@@ -5,13 +5,24 @@
     ViewBag.Title = "Selected User Publications";
 }
 
-
-<h2 class="text-center">
-    <img src="@await profileService.GetProfilePictureAsync(User.Id())" style="height: 50px; width: 50px; border-radius: 50%; margin-top: 10px;" />
-    @User.Identity!.Name
-</h2>
-<h3 class="text-center">@ViewBag.Title</h3>
-<hr />
+@if (Model.Count() != 0)
+{
+    <h2 class="text-center">
+        <img src="@Model.First().User.ProfilePicture!.ImageToString" style="height: 50px; width: 50px; border-radius: 50%; margin-top: 10px;" />
+        @Model.First().User.UserName
+    </h2>
+    <h3 class="text-center">@ViewBag.Title</h3>
+    <hr />
+}
+else
+{
+    <h2 class="text-center">
+        <img src="@await profileService.GetProfilePictureAsync(User.Id())" style="height: 50px; width: 50px; border-radius: 50%; margin-top: 10px;" />
+        @User.Identity!.Name
+    </h2>
+    <h3 class="text-center">@ViewBag.Title</h3>
+    <hr />
+}
 
 <div class="row">
     @foreach (var publication in Model)
