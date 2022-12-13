@@ -1,11 +1,17 @@
 ﻿@model PublicationViewModel
 
 
-<div class="card" style="width: 26rem; height: 34rem; margin: 5px;">
+<div class="card" style="width: 420px; margin: 5px;">
     @Html.HiddenFor(p => p.Id)
     <a asp-controller="Profile" asp-action="User" asp-route-id="@Model.User.UserName">
-        @*<img src="@Model.User.ProfilePicture.Content" />*@
-        <h5 class="card-title mt-1" style="padding: 5px;">@Model.User.FirstName @Model.User.LastName</h5>
+        <div>
+            <div style="float: left; margin-bottom: 10px; margin-right: 10px;">
+                <img src="@Model.User.ProfilePicture!.ImageToString" style="height: 50px; width: 50px; border-radius: 50%; margin-top: 10px;" />
+            </div>
+            <div style="padding-top: 15px;">
+                <h5 class="card-title mt-1" style="padding: 5px;">@Model.User.FirstName @Model.User.LastName</h5>
+            </div>
+        </div>
     </a>
     <img src="@Model.ImageUrl" class="card-img-top" alt="..." style="height: 240px; width: 390px;">
 
@@ -46,10 +52,10 @@
         </div>
 
         @*<div class="row">
-            @foreach (var comment in Model.PublicationsComments)
-            {
-                <partial name="_CommentPartial" model="@comment.Comment" />
-            }
+        @foreach (var comment in Model.PublicationsComments)
+        {
+        <partial name="_CommentPartial" model="@comment.Comment" />
+        }
         </div>*@
 
     </div>

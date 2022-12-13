@@ -65,14 +65,14 @@ namespace BookFaceApp.Test.ServiceTests
 
             var commentId = 1;
 
-            var commentBeforeDelete = await repo.GetByIdAsync<Comment>(commentId);
+            var commentBeforeDelete = await repo!.GetByIdAsync<Comment>(commentId);
 
             Assert.IsNotNull(commentBeforeDelete);
             Assert.IsTrue(commentBeforeDelete.IsDeleted == false);
 
             await service!.DeleteCommentAsync(commentId);
 
-            var commentAfterDelete = await repo.GetByIdAsync<Comment>(commentId);
+            var commentAfterDelete = await repo!.GetByIdAsync<Comment>(commentId);
 
             Assert.IsNotNull(commentAfterDelete);
             Assert.IsTrue(commentBeforeDelete.IsDeleted == true);
@@ -176,7 +176,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<ICommentService>();
 
-            Assert.IsTrue(await service.GetPublicationIdByCommentIdAsync(2) == 1);
+            Assert.IsTrue(await service!.GetPublicationIdByCommentIdAsync(2) == 1);
         }
 
         [Test]
@@ -184,7 +184,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<ICommentService>();
 
-            Assert.IsFalse(await service.GetPublicationIdByCommentIdAsync(1) == 2);
+            Assert.IsFalse(await service!.GetPublicationIdByCommentIdAsync(1) == 2);
         }
 
 

@@ -10,14 +10,16 @@ namespace BookFaceApp.Areas.Admin.CustomTagHelpers
         private readonly UserManager<User> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
 
-        public RoleUserTagHelper(UserManager<User> _userManager, RoleManager<IdentityRole> _roleManager)
+        public RoleUserTagHelper(
+            UserManager<User> _userManager, 
+            RoleManager<IdentityRole> _roleManager)
         {
             userManager = _userManager;
             roleManager = _roleManager;
         }
 
         [HtmlAttributeName("i-role")]
-        public string Role { get; set; }
+        public string Role { get; set; } = null!;
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {

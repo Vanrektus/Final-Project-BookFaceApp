@@ -5,11 +5,12 @@ namespace BookFaceApp.Core.Models.Role
     public class RoleEditModel
     {
         [Required]
-        public string RoleName { get; set; }
+        public string RoleName { get; set; } = null!;
 
-        public string RoleId { get; set; }
+		[Required]
+		public string RoleId { get; set; } = null!;
 
-        public string[]? AddIds { get; set; }
+		public string[]? AddIds { get; set; }
 
         public string[]? DeleteIds { get; set; }
     }

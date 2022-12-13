@@ -4,6 +4,8 @@
     {
         public string UserName { get; set; } = null!;
 
-        public List<Infrastructure.Data.Entities.Publication> Publications { get; set; } = new List<Infrastructure.Data.Entities.Publication>();
+        public string ProfilePicture { get; set; } = null!;
+
+		public List<Infrastructure.Data.Entities.Publication> Publications { get; set; } = new List<Infrastructure.Data.Entities.Publication>();
     }
 }

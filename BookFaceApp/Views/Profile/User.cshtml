@@ -5,16 +5,26 @@
 }
 
 
-<h2 class="text-center">@Model.Select(p => p.User.UserName).First().ToString()</h2>
+<h2 class="text-center">
+    <img src="@Model.First().User.ProfilePicture!.ImageToString" style="height: 50px; width: 50px; border-radius: 50%; margin-top: 10px;" />
+    @Model.Select(p => p.User.UserName).First().ToString()
+</h2>
 <h3 class="text-center">@ViewBag.Title</h3>
 <hr />
 
 <div class="row">
     @foreach (var publication in Model)
     {
-        <div class="card" style="width: 26rem; height: 32rem; margin: 5px;">
+        <div class="card" style="width: 420px; margin: 5px;">
             <a asp-controller="Profile" asp-action="User" asp-route-id="@publication.User.UserName">
-                <h5 class="card-title mt-1" style="padding: 5px;">@publication.User.FirstName @publication.User.LastName</h5>
+                <div>
+                    <div style="float: left; margin-bottom: 10px; margin-right: 10px;">
+                        <img src="@publication.User.ProfilePicture!.ImageToString" style="height: 50px; width: 50px; border-radius: 50%; margin-top: 10px;" />
+                    </div>
+                    <div style="padding-top: 15px;">
+                        <h5 class="card-title mt-1" style="padding: 5px;">@publication.User.FirstName @publication.User.LastName</h5>
+                    </div>
+                </div>
             </a>
             <img src="@publication.ImageUrl" class="card-img-top" alt="..." style="height: 240px; width: 390px;">
 

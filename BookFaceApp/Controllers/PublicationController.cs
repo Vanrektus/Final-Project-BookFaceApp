@@ -152,7 +152,8 @@ namespace BookFaceApp.Controllers
 
 			if ((await publicationService.IsOwnerAsync(model.Id, userId)) == false
                 && User.IsInRole(Admin) == false
-                && ((await publicationService.IsInGroupAsync(model.Id)) && (await groupService.IsOwnerAsync((int)model.GroupId!, userId))) == false)
+                && ((await publicationService.IsInGroupAsync(model.Id)) 
+                && (await groupService.IsOwnerAsync((int)model.GroupId!, userId))) == false)
 			{
 				TempData[MessageConstant.ErrorMessage] = "You must be the owner in order to perform this action!";
 

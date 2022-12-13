@@ -20,12 +20,14 @@ namespace BookFaceApp.Core.Services
         {
             var entities = await repo.All<User>()
                 .Include(u => u.Publications.Where(p => p.IsDeleted == false && p.GroupId == null))
+                .Include(u => u.ProfilePicture)
                 .ToListAsync();
 
             return entities
                 .Select(u => new AllUsersViewModel()
                 {
                     UserName = u.UserName,
+                    ProfilePicture = u.ProfilePicture!.ImageToString,
                     Publications = u.Publications,
                 });
         }
@@ -68,6 +70,7 @@ namespace BookFaceApp.Core.Services
                 .Where(p => p.IsDeleted == false)
                 .Where(p => p.GroupId == null)
                 .Include(p => p.User)
+                .ThenInclude(u => u.ProfilePicture)
                 .Include(p => p.PublicationsComments
                 .Where(pc => pc.Comment.IsDeleted == false))
                 .ThenInclude(pc => pc.Comment)

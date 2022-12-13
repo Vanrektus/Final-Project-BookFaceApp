@@ -24,7 +24,7 @@ namespace BookFaceApp.Core.Services
 
             return new StatisticsServiceModel
 			{
-				Id = publication.Id,
+				Id = publication!.Id,
 				TotalLikes = publication.UsersPublications.Count()
 			};
 		}

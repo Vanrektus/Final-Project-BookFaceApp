@@ -21,10 +21,17 @@ else
 }
 
 <div class="row">
-    <div class="card" style="width: 26rem; height: 320rem; margin: 5px;">
+    <div class="card" style="width: 420px; margin: 5px;">
         @Html.HiddenFor(p => p.Id)
         <a asp-controller="Profile" asp-action="User" asp-route-id="@Model.User.UserName">
-            <h4 class="card-title mt-1" style="padding-bottom: 20px; padding-top: 5px; padding-left: 5px;">@Model.User.FirstName @Model.User.LastName</h4>
+            <div>
+                <div style="float: left; margin-bottom: 10px; margin-right: 10px;">
+                    <img src="@Model.User.ProfilePicture!.ImageToString" style="height: 50px; width: 50px; border-radius: 50%; margin-top: 10px;" />
+                </div>
+                <div style="padding-top: 15px;">
+                    <h5 class="card-title mt-1" style="padding: 5px;">@Model.User.FirstName @Model.User.LastName</h5>
+                </div>
+            </div>
         </a>
         @if (await pubService.IsOwnerAsync(Model.Id, User.Id())
         || User.IsInRole("Administrator")
@@ -50,29 +57,36 @@ else
 
             @if (Model.PublicationsComments.Count > 0)
             {
-                @foreach (var comment in Model.PublicationsComments)
+                @foreach (var publicationComment in Model.PublicationsComments)
                 {
                     <div class="card-body">
-                        @if (await comService.IsOwnerAsync(comment.CommentId, User.Id())
+                        @if (await comService.IsOwnerAsync(publicationComment.CommentId, User.Id())
                        || await pubService.IsOwnerAsync(Model.Id, User.Id())
-                       || await grpService.IsOwnerAsync((await pubService.GetPublicationGroupIdAsync(comment.PublicationId)), User.Id())
+                       || await grpService.IsOwnerAsync((await pubService.GetPublicationGroupIdAsync(publicationComment.PublicationId)), User.Id())
                        || User.IsInRole("Administrator"))
                         {
                             <div style="float: right;">
-                                <a class="btn btn-primary" asp-area="" asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.CommentId" onclick="return confirm('Are you sure you want to delete this comment?')">
+                                <a class="btn btn-primary" asp-area="" asp-controller="Comment" asp-action="Delete" asp-route-id="@publicationComment.CommentId" onclick="return confirm('Are you sure you want to delete this comment?')">
                                     <img src="/lib/bootstrap-icons/x-square.svg" alt="Bootstrap" width="35" height="35">
                                 </a>
                             </div>
                             <div style="float: right; margin-right: 10px;">
-                                <a class="btn btn-primary" asp-area="" asp-controller="Comment" asp-action="Edit" asp-route-id="@comment.CommentId">
+                                <a class="btn btn-primary" asp-area="" asp-controller="Comment" asp-action="Edit" asp-route-id="@publicationComment.CommentId">
                                     <img src="/lib/bootstrap-icons/pencil.svg" alt="Bootstrap" width="35" height="35">
                                 </a>
                             </div>
                         }
-                        <a asp-controller="Profile" asp-action="User" asp-route-id="@comment.Comment.User.UserName">
-                            <h5 class="card-title mt-1">@comment.Comment.User.FirstName @comment.Comment.User.LastName</h5>
+                        <a asp-controller="Profile" asp-action="User" asp-route-id="@publicationComment.Comment.User.UserName">
+                            <div>
+                                <div style="float: left; margin-bottom: 10px; margin-right: 10px;">
+                                    <img src="@publicationComment.Comment.User.ProfilePicture!.ImageToString" style="height: 50px; width: 50px; border-radius: 50%; margin-top: 10px;" />
+                                </div>
+                                <div style="padding-top: 15px;">
+                                    <h5 class="card-title mt-1" style="padding: 5px;">@publicationComment.Comment.User.FirstName @publicationComment.Comment.User.LastName</h5>
+                                </div>
+                            </div>
                         </a>
-                        <h5 class="card-title mt-1">@comment.Comment.Text</h5>
+                        <h5 class="card-title mt-1">@publicationComment.Comment.Text</h5>
 
                         <hr />
                     </div>

@@ -5,7 +5,6 @@ using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.Infrastructure.Data.Entities.Relationships;
 using Microsoft.Extensions.DependencyInjection;
-using System.ComponentModel.Design;
 
 namespace BookFaceApp.Test.ServiceTests
 {
@@ -51,10 +50,10 @@ namespace BookFaceApp.Test.ServiceTests
 
             string userId = "ff8c4ff1-b3a1-4d41-8d8c-4de59272dec5";
 
-            var actualReturnId = await service.AddPublicationAsync(publicationModel, userId);
+            var actualReturnId = await service!.AddPublicationAsync(publicationModel, userId);
 
             Assert.That(actualReturnId, Is.EqualTo(expectedReturnId));
-            Assert.DoesNotThrowAsync(async () => await service.AddPublicationAsync(publicationModel, userId));
+            Assert.DoesNotThrowAsync(async () => await service!.AddPublicationAsync(publicationModel, userId));
         }
 
 
@@ -65,7 +64,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<IPublicationService>();
 
-            var pubBeforeEdit = await service.GetOnePublicationAsync(1);
+            var pubBeforeEdit = await service!.GetOnePublicationAsync(1);
 
             Assert.IsTrue(pubBeforeEdit.Title == "TestPublication");
 
@@ -77,9 +76,9 @@ namespace BookFaceApp.Test.ServiceTests
                 CategoryId = 1,
             };
 
-            await service.EditPublicationAsync(publicationModel);
+            await service!.EditPublicationAsync(publicationModel);
 
-            var pubAfterEdit = await service.GetOnePublicationAsync(1);
+            var pubAfterEdit = await service!.GetOnePublicationAsync(1);
 
             Assert.IsTrue(pubAfterEdit.Title == "TestTitle");
         }
@@ -91,7 +90,7 @@ namespace BookFaceApp.Test.ServiceTests
 
             var publicationModel = new PublicationEditModel();
 
-            Assert.ThrowsAsync<NullReferenceException>(async () => await service.EditPublicationAsync(publicationModel));
+            Assert.ThrowsAsync<NullReferenceException>(async () => await service!.EditPublicationAsync(publicationModel));
         }
 
 
@@ -102,9 +101,9 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<IPublicationService>();
 
-            Assert.DoesNotThrowAsync(async () => await service.GetAllPublicationsAsync());
+            Assert.DoesNotThrowAsync(async () => await service!.GetAllPublicationsAsync());
 
-            var publications = await service.GetAllPublicationsAsync();
+            var publications = await service!.GetAllPublicationsAsync();
             var expectedPublicationsCount = 3;
             var actualPublicationsCount = publications.TotalPublicationsCount;
 
@@ -119,9 +118,9 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<IPublicationService>();
 
-            Assert.DoesNotThrowAsync(async () => await service.GetOnePublicationAsync(10));
+            Assert.DoesNotThrowAsync(async () => await service!.GetOnePublicationAsync(10));
 
-            var publication = await service.GetOnePublicationAsync(10);
+            var publication = await service!.GetOnePublicationAsync(10);
 
             Assert.IsNotNull(publication);
             Assert.IsTrue(publication.Id == 10);
@@ -132,7 +131,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<IPublicationService>();
 
-            Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetOnePublicationAsync(999));
+            Assert.ThrowsAsync<NullReferenceException>(async () => await service!.GetOnePublicationAsync(999));
         }
 
 
@@ -143,9 +142,9 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<IPublicationService>();
 
-            Assert.DoesNotThrowAsync(async () => await service.GetPublicationForEditAsync(1));
+            Assert.DoesNotThrowAsync(async () => await service!.GetPublicationForEditAsync(1));
 
-            var publication = await service.GetPublicationForEditAsync(10);
+            var publication = await service!.GetPublicationForEditAsync(10);
 
             Assert.IsNotNull(publication);
             Assert.IsTrue(publication.Id == 10);
@@ -156,7 +155,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<IPublicationService>();
 
-            Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetPublicationForEditAsync(999));
+            Assert.ThrowsAsync<NullReferenceException>(async () => await service!.GetPublicationForEditAsync(999));
         }
 
 
@@ -169,7 +168,7 @@ namespace BookFaceApp.Test.ServiceTests
 
             var userId = "ff8c4ff1-b3a1-4d41-8d8c-4de59272dec5";
 
-            Assert.DoesNotThrowAsync(async () => await service.LikePublicationAsync(1, userId));
+            Assert.DoesNotThrowAsync(async () => await service!.LikePublicationAsync(1, userId));
         }
 
         [Test]
@@ -181,7 +180,7 @@ namespace BookFaceApp.Test.ServiceTests
 
             await service!.LikePublicationAsync(1, userId);
 
-            Assert.DoesNotThrowAsync(async () => await service.LikePublicationAsync(1, userId));
+            Assert.DoesNotThrowAsync(async () => await service  .LikePublicationAsync(1, userId));
         }
 
         [Test]
@@ -211,7 +210,7 @@ namespace BookFaceApp.Test.ServiceTests
             Assert.IsNotNull(publicationBeforeDelete);
             Assert.That(publicationBeforeDelete.IsDeleted == false);
 
-            await service.DeletePublicationAsync(publicationId);
+            await service!.DeletePublicationAsync(publicationId);
 
             var publicationAfterDelete = await repo!.GetByIdAsync<Publication>(publicationId);
 
@@ -249,7 +248,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<IPublicationService>();
 
-            Assert.IsTrue(await service.CategoryExistsAsync(1));
+            Assert.IsTrue(await service!.CategoryExistsAsync(1));
         }
 
         [Test]
@@ -257,7 +256,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<IPublicationService>();
 
-            Assert.IsFalse(await service.CategoryExistsAsync(999));
+            Assert.IsFalse(await service!.CategoryExistsAsync(999));
         }
 
 
@@ -268,7 +267,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var publicationService = serviceProvider.GetService<IPublicationService>();
 
-            Assert.IsTrue(publicationService.PublicationCatMatchesGroupCat(1, 1));
+            Assert.IsTrue(publicationService!.PublicationCatMatchesGroupCat(1, 1));
         }
 
         [Test]
@@ -276,7 +275,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var publicationService = serviceProvider.GetService<IPublicationService>();
 
-            Assert.IsFalse(publicationService.PublicationCatMatchesGroupCat(1, 999));
+            Assert.IsFalse(publicationService!.PublicationCatMatchesGroupCat(1, 999));
         }
 
 
@@ -287,7 +286,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var publicationService = serviceProvider.GetService<IPublicationService>();
 
-            Assert.IsTrue(await publicationService.ExistsAsync(1));
+            Assert.IsTrue(await publicationService!.ExistsAsync(1));
         }
 
         [Test]
@@ -295,7 +294,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var publicationService = serviceProvider.GetService<IPublicationService>();
 
-            Assert.IsFalse(await publicationService.ExistsAsync(999));
+            Assert.IsFalse(await publicationService!.ExistsAsync(999));
         }
 
 
@@ -307,7 +306,7 @@ namespace BookFaceApp.Test.ServiceTests
 
             string userId = "ff8c4ff1-b3a1-4d41-8d8c-4de59272dec5";
 
-            Assert.IsTrue(await publicationService.IsOwnerAsync(1, userId));
+            Assert.IsTrue(await publicationService!.IsOwnerAsync(1, userId));
         }
 
         [Test]
@@ -317,7 +316,7 @@ namespace BookFaceApp.Test.ServiceTests
 
             string userId = "InvalidUserId";
 
-            Assert.IsFalse(await publicationService.IsOwnerAsync(1, userId));
+            Assert.IsFalse(await publicationService!.IsOwnerAsync(1, userId));
         }
 
 
@@ -328,7 +327,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var publicationService = serviceProvider.GetService<IPublicationService>();
 
-            Assert.IsTrue(await publicationService.IsInGroupAsync(2));
+            Assert.IsTrue(await publicationService!.IsInGroupAsync(2));
         }
 
         [Test]
@@ -336,7 +335,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var publicationService = serviceProvider.GetService<IPublicationService>();
 
-            Assert.IsFalse(await publicationService.IsInGroupAsync(1));
+            Assert.IsFalse(await publicationService!.IsInGroupAsync(1));
         }
 
 
@@ -347,7 +346,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var publicationService = serviceProvider.GetService<IPublicationService>();
 
-            Assert.IsTrue(await publicationService.GetPublicationGroupIdAsync(2) == 1);
+            Assert.IsTrue(await publicationService!.GetPublicationGroupIdAsync(2) == 1);
         }
 
         [Test]
@@ -355,7 +354,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var publicationService = serviceProvider.GetService<IPublicationService>();
 
-            Assert.IsFalse(await publicationService.GetPublicationGroupIdAsync(1) == 1);
+            Assert.IsFalse(await publicationService!.GetPublicationGroupIdAsync(1) == 1);
         }
 
 

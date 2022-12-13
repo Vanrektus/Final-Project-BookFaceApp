@@ -59,6 +59,8 @@ namespace BookFaceApp.Core.Services
 
             var publications = repo.AllReadonly<Publication>()
                 .Include(p => p.PublicationsComments.Where(pc => pc.Comment.IsDeleted == false))
+                .Include(p => p.User)
+                .ThenInclude(u => u.ProfilePicture)
                 .Where(p => p.IsDeleted == false)
                 .Where(p => p.GroupId == null);
 
@@ -112,20 +114,20 @@ namespace BookFaceApp.Core.Services
                 .Where(p => p.Id == publicationId)
                 .Where(p => p.IsDeleted == false)
                 .Include(p => p.User)
+                .ThenInclude(u => u.ProfilePicture)
                 .Include(p => p.PublicationsComments
                 .Where(pc => pc.Comment.IsDeleted == false))
                 .ThenInclude(pc => pc.Comment)
                 .ThenInclude(c => c.User)
+                .ThenInclude(u => u.ProfilePicture)
                 .Include(p => p.UsersPublications)
                 .ThenInclude(up => up.User)
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync();
 
-            var user = await repo.GetByIdAsync<User>(model!.UserId);
-
             return new PublicationViewModel()
             {
-                Id = model.Id,
+                Id = model!.Id,
                 Title = model.Title,
                 ImageUrl = model.ImageUrl!,
                 UserId = model.UserId,
@@ -205,6 +207,7 @@ namespace BookFaceApp.Core.Services
                 .Where(p => p.IsDeleted == false)
                 .Where(p => p.GroupId == null)
                 .Include(p => p.User)
+                .ThenInclude(u => u.ProfilePicture)
                 .Include(p => p.PublicationsComments
                 .Where(pc => pc.Comment.IsDeleted == false))
                 .ThenInclude(pc => pc.Comment)
@@ -214,7 +217,7 @@ namespace BookFaceApp.Core.Services
                 .Include(p => p.Category)
                 .ToListAsync();
 
-            var randomThreeEntities = new List<Publication>();
+			var randomThreeEntities = new List<Publication>();
 
             Random random = new Random();
 

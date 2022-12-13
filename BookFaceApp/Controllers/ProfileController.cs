@@ -8,86 +8,93 @@ using static BookFaceApp.Controllers.Constants.ControllersConstants.ControllersN
 
 namespace BookFaceApp.Controllers
 {
-	[Authorize]
-	public class ProfileController : Controller
-	{
-		private readonly IProfileService profileService;
-		private readonly IFileService fileService;
+    [Authorize]
+    public class ProfileController : Controller
+    {
+        private readonly IProfileService profileService;
+        private readonly IFileService fileService;
 
-		public ProfileController(
-			IProfileService _profileService,
-			IFileService _fileService)
-		{
-			profileService = _profileService;
-			fileService = _fileService;
-		}
+        public ProfileController(
+            IProfileService _profileService,
+            IFileService _fileService)
+        {
+            profileService = _profileService;
+            fileService = _fileService;
+        }
 
-		[HttpGet]
-		public async Task<IActionResult> MyProfile()
-		{
-			var userId = base.User.Id();
+        [HttpGet]
+        public async Task<IActionResult> MyProfile()
+        {
+            var userId = base.User.Id();
 
-			var model = await profileService.GetMyProfilePublicationsAsync(userId);
+            var model = await profileService.GetMyProfilePublicationsAsync(userId);
 
-			return View(model);
-		}
+            return View(model);
+        }
 
-		[HttpGet]
-		public async Task<IActionResult> User(string id)
-		{
-			var model = await profileService.GetUserProfilePublicationsAsync(id);
+        [HttpGet]
+        public async Task<IActionResult> User(string id)
+        {
+            var model = await profileService.GetUserProfilePublicationsAsync(id);
 
-			return View(model);
-		}
+            return View(model);
+        }
 
-		[HttpGet]
-		public async Task<IActionResult> All()
-		{
-			var model = await profileService.GetAllUsersAsync();
+        [HttpGet]
+        public async Task<IActionResult> All()
+        {
+            var model = await profileService.GetAllUsersAsync();
 
-			return View(model);
-		}
+            return View(model);
+        }
 
-		public async Task<IActionResult> UploadProfilePicture(IFormFile file)
-		{
-			try
-			{
-				if (file == null || file.Length <= 0)
-				{
-					TempData[MessageConstant.ErrorMessage] = "You must choose a picture to upload!";
+        public async Task<IActionResult> UploadProfilePicture(IFormFile file)
+        {
+            try
+            {
+                if (file == null || file.Length <= 0)
+                {
+                    TempData[MessageConstant.ErrorMessage] = "You must choose a picture to upload!";
 
-					return RedirectToAction(nameof(MyProfile));
-				}
+                    return RedirectToAction(nameof(MyProfile));
+                }
 
-				if (file.ContentType != "image/jpeg" && file.ContentType != "image/png")
-				{
-					TempData[MessageConstant.ErrorMessage] = "Picture format must be JPEG or PNG!";
+                if (file.ContentType != "image/jpeg" && file.ContentType != "image/png")
+                {
+                    TempData[MessageConstant.ErrorMessage] = "Picture format must be JPEG or PNG!";
 
-					return RedirectToAction(nameof(ErrorController.InvalidPictureFormat), ErrorControllerName);
-				}
+                    return RedirectToAction(nameof(ErrorController.InvalidPictureFormat), ErrorControllerName);
+                }
 
-				using (var stream = new MemoryStream())
-				{
-					await file.CopyToAsync(stream);
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
 
-					var userId = base.User.Id();
+                    var userId = base.User.Id();
 
-					var fileToSave = new ProfilePicture()
-					{
-						FileName = file.FileName,
-						Content = stream.ToArray(),
-						UserId = userId,
-					};
+                    var imageToString = file.FileName.EndsWith(".png")
+                        ? "data:image/png;base64," + Convert
+                        .ToBase64String(stream.ToArray(), 0, stream.ToArray().Length)
+                        : "data:image/jpeg;base64," + Convert
+                        .ToBase64String(stream.ToArray(), 0, stream.ToArray().Length);
 
-					await fileService.SavePictureAsync(fileToSave);
-				}
+                    var fileToSave = new ProfilePicture()
+                    {
+                        FileName = file.FileName,
+                        Content = stream.ToArray(),
+                        ImageToString = imageToString,
+                        UserId = userId,
+                    };
 
-				return RedirectToAction(nameof(MyProfile));
-			}
-			catch (Exception ex)
-			{
-				throw;
-			}
-		}
-	}
+                    await fileService.SavePictureAsync(fileToSave);
+                }
+
+                return RedirectToAction(nameof(MyProfile));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+    }
 }

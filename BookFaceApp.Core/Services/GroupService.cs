@@ -146,13 +146,15 @@ namespace BookFaceApp.Core.Services
 			var model = await repo.AllReadonly<Group>()
 				.Where(g => g.Id == groupId)
 				.Include(g => g.User)
+				.ThenInclude(u => u.ProfilePicture)
 				.Include(g => g.Publications.Where(p => p.IsDeleted == false))
 				.ThenInclude(p => p.UsersPublications)
 				.Include(g => g.Publications.Where(p => p.IsDeleted == false))
 				.ThenInclude(p => p.PublicationsComments.Where(pc => pc.Comment.IsDeleted == false))
 				.Include(g => g.Publications.Where(p => p.IsDeleted == false))
 				.ThenInclude(p => p.User)
-				.Include(g => g.Publications.Where(p => p.IsDeleted == false))
+                .ThenInclude(u => u.ProfilePicture)
+                .Include(g => g.Publications.Where(p => p.IsDeleted == false))
 				.ThenInclude(p => p.Category)
 				.Include(g => g.Category)
 				.FirstOrDefaultAsync();
@@ -194,7 +196,14 @@ namespace BookFaceApp.Core.Services
 			=> await repo.GetByIdAsync<Category>(categoryId) != null;
 
 		public async Task<bool> IsOwnerAsync(int groupId, string userId)
-			=> (await repo.GetByIdAsync<Group>(groupId)).UserId == userId;
+		{
+			if (groupId == 0)
+			{
+				return false;
+            }
+
+			return (await repo.GetByIdAsync<Group>(groupId)).UserId == userId;
+		}
 
 		public async Task RequestToJoin(int groupId, string userId)
 		{

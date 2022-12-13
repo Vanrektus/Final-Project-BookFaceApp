@@ -105,9 +105,9 @@ namespace BookFaceApp.Test.ServiceTests
                 CategoryId = 1,
             };
 
-            await service.EditGroupAsync(groupModel);
+            await service!.EditGroupAsync(groupModel);
 
-            var pubAfterEdit = await service.GetOneGroupAsync(1);
+            var pubAfterEdit = await service!.GetOneGroupAsync(1);
 
             Assert.IsTrue(pubAfterEdit.Name == "TestGroupEdited");
         }
@@ -149,9 +149,9 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<IGroupService>();
 
-            Assert.DoesNotThrowAsync(async () => await service.GetGroupForEditAsync(2));
+            Assert.DoesNotThrowAsync(async () => await service!.GetGroupForEditAsync(2));
 
-            var group = await service.GetGroupForEditAsync(2);
+            var group = await service!.GetGroupForEditAsync(2);
 
             Assert.IsNotNull(group);
             Assert.IsTrue(group.Id == 2);
@@ -162,7 +162,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<IGroupService>();
 
-            Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetGroupForEditAsync(999));
+            Assert.ThrowsAsync<NullReferenceException>(async () => await service!.GetGroupForEditAsync(999));
         }
 
 
@@ -173,9 +173,9 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<IGroupService>();
 
-            Assert.DoesNotThrowAsync(async () => await service.GetOneGroupAsync(2));
+            Assert.DoesNotThrowAsync(async () => await service!.GetOneGroupAsync(2));
 
-            var group = await service.GetOneGroupAsync(2);
+            var group = await service!.GetOneGroupAsync(2);
 
             Assert.IsNotNull(group);
             Assert.IsTrue(group.Id == 2);
@@ -186,7 +186,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<IGroupService>();
 
-            Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetOneGroupAsync(999));
+            Assert.ThrowsAsync<NullReferenceException>(async () => await service!.GetOneGroupAsync(999));
         }
 
 
@@ -197,7 +197,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<IGroupService>();
 
-            Assert.IsTrue(await service.ExistsByIdAsync(2));
+            Assert.IsTrue(await service!.ExistsByIdAsync(2));
         }
 
         [Test]
@@ -205,7 +205,7 @@ namespace BookFaceApp.Test.ServiceTests
         {
             var service = serviceProvider.GetService<IGroupService>();
 
-            Assert.IsFalse(await service.ExistsByIdAsync(999));
+            Assert.IsFalse(await service!.ExistsByIdAsync(999));
         }
 
 
@@ -340,7 +340,7 @@ namespace BookFaceApp.Test.ServiceTests
 
             await service!.AddUserToGroup(groupId, userId);
 
-            Assert.IsTrue(await service.IsAccepted(groupId, userId));
+            Assert.IsTrue(await service!.IsAccepted(groupId, userId));
         }
 
         [Test]
@@ -384,7 +384,7 @@ namespace BookFaceApp.Test.ServiceTests
 
             Assert.IsFalse(await service!.IsUserInGroup(groupId, userId));
 
-            await service.AddUserToGroup(groupId, userId);
+            await service!.AddUserToGroup(groupId, userId);
 
             Assert.IsTrue(await service!.IsUserInGroup(groupId, userId));
         }
@@ -402,7 +402,7 @@ namespace BookFaceApp.Test.ServiceTests
 
             Assert.IsTrue(await service!.IsUserRequested(groupId, userId));
 
-            await service.RequestToJoin(groupId, userId);
+            await service!.RequestToJoin(groupId, userId);
 
             Assert.IsFalse(await service!.IsUserInGroup(groupId, userId));
         }

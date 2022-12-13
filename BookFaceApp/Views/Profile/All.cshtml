@@ -12,7 +12,14 @@
 	{
 		<div class="card col-4" style="width: 375px; margin: 5px;">
 			<a asp-controller="Profile" asp-action="User" asp-route-id="@user.UserName">
-				<h5 class="card-title mt-1">@user.UserName</h5>
+				<div>
+					   <div style="float: left; margin-bottom: 10px; margin-right: 10px;">
+						   <img src="@user.ProfilePicture" style="height: 50px; width: 50px; border-radius: 50%; margin-top: 10px;" />
+					   </div>
+						<div style="padding-top: 15px;">
+							<h5 class="card-title mt-1" style="padding: 5px;">@user.UserName</h5>
+						</div>
+					</div>
 			</a>
 			<h5 class="card-title mt-1">@user.Publications.Count publications</h5>
 		</div>
