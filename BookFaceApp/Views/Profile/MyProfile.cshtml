@@ -1,20 +1,23 @@
 ﻿@model IEnumerable<PublicationViewModel>
 
 @{
-	ViewBag.Title = "My Publications";
+    ViewBag.Title = "My Publications";
 }
 
-<h2 class="text-center">@User.Identity?.Name</h2>
+<h2 class="text-center">
+    <img src="@Model.First().User.ProfilePicture!.ImageToString" style="height: 50px; width: 50px; border-radius: 50%; margin-top: 10px;" />
+    @User.Identity?.Name
+</h2>
 <form asp-action="UploadProfilePicture" enctype="multipart/form-data" method="post" style="text-align: center;">
-	<input id="file-upload" name="file" type="file" />
-	<input type="submit" class="btn btn-primary" value="Upload" />
+    <input id="file-upload" name="file" type="file" />
+    <input type="submit" class="btn btn-primary" value="Change Picture" />
 </form>
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
 <div class="row">
-	@foreach (var publication in Model)
-	{
-		<partial name="_PublicationPartial" model="@publication" />
-	}
+    @foreach (var publication in Model)
+    {
+        <partial name="_PublicationPartial" model="@publication" />
+    }
 </div>

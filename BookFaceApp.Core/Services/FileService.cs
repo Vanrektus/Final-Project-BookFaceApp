@@ -1,6 +1,7 @@
 ﻿using BookFaceApp.Core.Contracts;
 using BookFaceApp.Infrastructure.Data.Common;
 using BookFaceApp.Infrastructure.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookFaceApp.Core.Services
 {
@@ -12,10 +13,16 @@ namespace BookFaceApp.Core.Services
 		{
 			repo = _repo;
 		}
-
-		public async Task SavePictureAsync(ProfilePicture file)
+		
+		public async Task ChangePictureAsync(ProfilePicture pictureModel, string userId)
 		{
-			await repo.AddAsync(file);
+			var pictureToChange = await repo.All<ProfilePicture>()
+				.FirstOrDefaultAsync(pp => pp.UserId == userId);
+
+			pictureToChange!.FileName = pictureModel.FileName;
+			pictureToChange.Content = pictureModel.Content;
+			pictureToChange.ImageToString = pictureModel.ImageToString;
+
 			await repo.SaveChangesAsync();
 		}
 	}

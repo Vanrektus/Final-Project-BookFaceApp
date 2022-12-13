@@ -78,7 +78,7 @@ namespace BookFaceApp.Controllers
                         : "data:image/jpeg;base64," + Convert
                         .ToBase64String(stream.ToArray(), 0, stream.ToArray().Length);
 
-                    var fileToSave = new ProfilePicture()
+                    var pictureToEdit = new ProfilePicture()
                     {
                         FileName = file.FileName,
                         Content = stream.ToArray(),
@@ -86,7 +86,7 @@ namespace BookFaceApp.Controllers
                         UserId = userId,
                     };
 
-                    await fileService.SavePictureAsync(fileToSave);
+                    await fileService.ChangePictureAsync(pictureToEdit, userId);
                 }
 
                 return RedirectToAction(nameof(MyProfile));

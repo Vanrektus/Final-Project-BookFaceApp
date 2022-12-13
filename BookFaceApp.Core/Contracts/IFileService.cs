@@ -4,6 +4,6 @@ namespace BookFaceApp.Core.Contracts
 {
 	public interface IFileService
 	{
-		Task SavePictureAsync(ProfilePicture file);
+		Task ChangePictureAsync(ProfilePicture file, string userId);
 	}
 }
