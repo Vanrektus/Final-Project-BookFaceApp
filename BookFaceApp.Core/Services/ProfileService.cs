@@ -93,5 +93,14 @@ namespace BookFaceApp.Core.Services
                     UsersPublications = p.UsersPublications,
                 });
         }
+
+        public async Task<string> GetProfilePictureAsync(string userId)
+        {
+            var user = await repo.AllReadonly<User>()
+                .Include(u => u.ProfilePicture)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            return user.ProfilePicture!.ImageToString;
+        }
     }
 }

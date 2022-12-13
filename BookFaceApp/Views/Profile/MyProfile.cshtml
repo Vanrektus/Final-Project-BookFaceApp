@@ -1,12 +1,13 @@
 ﻿@model IEnumerable<PublicationViewModel>
+@inject IProfileService profileService
 
 @{
     ViewBag.Title = "My Publications";
 }
 
 <h2 class="text-center">
-    <img src="@Model.First().User.ProfilePicture!.ImageToString" style="height: 50px; width: 50px; border-radius: 50%; margin-top: 10px;" />
-    @User.Identity?.Name
+    <img src="@await profileService.GetProfilePictureAsync(User.Id())" style="height: 50px; width: 50px; border-radius: 50%; margin-top: 10px;" />
+    @User.Identity!.Name
 </h2>
 <form asp-action="UploadProfilePicture" enctype="multipart/form-data" method="post" style="text-align: center;">
     <input id="file-upload" name="file" type="file" />

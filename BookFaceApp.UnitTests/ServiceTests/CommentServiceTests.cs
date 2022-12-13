@@ -206,6 +206,13 @@ namespace BookFaceApp.Test.ServiceTests
                 LastName = "Petrov",
                 Email = "pesho@mail.com",
                 NormalizedEmail = "PESHO@MAIL.COM",
+                ProfilePicture = new ProfilePicture()
+                {
+                    FileName = "",
+                    Content = new byte[] { },
+                    ImageToString = "",
+                    UserId = ""
+                },
             };
 
             var comment = new Comment()

@@ -42,7 +42,7 @@ namespace BookFaceApp.Test.ServiceTests
             var users = await service!.GetAllUsersAsync();
 
             Assert.IsNotNull(users);
-            Assert.That(users.Count() == 3);
+            Assert.That(users.Count() == 1);
         }
 
 
@@ -124,6 +124,13 @@ namespace BookFaceApp.Test.ServiceTests
                 LastName = "Petrov",
                 Email = "pesho@mail.com",
                 NormalizedEmail = "PESHO@MAIL.COM",
+                ProfilePicture = new ProfilePicture()
+                {
+                    FileName = "",
+                    Content = new byte[] { },
+                    ImageToString = "",
+                    UserId = ""
+                },
             };
 
             var publication = new Publication()

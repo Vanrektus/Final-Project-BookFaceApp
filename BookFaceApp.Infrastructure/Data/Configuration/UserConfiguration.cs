@@ -9,7 +9,7 @@ namespace BookFaceApp.Infrastructure.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasData(SeedUsers());
+            //builder.HasData(SeedUsers());
         }
 
         private List<User> SeedUsers()

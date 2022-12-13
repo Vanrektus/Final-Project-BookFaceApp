@@ -10,5 +10,7 @@ namespace BookFaceApp.Core.Contracts
         Task<IEnumerable<PublicationViewModel>> GetUserProfilePublicationsAsync(string username);
 
         Task<IEnumerable<AllUsersViewModel>> GetAllUsersAsync();
+
+        Task<string> GetProfilePictureAsync(string userId);
     }
 }
