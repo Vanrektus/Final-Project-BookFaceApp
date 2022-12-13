@@ -18,13 +18,13 @@ This is a facebook like application, with similar functionality ( not everything
 - **`All groups`** - A page that shows all groups. Similar to all publications, it comes with a search bar and sorting and pagination functionality. Users may request to join a group in order to see its publications.
 - **`Create a new group`** - Group creation page. Publications that are added to groups ***must*** match the group's category!
 - **`All users`** - A page where users can see all other users. Upon clicking on the name of an user, a page opens with all the specific user's publications.
-- **`Current user's username ( profile page )'`** - A page with logged in user's publications.
+- **`*Current user's username* ( profile page )'`** - A page with logged in user's publications. In this page users can change their profile pictures ( only PNG and JPEG formats are supported ).
 - **`Like a publication`** - Users can like publications. If an user has already liked a publication, upon clicking it will unlike the publication.
 - **`Comment a publication`** - Users can add comments to publications.
 - **`Logout`**
 
 <ins>Logged in user - ***admin***:</ins>
-- Admins can do everything that non admins can do plus some more.
+- ***Admins*** can do <ins>everything</ins> that ***non admins*** can do plus some more.
 - **`Roles`** - Role managing page where admins can create/edit/delete roles and can manage users in those roles.
 - **`Request`** - All user requests for joining a group show here. Admins can accept or deny them.
 
