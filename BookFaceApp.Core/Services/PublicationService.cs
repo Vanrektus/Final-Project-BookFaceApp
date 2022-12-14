@@ -59,6 +59,8 @@ namespace BookFaceApp.Core.Services
 
             var publications = repo.AllReadonly<Publication>()
                 .Include(p => p.PublicationsComments.Where(pc => pc.Comment.IsDeleted == false))
+                .ThenInclude(pc => pc.Comment)
+                .ThenInclude(c => c.User)
                 .Include(p => p.User)
                 .ThenInclude(u => u.ProfilePicture)
                 .Where(p => p.IsDeleted == false)
