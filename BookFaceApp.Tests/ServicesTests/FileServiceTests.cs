@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text;
 
-namespace BookFaceApp.Test.ServicesTests
+namespace BookFaceApp.Tests.ServicesTests
 {
     [TestFixture]
     public class FileServiceTests

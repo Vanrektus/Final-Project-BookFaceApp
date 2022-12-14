@@ -9,14 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFaceApp.Infrastructure"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFaceApp.Core", "BookFaceApp.Core\BookFaceApp.Core.csproj", "{BB3382BB-C0CA-41FD-815B-15DCE36B2565}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFaceApp.Test", "BookFaceApp.UnitTests\BookFaceApp.Test.csproj", "{9BF7F991-1C3F-4182-8240-C6F10FB6344E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFaceApp.WebApi", "BookFaceApp.WebApi\BookFaceApp.WebApi.csproj", "{61DDA088-E385-47E7-AB87-8B1FD13B3338}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{674A7FD0-5F0B-488A-851F-7B45EC64511F}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookFaceApp.Tests", "BookFaceApp.Tests\BookFaceApp.Tests.csproj", "{B5D6EA55-0DB4-4B75-A52E-54AA4192298C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,14 +36,14 @@ Global
 		{BB3382BB-C0CA-41FD-815B-15DCE36B2565}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB3382BB-C0CA-41FD-815B-15DCE36B2565}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB3382BB-C0CA-41FD-815B-15DCE36B2565}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9BF7F991-1C3F-4182-8240-C6F10FB6344E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9BF7F991-1C3F-4182-8240-C6F10FB6344E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9BF7F991-1C3F-4182-8240-C6F10FB6344E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9BF7F991-1C3F-4182-8240-C6F10FB6344E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{61DDA088-E385-47E7-AB87-8B1FD13B3338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{61DDA088-E385-47E7-AB87-8B1FD13B3338}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61DDA088-E385-47E7-AB87-8B1FD13B3338}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61DDA088-E385-47E7-AB87-8B1FD13B3338}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5D6EA55-0DB4-4B75-A52E-54AA4192298C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5D6EA55-0DB4-4B75-A52E-54AA4192298C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5D6EA55-0DB4-4B75-A52E-54AA4192298C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5D6EA55-0DB4-4B75-A52E-54AA4192298C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

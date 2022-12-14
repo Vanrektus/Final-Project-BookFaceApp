@@ -6,7 +6,7 @@ using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.Infrastructure.Data.Entities.Relationships;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BookFaceApp.Test.ServicesTests
+namespace BookFaceApp.Tests.ServicesTests
 {
     [TestFixture]
     public class CommentServiceTests

@@ -100,7 +100,7 @@ namespace BookFaceApp.Core.Services
                 .Include(u => u.ProfilePicture)
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
-            return user.ProfilePicture!.ImageToString;
+            return user!.ProfilePicture!.ImageToString;
         }
     }
 }
