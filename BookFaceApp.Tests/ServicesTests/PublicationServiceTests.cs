@@ -6,7 +6,7 @@ using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.Infrastructure.Data.Entities.Relationships;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BookFaceApp.Test.ServiceTests
+namespace BookFaceApp.Test.ServicesTests
 {
     [TestFixture]
     public class PublicationServiceTests
@@ -238,6 +238,20 @@ namespace BookFaceApp.Test.ServiceTests
 
             Assert.IsNotNull(publications);
             Assert.IsTrue(publications.Count() == 3);
+        }
+
+
+
+        // --- Get Categories Names TESTS ---
+        [Test]
+        public async Task GetCategoriesNamesShouldWorkCorrectly()
+        {
+            var service = serviceProvider.GetService<IPublicationService>();
+
+            var categories = await service!.GetCategoriesNamesAsync();
+
+            Assert.IsNotNull(categories);
+            Assert.IsTrue(categories.Count() == 9);
         }
 
 
