@@ -191,6 +191,33 @@ namespace BookFaceApp.Tests.ServicesTests
 
 
 
+        // --- Get Category Id TESTS ---
+        [Test]
+        public async Task GetCategoryIdShouldWorkCorrectlyWithValidId()
+        {
+            var service = serviceProvider.GetService<IGroupService>();
+
+            Assert.DoesNotThrowAsync(async () => await service!.GetCategoryIdAsync(1));
+
+            var result = await service!.GetCategoryIdAsync(1);
+
+            Assert.IsTrue(result == 1);
+        }
+
+        [Test]
+        public async Task GetCategoryIdShouldWorkCorrectlyWithInvalidId()
+        {
+            var service = serviceProvider.GetService<IGroupService>();
+
+            Assert.DoesNotThrowAsync(async () => await service!.GetCategoryIdAsync(null));
+
+            var result = await service!.GetCategoryIdAsync(null);
+
+            Assert.IsTrue(result == 0);
+        }
+
+
+
         // --- Groups Exists TESTS ---
         [Test]
         public async Task GroupExistsShouldWorkCorrectlyWithValidId()
