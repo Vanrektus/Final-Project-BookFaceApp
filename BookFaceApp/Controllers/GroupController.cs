@@ -88,7 +88,8 @@ namespace BookFaceApp.Controllers
 
 			var userId = User.Id();
 
-			if ((await groupService.IsUserInGroup(id, userId)) == false)
+			if ((await groupService.IsUserInGroup(id, userId)) == false
+				&& User.IsInRole(Admin) == false)
             {
                 TempData[MessageConstant.ErrorMessage] = "You must be in the group in order to see its publications :(";
 

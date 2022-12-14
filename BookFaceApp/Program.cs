@@ -74,8 +74,8 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-	app.UseDeveloperExceptionPage();
-	//app.UseExceptionHandler("/Error/SomethingWentWrong");
+	//app.UseDeveloperExceptionPage();
+	app.UseExceptionHandler("/Error/SomethingWentWrong");
 }
 else
 {

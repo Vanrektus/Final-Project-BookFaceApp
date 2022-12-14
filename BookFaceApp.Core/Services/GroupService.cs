@@ -96,9 +96,11 @@ namespace BookFaceApp.Core.Services
 			groups = sorting switch
 			{
 				GroupSorting.MostUsers => groups
-				.OrderByDescending(g => g.UsersGroups.Count),
+				.OrderByDescending(g => g.UsersGroups.Count)
+				.ThenByDescending(g => g.Publications.Where(p => p.IsDeleted == false).ToList().Count),
 				GroupSorting.MostPublications => groups
-				.OrderByDescending(g => g.Publications.Count),
+				.OrderByDescending(g => g.Publications.Where(p => p.IsDeleted == false).ToList().Count)
+				.ThenByDescending(g => g.UsersGroups.Count),
 				_ => groups.OrderByDescending(p => p.Id)
 			};
 

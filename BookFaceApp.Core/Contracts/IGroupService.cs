@@ -1,5 +1,4 @@
 ﻿using BookFaceApp.Core.Models.Group;
-using BookFaceApp.Core.Models.Publication;
 using BookFaceApp.Infrastructure.Data.Entities;
 using BookFaceApp.Infrastructure.Data.Entities.Relationships;
 

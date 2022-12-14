@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookFaceApp.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IPublicationService publicationService;

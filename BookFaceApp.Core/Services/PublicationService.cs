@@ -81,9 +81,11 @@ namespace BookFaceApp.Core.Services
             publications = sorting switch
             {
                 PublicationSorting.MostLiked => publications
-                .OrderByDescending(p => p.UsersPublications.Count),
+                .OrderByDescending(p => p.UsersPublications.Count)
+                .ThenByDescending(p => p.PublicationsComments.Where(pc => pc.Comment.IsDeleted == false).ToList().Count),
                 PublicationSorting.MostCommented => publications
-                .OrderByDescending(p => p.PublicationsComments.Count),
+                .OrderByDescending(p => p.PublicationsComments.Where(pc => pc.Comment.IsDeleted == false).ToList().Count)
+                .ThenByDescending(p => p.UsersPublications.Count),
                 _ => publications.OrderByDescending(p => p.Id)
             };
 
