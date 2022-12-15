@@ -113,7 +113,7 @@ namespace BookFaceApp.Controllers
 
             return RedirectToAction(nameof(Details), new { id = id, information = model.GetInformation() });
         }
-         
+        
         [HttpGet]
         public async Task<IActionResult> Details(int id, string information)
         {
@@ -131,6 +131,14 @@ namespace BookFaceApp.Controllers
                 TempData[MessageConstant.ErrorMessage] = "The publication you are looking for was not found :(";
 
                 return RedirectToAction(nameof(ErrorController.InvalidPublication), ErrorControllerName);
+            }
+
+            if ((await publicationService.IsInGroupAsync(model.Id)) == true 
+                && (await groupService.IsUserInGroup((int)model.GroupId, User.Id())) == false)
+            {
+                TempData[MessageConstant.ErrorMessage] = "You must be in the group in order to see its publications :(";
+
+                return RedirectToAction(nameof(ErrorController.NotInGroup), ErrorControllerName);
             }
 
             return View(model);
