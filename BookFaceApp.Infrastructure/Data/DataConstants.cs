@@ -52,5 +52,11 @@
             public const int MinRequestStatus = 7;
             public const int MaxRequestStatus = 8;
         }
+
+        public class RoleConstants
+        {
+            public const int MinRoleName = 1;
+            public const int MaxRoleName = 50;
+        }
     }
 }

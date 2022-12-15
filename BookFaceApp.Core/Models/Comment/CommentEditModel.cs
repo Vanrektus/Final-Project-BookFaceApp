@@ -9,7 +9,7 @@ namespace BookFaceApp.Core.Models.Comment
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(MaxCommentText)]
+        [StringLength(MaxCommentText, MinimumLength = MinCommentText)]
         public string Text { get; set; } = null!;
 
 		public string? UserId { get; set; }

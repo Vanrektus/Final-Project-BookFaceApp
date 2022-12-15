@@ -11,7 +11,7 @@ namespace BookFaceApp.Core.Models.Publication
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(MaxPublicationTitle)]
+        [StringLength(MaxPublicationTitle, MinimumLength = MinPublicationTitle)]
         public string Title { get; set; } = null!;
 
         public string? ImageUrl { get; set; }

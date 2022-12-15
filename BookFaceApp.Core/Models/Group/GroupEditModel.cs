@@ -10,7 +10,7 @@ namespace BookFaceApp.Core.Models.Group
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(MaxGroupName)]
+        [StringLength(MaxGroupName, MinimumLength = MinGroupName)]
         public string Name { get; set; } = null!;
 
 		[Required]

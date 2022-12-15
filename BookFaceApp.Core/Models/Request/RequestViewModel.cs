@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BookFaceApp.Core.Models.Request
+﻿namespace BookFaceApp.Core.Models.Request
 {
     public class RequestViewModel
     {
